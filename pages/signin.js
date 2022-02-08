@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Router from 'next/router';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import Router from "next/router";
 
-import Button from '../components/Button';
-import { useDispatch } from 'react-redux';
-import { login } from '../components/reducers/login';
+import Button from "../components/Button";
+import { useDispatch } from "react-redux";
+import { login } from "../components/reducers/login";
 
 export default function Signin() {
   const {
@@ -12,15 +12,16 @@ export default function Signin() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
 
   const loginHandler = async ({ email, password }) => {
-    const data = await fetch('http://localhost:5000/api/user/signin', {
-      method: 'POST',
-      credentials: 'include',
+    console.log(email, password);
+    const data = await fetch("http://localhost:5000/api/user/signin", {
+      method: "POST",
+      credentials: "include",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
@@ -29,7 +30,7 @@ export default function Signin() {
 
     dispatch(
       login({
-        name: 'test',
+        name: "test",
         email,
         loggedIn: true,
       })
@@ -37,9 +38,14 @@ export default function Signin() {
 
     console.log(await data.json());
     if (result === 200) {
-      return Router.push('profile');
+      return Router.push("profile");
     } else {
-      return setError(await data.json().then((res) => res.message));
+      return setError(
+        await data.json().then((res) => {
+          console.log(res.message);
+          return res.message;
+        })
+      );
     }
   };
 
@@ -56,7 +62,7 @@ export default function Signin() {
         <label htmlFor="email" className="font-semibold w-full">
           Email
           <input
-            {...register('email', {
+            {...register("email", {
               required: true,
               pattern:
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -64,18 +70,18 @@ export default function Signin() {
             placeholder="Email"
             type="text"
             className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
-              errors?.email?.type === 'required' && 'border-red-500'
-            } ${errors?.email?.type === 'pattern' && 'border-red-500'}`}
+              errors?.email?.type === "required" && "border-red-500"
+            } ${errors?.email?.type === "pattern" && "border-red-500"}`}
           ></input>
         </label>
 
         <label htmlFor="password" className="mt-5 font-semibold w-full">
           Password
           <input
-            {...register('password', { required: true })}
+            {...register("password", { required: true })}
             placeholder="Password"
             className={`mt-2 px-4 py-4 rounded-xl border border-primary w-full ${
-              errors?.password?.type === 'required' && 'border-red-500'
+              errors?.password?.type === "required" && "border-red-500"
             }`}
             type="password"
           ></input>
@@ -83,7 +89,7 @@ export default function Signin() {
 
         <div className="flex items-center justify-center gap-5 mt-5">
           <input
-            {...register('rememberMe')}
+            {...register("rememberMe")}
             type="checkbox"
             className="ml-1 w-5 h-5 accent-primary rounded"
           ></input>
@@ -104,13 +110,13 @@ export default function Signin() {
 
         <Button
           type="submit"
-          className={'mt-5 bg-primary text-white font-bold'}
+          className={"mt-5 bg-primary text-white font-bold"}
         >
           Sign in
         </Button>
       </form>
 
-      <Button className={'mt-5 border border-primary text-primary font-bold'}>
+      <Button className={"mt-5 border border-primary text-primary font-bold"}>
         Sign in with Google
       </Button>
 
