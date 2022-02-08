@@ -2,9 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  font-family: "Open Sans", ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji";
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  html,
+  body {
+    @apply font-main;
+    scroll-behavior: smooth;
+  }
+
+  a {
+    @apply no-underline;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    @apply focus:outline-none;
+  }
+}
+
+.swiper-pagination-bullet-active {
+  border-radius: 0.75rem !important;
+  padding: 0.325rem 1rem !important;
+  background-color: #1f8734 !important;
+}
+
+.swiper-pagination-bullet {
+  padding: 0.325rem;
 }
