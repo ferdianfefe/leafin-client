@@ -6,7 +6,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-export default function Profile() {
+export default function Profile({ user }) {
+  const { email } = user;
   const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terter'];
   const envProfile = [
     { name: 'Humidity', value: '70' },
@@ -44,7 +45,7 @@ export default function Profile() {
           ></Image>
         </div>
         <div className="ml-5 flex flex-wrap gap-1">
-          <h1 className="font-bold text-lg w-full">John</h1>
+          <h1 className="font-bold text-lg w-full">{email}</h1>
           <p className="text-xs text-gray-light">John is me</p>
         </div>
       </div>
@@ -97,4 +98,23 @@ export default function Profile() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const data = await fetch('http://localhost:5000/api/user/', {
+    method: 'GET',
+    credentials: true,
+    headers: {
+      cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
+      content: 'application/json',
+    },
+  });
+
+  const result = (await data.json()).data;
+
+  return {
+    props: {
+      user: result,
+    },
+  };
 }

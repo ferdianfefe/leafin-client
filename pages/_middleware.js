@@ -16,22 +16,24 @@ export async function middleware(req) {
     if (cookie != null) {
       res.cookie('accessToken', cookie[0].split('=')[1], {
         httpOnly: true,
-        maxAge: cookie[1].split('=')[1],
+        maxAge: cookie[1].split('=')[1] * 1000,
       });
     }
 
     if (
       result == 200 &&
-      (req.url.includes('/signin') || req.url.includes('/signup'))
+      (req.url.includes('/signin') ||
+        req.url.includes('/signup') ||
+        req.url.includes('/home'))
     ) {
       return res && NextResponse.redirect(new URL('/', req.url));
     } else if (
       result != 200 &&
       !req.url.includes('/signin') &&
       !req.url.includes('/signup') &&
-      !req.url.includes('/')
+      !req.url.includes('/home')
     ) {
-      return NextResponse.redirect(new URL('/signin', req.url));
+      return NextResponse.redirect(new URL('/home', req.url));
     } else {
       return res;
     }
