@@ -1,9 +1,11 @@
-import Router from 'next/router';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../components/Button';
 
 export default function Signup() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -22,7 +24,7 @@ export default function Signup() {
 
     const result = data.status;
     if (result === 201) {
-      return Router.push('profile');
+      return router.push('profile');
     } else {
       return setError(await data.json().then((res) => res.message));
     }
@@ -76,13 +78,13 @@ export default function Signup() {
           ></input>
           <p className="text-[12.13px] text-gray-primary">
             I agree to the
-            <a as="tnc" href="#" className="text-primary">
-              Terms & Conditions
-            </a>
+            <Link href="/#">
+              <a className="text-primary">Terms & Conditions</a>
+            </Link>
             <br /> and
-            <a as="privacy policy" href="#" className="text-primary">
-              Privacy Policy
-            </a>
+            <Link href="#">
+              <a className="text-primary">Privacy Policy</a>
+            </Link>
           </p>
 
           {errors?.rememberme?.type === 'required' && (
@@ -126,9 +128,9 @@ export default function Signup() {
 
       <p className="mt-5 font-semibold w-full  text-gray-primary text-[12.13px]">
         Already have an account?
-        <a as="signin" href="signin" className="text-primary hover:underline">
-          Log in
-        </a>
+        <Link href="signin">
+          <a className="text-primary hover:underline">Log in</a>
+        </Link>
       </p>
     </div>
   );

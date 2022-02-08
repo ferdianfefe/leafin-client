@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 import Button from '../components/Button';
 import { useDispatch } from 'react-redux';
 import { login } from '../components/reducers/login';
+import Link from 'next/link';
 
 export default function Signin() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -35,9 +37,8 @@ export default function Signin() {
       })
     );
 
-    console.log(await data.json());
     if (result === 200) {
-      return Router.push('profile');
+      return router.push('profile');
     } else {
       return setError(await data.json().then((res) => res.message));
     }
@@ -116,9 +117,9 @@ export default function Signin() {
 
       <p className="mt-5 font-semibold w-full  text-gray-primary text-[12.13px]">
         Not yet have an account?
-        <a as="signup" href="signup" className="text-primary hover:underline">
-          Register
-        </a>
+        <Link href="signup">
+          <a className="text-primary hover:underline">Register</a>
+        </Link>
       </p>
     </div>
   );
