@@ -1,5 +1,5 @@
 import Router from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../components/Button';
 
@@ -11,13 +11,21 @@ export default function Signup() {
   } = useForm();
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+  const registerHandler = async ({ email, password }) => {
+    const data = await fetch('http://localhost:5000/api/user/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-  const registerHandler = ({ email, password }) => {
-    // Register user
-    Router.push('profile');
+    const result = data.status;
+    if (result === 201) {
+      return Router.push('profile');
+    } else {
+      return setError(await data.json().then((res) => res.message));
+    }
   };
 
   return (
@@ -87,6 +95,18 @@ export default function Signup() {
                 <span className="block sm:inline">
                   You need to accept term & conditions
                 </span>
+              </div>
+            </>
+          )}
+
+          {error && (
+            <>
+              <div
+                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full"
+                role="alert"
+              >
+                <strong className="font-bold">Error</strong>
+                <span className="block sm:inline">{error}</span>
               </div>
             </>
           )}

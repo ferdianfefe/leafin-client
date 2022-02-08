@@ -1,13 +1,24 @@
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Badge from '../../components/Badge';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-
-import { Pagination, Navigation } from 'swiper';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 export default function Profile() {
+  const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terter'];
+  const envProfile = [
+    { name: 'Humidity', value: '70' },
+    { name: 'Temperature', value: '70' },
+    { name: 'Kinds', value: '2' },
+    { name: 'Jenis Pupuk', value: 'Kaltim' },
+    { name: 'Jumlah', value: '3' },
+    { name: 'Jumlah', value: '4' },
+  ];
+
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
       <div className="flex items-center">
@@ -49,58 +60,13 @@ export default function Profile() {
           loopFillGroupWithBlank={true}
           className="mt-5"
         >
-          <SwiperSlide>
-            <div className="flex shrink-0 overflow-hidden items-center justify-center rounded-full h-10 w-28 bg-primary text-white text-sm font-bold gap-2">
-              <div className="relative w-4 h-4">
-                <Image
-                  src="/crown.svg"
-                  alt="crown"
-                  objectFit="contain"
-                  layout="fill"
-                />
-              </div>
-              Terajin
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="flex shrink-0 overflow-hidden items-center justify-center rounded-full h-10 w-28 bg-primary text-white text-sm font-bold gap-2">
-              <div className="relative w-4 h-4">
-                <Image
-                  src="/crown.svg"
-                  alt="crown"
-                  objectFit="contain"
-                  layout="fill"
-                />
-              </div>
-              Terbaik
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="flex shrink-0 overflow-hidden items-center justify-center rounded-full h-10 w-28 bg-primary text-white text-sm font-bold gap-2">
-              <div className="relative w-4 h-4">
-                <Image
-                  src="/crown.svg"
-                  alt="crown"
-                  objectFit="contain"
-                  layout="fill"
-                />
-              </div>
-              Tercepat
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="flex shrink-0 overflow-hidden items-center justify-center rounded-full h-10 w-28 bg-primary text-white text-sm font-bold gap-2">
-              <div className="relative w-4 h-4">
-                <Image
-                  src="/crown.svg"
-                  alt="crown"
-                  objectFit="contain"
-                  layout="fill"
-                />
-              </div>
-              Terter
-            </div>
-          </SwiperSlide>
+          {badges.map((badge, i) => {
+            return (
+              <SwiperSlide key={i}>
+                <Badge>{badge}</Badge>
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </div>
 
@@ -116,30 +82,17 @@ export default function Profile() {
             />
           </div>
           <div className="font-bold w-1/2">
-            <div className="text-[#CCCCCC] mb-2 w-full text-xs flex justify-between">
-              Humidity
-              <p className="text-black">70</p>
-            </div>
-            <div className="text-[#CCCCCC] mb-2 w-full text-xs flex justify-between">
-              Temperature
-              <p className="text-black">70</p>
-            </div>
-            <div className="text-[#CCCCCC] mb-2 w-full text-xs flex justify-between">
-              Kinds
-              <p className="text-black">2</p>
-            </div>
-            <div className="text-[#CCCCCC] mb-2 w-full text-xs flex justify-between">
-              Jenis pupuk
-              <p className="text-black">Kaltim</p>
-            </div>
-            <div className="text-[#CCCCCC] mb-2 w-full text-xs flex justify-between">
-              Jumlah
-              <p className="text-black">3</p>
-            </div>
-            <div className="text-[#CCCCCC] mb-2 w-full text-xs flex justify-between">
-              Jumlah
-              <p className="text-black">4</p>
-            </div>
+            {envProfile.map(({ name, value }, i) => {
+              return (
+                <div
+                  key={i}
+                  className="text-[#CCCCCC] mb-2 w-full text-xs flex justify-between"
+                >
+                  {name}
+                  <p className="text-black">{value}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

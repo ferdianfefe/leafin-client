@@ -13,7 +13,20 @@ export default function Signin() {
   const [error, setError] = useState('');
 
   const loginHandler = async ({ email, password }) => {
-    Router.push('profile');
+    const data = await fetch('http://localhost:5000/api/user/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const result = data.status;
+    if (result === 200) {
+      return Router.push('profile');
+    } else {
+      return setError(await data.json().then((res) => res.message));
+    }
   };
 
   return (
@@ -62,6 +75,18 @@ export default function Signin() {
           ></input>
           <p className="text-[12.13px] text-gray-primary ">Remember me</p>
         </div>
+
+        {error && (
+          <>
+            <div
+              className="mt-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full"
+              role="alert"
+            >
+              <strong className="font-bold">Error</strong>
+              <span className="block sm:inline">{error}</span>
+            </div>
+          </>
+        )}
 
         <Button
           type="submit"
