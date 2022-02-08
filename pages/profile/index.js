@@ -5,8 +5,6 @@ import Badge from '../../components/Badge';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 export default function Profile() {
   const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terter'];
@@ -23,7 +21,7 @@ export default function Profile() {
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
       <div className="flex items-center">
         <h1 className="font-bold text-2xl px-10">My Profile</h1>
-        <a href="profile/edit">
+        <a as="edit profile" href="profile/edit">
           <div className="w-5 h-5 relative">
             <Image
               src="/edit.svg"

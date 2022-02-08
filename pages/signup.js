@@ -76,11 +76,11 @@ export default function Signup() {
           ></input>
           <p className="text-[12.13px] text-gray-primary">
             I agree to the
-            <a href="#" className="text-primary">
+            <a as="tnc" href="#" className="text-primary">
               Terms & Conditions
             </a>
             <br /> and
-            <a href="#" className="text-primary">
+            <a as="privacy policy" href="#" className="text-primary">
               Privacy Policy
             </a>
           </p>
@@ -126,7 +126,7 @@ export default function Signup() {
 
       <p className="mt-5 font-semibold w-full  text-gray-primary text-[12.13px]">
         Already have an account?
-        <a href="signin" className="text-primary hover:underline">
+        <a as="signin" href="signin" className="text-primary hover:underline">
           Log in
         </a>
       </p>

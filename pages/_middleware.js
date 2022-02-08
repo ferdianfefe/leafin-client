@@ -24,11 +24,12 @@ export async function middleware(req) {
       result == 200 &&
       (req.url.includes('/signin') || req.url.includes('/signup'))
     ) {
-      return res && NextResponse.redirect(new URL('/profile', req.url));
+      return res && NextResponse.redirect(new URL('/', req.url));
     } else if (
       result != 200 &&
       !req.url.includes('/signin') &&
-      !req.url.includes('/signup')
+      !req.url.includes('/signup') &&
+      !req.url.includes('/')
     ) {
       return NextResponse.redirect(new URL('/signin', req.url));
     } else {

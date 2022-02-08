@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import Router from 'next/router';
 
 import Button from '../components/Button';
+import { useDispatch } from 'react-redux';
+import { login } from '../components/reducers/login';
 
 export default function Signin() {
   const {
@@ -11,9 +13,9 @@ export default function Signin() {
     formState: { errors },
   } = useForm();
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
   const loginHandler = async ({ email, password }) => {
-    console.log(email, password);
     const data = await fetch('http://localhost:5000/api/user/signin', {
       method: 'POST',
       credentials: 'include',
@@ -24,6 +26,14 @@ export default function Signin() {
     });
 
     const result = data.status;
+
+    dispatch(
+      login({
+        name: 'test',
+        email,
+        loggedIn: true,
+      })
+    );
 
     console.log(await data.json());
     if (result === 200) {
@@ -106,7 +116,7 @@ export default function Signin() {
 
       <p className="mt-5 font-semibold w-full  text-gray-primary text-[12.13px]">
         Not yet have an account?
-        <a href="signup" className="text-primary hover:underline">
+        <a as="signup" href="signup" className="text-primary hover:underline">
           Register
         </a>
       </p>
