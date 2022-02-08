@@ -79,6 +79,7 @@ export default function Profile() {
               objectFit="contain"
               layout="fill"
               alt="weather"
+              priority
             />
           </div>
           <div className="font-bold w-1/2">

@@ -13,8 +13,10 @@ export default function Signin() {
   const [error, setError] = useState('');
 
   const loginHandler = async ({ email, password }) => {
+    console.log(email, password);
     const data = await fetch('http://localhost:5000/api/user/signin', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -22,6 +24,8 @@ export default function Signin() {
     });
 
     const result = data.status;
+
+    console.log(await data.json());
     if (result === 200) {
       return Router.push('profile');
     } else {
