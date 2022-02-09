@@ -6,6 +6,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Link from 'next/link';
+import Navbar from '../../components/Navbar';
 
 export default function Profile({ user }) {
   const { email } = user;
@@ -99,6 +100,8 @@ export default function Profile({ user }) {
           </div>
         </div>
       </div>
+
+      <Navbar active="profile" />
     </div>
   );
 }
