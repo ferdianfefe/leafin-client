@@ -6,7 +6,7 @@ export const userSlice = createSlice({
     user: null,
   },
   reducers: {
-    login: (state, action) => {
+    signin: (state, action) => {
       state.user = action.payload;
     },
     register: (state, action) => {

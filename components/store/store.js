@@ -1,8 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
-import loginReducer from '../reducers/login';
+import { applyMiddleware, createStore } from "@reduxjs/toolkit";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
+import rootReducer from "../reducers/index";
 
-export default configureStore({
-  reducer: {
-    login: loginReducer,
-  },
-});
+const initialState = {};
+
+const store = createStore(
+  rootReducer,
+  initialState,
+  composeWithDevTools(applyMiddleware(thunk))
+);
+
+export default store;

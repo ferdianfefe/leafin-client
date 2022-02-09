@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 import Button from "../components/Button";
 import { useDispatch } from "react-redux";
-import { login } from "../components/reducers/login";
+import { signin } from "../components/actions/userActions";
 import Link from "next/link";
 
 export default function Signin() {
@@ -18,35 +18,14 @@ export default function Signin() {
   const dispatch = useDispatch();
 
   const loginHandler = async ({ email, password }) => {
-    console.log(email, password);
-    const data = await fetch("http://localhost:5000/api/user/signin", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const result = data.status;
-
-    dispatch(
-      login({
-        name: "test",
-        email,
-        loggedIn: true,
+    dispatch(signin(email, password))
+      .then((data) => {
+        console.log(data);
+        router.push("profile");
       })
-    );
-
-    if (result === 200) {
-      return router.push("profile");
-    } else {
-      return setError(
-        await data.json().then((res) => {
-          return res.message;
-        })
-      );
-    }
+      .catch((error) => {
+        setError(error);
+      });
   };
 
   return (
