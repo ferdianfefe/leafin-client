@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Navbar({ active }) {
   const navs = [
@@ -40,20 +40,22 @@ export default function Navbar({ active }) {
           }
 
           return (
-            <a key={i} href={href} className={className}>
-              <svg
-                className="inline-block mb-1 w-full"
-                width="23"
-                height="24"
-                viewBox="0 0 23 24"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path fillRule="evenodd" clipRule="evenodd" d={svg} />
-              </svg>
+            <Link href={href} key={i}>
+              <a className={className}>
+                <svg
+                  className="inline-block mb-1 w-full"
+                  width="23"
+                  height="24"
+                  viewBox="0 0 23 24"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path fillRule="evenodd" clipRule="evenodd" d={svg} />
+                </svg>
 
-              <span className="block font-semibold text-xs">{name}</span>
-            </a>
+                <span className="block font-semibold text-xs">{name}</span>
+              </a>
+            </Link>
           );
         })}
       </div>

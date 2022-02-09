@@ -1,15 +1,17 @@
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import Badge from '../../components/Badge';
+import Link from 'next/link';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import Link from 'next/link';
-import Navbar from '../../components/Navbar';
 
-export default function Profile({ user }) {
-  const { email } = user;
+import Badge from '@/components/Badge';
+import Navbar from '@/components/Navbar';
+
+export default function Profile(ctx) {
+  console.log(ctx);
+  const { email } = ctx.user;
   const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terter'];
   const envProfile = [
     { name: 'Humidity', value: '70' },
@@ -22,13 +24,13 @@ export default function Profile({ user }) {
 
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
-      <div className="flex items-center">
+      <div className="flex items-center justify-center w-full">
         <h1 className="font-bold text-2xl px-10">My Profile</h1>
         <Link href="profile/edit">
           <a href="profile/edit">
-            <div className="w-5 h-5 relative">
+            <div className="w-5 h-5 fixed flex items-center justify-self-end">
               <Image
-                src="/edit.svg"
+                src="/assets/edit.svg"
                 objectFit="contain"
                 layout="fill"
                 alt="edit"
@@ -38,18 +40,18 @@ export default function Profile({ user }) {
         </Link>
       </div>
 
-      <div className="pt-10 flex w-full items-center ">
+      <div className="pt-10 flex w-full items-center">
         <div className="rounded-full w-20 h-20 relative overflow-hidden">
           <Image
-            src="/profileimage.png"
+            src="/assets/profileimage.png"
             objectFit="cover"
             layout="fill"
             alt="profile picture"
             loading="lazy"
           ></Image>
         </div>
-        <div className="ml-5 flex flex-wrap gap-1">
-          <h1 className="font-bold text-lg w-full">{email}</h1>
+        <div className="w-2/3 ml-5 flex flex-wrap gap-1">
+          <h1 className="font-bold text-lg">{email}</h1>
           <p className="text-xs text-gray-light">John is me</p>
         </div>
       </div>
@@ -78,7 +80,7 @@ export default function Profile({ user }) {
         <div className="mt-5 border flex items-center gap-5 w-full rounded-xl p-5 border-gray-400">
           <div className="relative h-24 w-32">
             <Image
-              src="/weather.svg"
+              src="/assets/weather.svg"
               objectFit="contain"
               layout="fill"
               alt="weather"

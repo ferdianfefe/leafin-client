@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Button from '../components/Button';
+import Button from '@/components/Button';
 
 export default function Signup() {
   const router = useRouter();

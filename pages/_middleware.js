@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 
 export async function middleware(req) {
   const res = NextResponse.next();
+  const url = req.nextUrl.pathname;
+
+  console.log(url);
   try {
     const data = await fetch('http://localhost:5000/api/user/private', {
       method: 'GET',
@@ -22,16 +25,15 @@ export async function middleware(req) {
 
     if (
       result == 200 &&
-      (req.url.includes('/signin') ||
-        req.url.includes('/signup') ||
-        req.url.includes('/home'))
+      (url == '/signin' || url == '/signup' || url == '/home')
     ) {
       return res && NextResponse.redirect(new URL('/', req.url));
     } else if (
       result != 200 &&
-      !req.url.includes('/signin') &&
-      !req.url.includes('/signup') &&
-      !req.url.includes('/home')
+      url !== '/signin' &&
+      url !== '/signup' &&
+      url !== '/home' &&
+      !url.includes('/assets/')
     ) {
       return NextResponse.redirect(new URL('/home', req.url));
     } else {

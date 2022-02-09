@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import Button from '../components/Button';
+import Button from '@/components/Button';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -9,21 +9,21 @@ import 'swiper/css/pagination';
 export default function Home() {
   const sliders = [
     {
-      image: '/homepage.svg',
+      image: '/assets/homepage.svg',
       altImg: 'homepage Image',
       title: 'Manage your gardening better',
       description:
         'Having difficulties in managing your gardening? We are here to assist you',
     },
     {
-      image: '/homepage.svg',
+      image: '/assets/homepage.svg',
       altImg: 'homepage Image',
       title: 'Manage your gardening better',
       description:
         'Having difficulties in managing your gardening? We are here to assist you',
     },
     {
-      image: '/homepage.svg',
+      image: '/assets/homepage.svg',
       altImg: 'homepage Image',
       title: 'Manage your gardening better',
       description:

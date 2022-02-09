@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 
-import Button from '../components/Button';
+import Button from '@/components/Button';
 import { useDispatch } from 'react-redux';
-import { login } from '../components/reducers/login';
+import { login } from '@/components/reducers/login';
 import Link from 'next/link';
 
 export default function Signin() {
@@ -38,7 +38,7 @@ export default function Signin() {
     );
 
     if (result === 200) {
-      return router.push('profile');
+      return router.push('/');
     } else {
       return setError(await data.json().then((res) => res.message));
     }
