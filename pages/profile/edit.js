@@ -1,4 +1,4 @@
-import { getUserProfile } from '@/components/actions/userActions';
+import { getProfile } from '@/components/actions/userActions';
 import Badge from '@/components/Badge';
 import Navbar from '@/components/Navbar';
 import Image from 'next/image';
@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 export default function Edit() {
   const dispatch = useDispatch();
+  let user = useSelector((state) => state.user);
 
   const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terter'];
   const envProfile = [
@@ -19,19 +20,9 @@ export default function Edit() {
     { name: 'Jumlah', value: '4' },
   ];
 
-  const loginHandler = async () => {
-    dispatch(getUserProfile())
-      .then((data) => {
-        // console.log(data);
-        // router.push('profile');
-        // dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
-      })
-      .catch((error) => {
-        // console.log(error);
-      });
-  };
-
-  loginHandler();
+  useEffect(() => {
+    dispatch(getProfile());
+  }, []);
 
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
@@ -50,7 +41,9 @@ export default function Edit() {
           ></Image>
         </div>
         <div className="ml-5 flex flex-wrap gap-1">
-          <h1 className="font-bold text-lg w-full">John</h1>
+          <h1 className="font-bold text-lg w-full">
+            {user?.user?.data?.email}
+          </h1>
           <p className="text-xs text-gray-light">John is me</p>
         </div>
       </div>

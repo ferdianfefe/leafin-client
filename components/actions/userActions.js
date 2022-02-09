@@ -5,6 +5,9 @@ import {
   USER_SIGNUP_REQUEST,
   USER_SIGNUP_SUCCESS,
   USER_SIGNUP_FAILURE,
+  USER_GET_PROFILE_REQUEST,
+  USER_GET_PROFILE_SUCCESS,
+  USER_GET_PROFILE_FAILURE,
 } from '../../constants/userConstants';
 import axios from 'axios';
 import config from '../../config';
@@ -13,12 +16,13 @@ const signin = (email, password) => async (dispath) => {
   try {
     dispath({ type: USER_SIGNIN_REQUEST });
 
-    const { data } = await axios.post(
+    const res = await axios.post(
       `${config.apiURL}/user/signin`,
       { email, password },
       { withCredentials: true }
     );
-    console.log(data);
+    console.log(res);
+    const data = res.data;
 
     dispath({ type: USER_SIGNIN_SUCCESS, payload: data });
 
@@ -54,36 +58,30 @@ const signup = (email, password) => async (dispath) => {
   }
 };
 
-const getUserProfile = () => async (dispath) => {
+/* Get user profile */
+const getProfile = () => async (dispath) => {
   try {
-    dispath({ type: USER_SIGNUP_REQUEST });
-
-    const { data } = await axios.get(`${config.apiURL}/user/`, {
-      withCredentials: true,
-    });
-
-    // const tes = await fetch('http://localhost:5000/api/user', {
+    dispath({ type: USER_GET_PROFILE_REQUEST });
+    // const res = await fetch(`${config.apiURL}/user/`, {
     //   method: 'GET',
     //   credentials: 'include',
     // });
 
-    console.log(data);
+    // const data = await res.json();
 
-    // console.log(await tes.json());
-
-    // const data = await tes.json();
-    dispath({ type: USER_SIGNUP_SUCCESS, payload: data });
-
-    // console.log(hasil);
+    const { data } = await axios.get(`${config.apiURL}/user/`, {
+      withCredentials: true,
+    });
+    dispath({ type: USER_GET_PROFILE_SUCCESS, payload: data });
 
     return Promise.resolve(data);
   } catch (error) {
     dispath({
-      type: USER_SIGNUP_FAILURE,
+      type: USER_GET_PROFILE_FAILURE,
       payload: error.response.data.message,
     });
     return Promise.reject(error.response.data.message);
   }
 };
 
-export { signin, signup, getUserProfile };
+export { signin, signup, getProfile };
