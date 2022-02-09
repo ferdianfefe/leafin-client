@@ -1,39 +1,39 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function middleware(req) {
   const res = NextResponse.next();
   try {
-    const data = await fetch('http://localhost:5000/api/user/private', {
-      method: 'GET',
+    const data = await fetch("http://localhost:5000/api/user/private", {
+      method: "GET",
       credentials: true,
       headers: {
         cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
-        content: 'application/json',
+        content: "application/json",
       },
     });
     const result = data.status;
-    const cookie = data.headers.get('set-cookie')?.split(';');
+    const cookie = data.headers.get("set-cookie")?.split(";");
     if (cookie != null) {
-      res.cookie('accessToken', cookie[0].split('=')[1], {
+      res.cookie("accessToken", cookie[0].split("=")[1], {
         httpOnly: true,
-        maxAge: cookie[1].split('=')[1] * 1000,
+        maxAge: cookie[1].split("=")[1] * 1000,
       });
     }
 
     if (
       result == 200 &&
-      (req.url.includes('/signin') ||
-        req.url.includes('/signup') ||
-        req.url.includes('/home'))
+      (req.url.includes("/signin") ||
+        req.url.includes("/signup") ||
+        req.url.includes("/home"))
     ) {
-      return res && NextResponse.redirect(new URL('/', req.url));
+      return res && NextResponse.redirect(new URL("/", req.url));
     } else if (
       result != 200 &&
-      !req.url.includes('/signin') &&
-      !req.url.includes('/signup') &&
-      !req.url.includes('/home')
+      !req.url.includes("/signin") &&
+      !req.url.includes("/signup") &&
+      !req.url.includes("/home")
     ) {
-      return NextResponse.redirect(new URL('/home', req.url));
+      return NextResponse.redirect(new URL("/home", req.url));
     } else {
       return res;
     }

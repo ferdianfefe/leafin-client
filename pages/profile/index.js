@@ -1,23 +1,32 @@
-import Image from 'next/image';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import Badge from '../../components/Badge';
+import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
+import { useEffect } from "react";
+import { getProfile } from "../../components/actions/userActions";
+import Badge from "../../components/Badge";
+import Navbar from "../../components/Navbar";
 
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-import Link from 'next/link';
-import Navbar from '../../components/Navbar';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 export default function Profile({ user }) {
+  const dispatch = useDispatch();
+  useEffect(async () => {
+    await dispatch(getProfile());
+  }, []);
+  user = useSelector((state) => state.user);
+  console.log(user);
   const { email } = user;
-  const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terter'];
+  const badges = ["Terajin", "Terbaik", "Tercepat", "Terjadi"];
   const envProfile = [
-    { name: 'Humidity', value: '70' },
-    { name: 'Temperature', value: '70' },
-    { name: 'Kinds', value: '2' },
-    { name: 'Jenis Pupuk', value: 'Kaltim' },
-    { name: 'Jumlah', value: '3' },
-    { name: 'Jumlah', value: '4' },
+    { name: "Humidity", value: "70" },
+    { name: "Temperature", value: "70" },
+    { name: "Kinds", value: "2" },
+    { name: "Jenis Pupuk", value: "Kaltim" },
+    { name: "Jumlah", value: "3" },
+    { name: "Jumlah", value: "4" },
   ];
 
   return (
@@ -106,21 +115,22 @@ export default function Profile({ user }) {
   );
 }
 
-export async function getServerSideProps({ req }) {
-  const data = await fetch('http://localhost:5000/api/user/', {
-    method: 'GET',
-    credentials: true,
-    headers: {
-      cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
-      content: 'application/json',
-    },
-  });
-
-  const result = (await data.json()).data;
-
-  return {
-    props: {
-      user: result,
-    },
-  };
-}
+// export async function getServerSideProps({ req }) {
+//   const dispatch = useDispatch();
+//   const { data } = await dispatch(getProfile());
+//   console.log(data);
+//   // const data = await fetch('http://localhost:5000/api/user/', {
+//   //   method: 'GET',
+//   //   credentials: true,
+//   //   headers: {
+//   //     cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
+//   //     content: 'application/json',
+//   //   },
+//   // });
+//   // const result = (await data.json()).data;
+//   return {
+//     props: {
+//       user: data,
+//     },
+//   };
+// }
