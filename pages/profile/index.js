@@ -5,6 +5,7 @@ import Badge from '../../components/Badge';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import Link from 'next/link';
 
 export default function Profile({ user }) {
   const { email } = user;
@@ -22,26 +23,28 @@ export default function Profile({ user }) {
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
       <div className="flex items-center">
         <h1 className="font-bold text-2xl px-10">My Profile</h1>
-        <a as="edit profile" href="profile/edit">
-          <div className="w-5 h-5 relative">
-            <Image
-              src="/edit.svg"
-              objectFit="contain"
-              layout="fill"
-              alt="edit"
-            ></Image>
-          </div>
-        </a>
+        <Link href="profile/edit">
+          <a href="profile/edit">
+            <div className="w-5 h-5 relative">
+              <Image
+                src="/edit.svg"
+                objectFit="contain"
+                layout="fill"
+                alt="edit"
+              ></Image>
+            </div>
+          </a>
+        </Link>
       </div>
 
       <div className="pt-10 flex w-full items-center ">
         <div className="rounded-full w-20 h-20 relative overflow-hidden">
           <Image
-            priority
             src="/profileimage.png"
             objectFit="cover"
             layout="fill"
             alt="profile picture"
+            loading="lazy"
           ></Image>
         </div>
         <div className="ml-5 flex flex-wrap gap-1">
@@ -78,7 +81,7 @@ export default function Profile({ user }) {
               objectFit="contain"
               layout="fill"
               alt="weather"
-              priority
+              loading="lazy"
             />
           </div>
           <div className="font-bold w-1/2">

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<style>
+  .overlay{
+    position: absolute;
+    transform: translate(-50%,-50%);
+  }
+</style>
+
+<html>
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+  <!-- we import arjs version without NFT but with marker + location based support -->
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
+        <a-entity
+          position="0 0 0"
+          scale="0.05 0.05 0.05"
+          gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+        ></a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+    <div class="overlay">
+      <div class="overlay-content">
+        <div class="overlay-header">
+          <h1>Trex</h1>
+        </div>
+        <div class="overlay-body">
+          <p>
+            This is a 3D model of a trex. It was created by
+            <a href="https://www.sketchfab.com/users/Sketchfab">Sketchfab</a>
+            and is licensed under
+            <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a
+            >.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
