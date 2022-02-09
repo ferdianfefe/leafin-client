@@ -109,7 +109,7 @@ export default function Profile({ user }) {
 export async function getServerSideProps({ req }) {
   const data = await fetch('http://localhost:5000/api/user/', {
     method: 'GET',
-    credentials: true,
+    credentials: 'include',
     headers: {
       cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
       content: 'application/json',

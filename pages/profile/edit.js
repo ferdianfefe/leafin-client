@@ -1,5 +1,38 @@
-export default function Edit({ user }) {
-  console.log(user);
+import { getUserProfile } from '@/components/actions/userActions';
+import Badge from '@/components/Badge';
+import Navbar from '@/components/Navbar';
+import Image from 'next/image';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+export default function Edit() {
+  const dispatch = useDispatch();
+
+  const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terter'];
+  const envProfile = [
+    { name: 'Humidity', value: '70' },
+    { name: 'Temperature', value: '70' },
+    { name: 'Kinds', value: '2' },
+    { name: 'Jenis Pupuk', value: 'Kaltim' },
+    { name: 'Jumlah', value: '3' },
+    { name: 'Jumlah', value: '4' },
+  ];
+
+  const loginHandler = async () => {
+    dispatch(getUserProfile())
+      .then((data) => {
+        // console.log(data);
+        // router.push('profile');
+        // dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
+      })
+      .catch((error) => {
+        // console.log(error);
+      });
+  };
+
+  loginHandler();
+
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
       <div className="flex items-center">
@@ -17,7 +50,7 @@ export default function Edit({ user }) {
           ></Image>
         </div>
         <div className="ml-5 flex flex-wrap gap-1">
-          <h1 className="font-bold text-lg w-full">{user.email}</h1>
+          <h1 className="font-bold text-lg w-full">John</h1>
           <p className="text-xs text-gray-light">John is me</p>
         </div>
       </div>

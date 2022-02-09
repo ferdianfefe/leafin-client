@@ -5,7 +5,7 @@ import {
   USER_SIGNUP_REQUEST,
   USER_SIGNUP_SUCCESS,
   USER_SIGNUP_FAILURE,
-} from "../../constants/userConstants";
+} from '../../constants/userConstants';
 
 const initialState = [];
 
@@ -33,6 +33,11 @@ const userReducer = (state = initialState, action) => {
         isLoading: false,
         isLoggedIn: false,
         error: payload,
+      };
+    case USER_GET_PROFILE:
+      return {
+        ...state,
+        user: payload,
       };
     default:
       return state;
