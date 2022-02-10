@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import config from '../config';
 
 export async function middleware(req) {
   const res = NextResponse.next();
@@ -6,7 +7,7 @@ export async function middleware(req) {
 
   console.log(url);
   try {
-    const data = await fetch('http://localhost:5000/api/user/private', {
+    const data = await fetch(`${config.apiURL}/api/user/private`, {
       method: 'GET',
       credentials: true,
       headers: {
@@ -41,13 +42,13 @@ export async function middleware(req) {
     }
   } catch (err) {
     console.log(err);
-    // if (
-    //   url !== '/signin' &&
-    //   url !== '/signup' &&
-    //   url !== '/home' &&
-    //   !url.includes('/assets/')
-    // ) {
-    //   return NextResponse.redirect(new URL('/home', req.url));
-    // }
+    if (
+      url !== '/signin' &&
+      url !== '/signup' &&
+      url !== '/home' &&
+      !url.includes('/assets/')
+    ) {
+      return NextResponse.redirect(new URL('/home', req.url));
+    }
   }
 }
