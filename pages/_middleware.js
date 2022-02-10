@@ -5,11 +5,27 @@ export async function middleware(req) {
   const res = NextResponse.next();
   const url = req.nextUrl.pathname;
 
-  console.log(url);
+  console.log(
+    url.includes('/assets/') ||
+      url.includes('.svg') ||
+      url.includes('.png') ||
+      url.includes('.ico') ||
+      url.includes('.js') ||
+      url.includes('.json')
+  );
+  if (
+    url.includes('/assets/') ||
+    url.includes('.svg') ||
+    url.includes('.png') ||
+    url.includes('.ico') ||
+    url.includes('.js') ||
+    url.includes('.json')
+  ) {
+    return res;
+  }
   try {
     const data = await fetch(`${config.apiURL}/user/private`, {
       method: 'GET',
-      credentials: true,
       headers: {
         cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
         content: 'application/json',
@@ -21,9 +37,11 @@ export async function middleware(req) {
       res.cookie('accessToken', cookie[0].split('=')[1], {
         httpOnly: true,
         maxAge: cookie[1].split('=')[1] * 1000,
+        domain: 'hunaki.my.id',
       });
     }
 
+    console.log(result);
     if (
       result == 200 &&
       (url == '/signin' || url == '/signup' || url == '/home')
@@ -33,15 +51,14 @@ export async function middleware(req) {
       result != 200 &&
       url !== '/signin' &&
       url !== '/signup' &&
-      url !== '/home' &&
-      !url.includes('/assets/')
+      url !== '/home'
     ) {
       return NextResponse.redirect(new URL('/home', req.url));
     } else {
       return res;
     }
   } catch (err) {
-    console.log(err);
+    console.log('Error disini:' + err);
     if (
       url !== '/signin' &&
       url !== '/signup' &&

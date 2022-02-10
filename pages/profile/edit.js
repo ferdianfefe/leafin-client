@@ -14,6 +14,7 @@ export default function Edit() {
                 objectFit="contain"
                 layout="fill"
                 alt="edit"
+                priority
               ></Image>
             </div>
           </a>

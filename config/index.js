@@ -1,7 +1,7 @@
 const api =
   process.env.NEXT_PUBLIC_TYPE == 'PRODUCTION'
     ? {
-        apiURL: 'http://api.hunaki.my.id/api',
+        apiURL: 'https://api.hunaki.my.id/api',
       }
     : {
         apiURL: 'http://localhost:5000/api',

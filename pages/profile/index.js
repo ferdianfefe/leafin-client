@@ -49,6 +49,7 @@ export default function Profile(props) {
                 objectFit="contain"
                 layout="fill"
                 alt="edit"
+                priority
               ></Image>
             </div>
           </a>
