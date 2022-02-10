@@ -8,17 +8,15 @@ import {
   USER_GET_PROFILE_REQUEST,
   USER_GET_PROFILE_SUCCESS,
   USER_GET_PROFILE_FAILURE,
-  USER_UPDATE_PROFILE_REQUEST,
-  USER_UPDATE_PROFILE_SUCCESS,
-  USER_UPDATE_PROFILE_FAILURE,
-} from "../../constants/userConstants";
-import axios from "axios";
-import config from "../../config";
+} from '../../constants/userConstants';
+import axios from 'axios';
+import config from '../../config';
 
-const signin = (email, password) => async (dispatch) => {
-
+const signin = (email, password) => async (dispath) => {
+  console.log(process.env.NEXT_PUBLIC_TYPE);
+  console.log('tes', config.apiURL);
   try {
-    dispatch({ type: USER_SIGNIN_REQUEST });
+    dispath({ type: USER_SIGNIN_REQUEST });
 
     const { data } = await axios.post(
       `${config.apiURL}/user/signin`,
@@ -26,11 +24,11 @@ const signin = (email, password) => async (dispatch) => {
       { withCredentials: true }
     );
 
-    dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
+    dispath({ type: USER_SIGNIN_SUCCESS, payload: data });
 
     return Promise.resolve(data);
   } catch (error) {
-    dispatch({
+    dispath({
       type: USER_SIGNIN_FAILURE,
       payload: error?.response?.data?.message || error.message,
     });
@@ -38,9 +36,9 @@ const signin = (email, password) => async (dispatch) => {
   }
 };
 
-const signup = (email, password) => async (dispatch) => {
+const signup = (email, password) => async (dispath) => {
   try {
-    dispatch({ type: USER_SIGNUP_REQUEST });
+    dispath({ type: USER_SIGNUP_REQUEST });
 
     const { data } = await axios.post(
       `${config.apiURL}/user/signup`,
@@ -48,11 +46,11 @@ const signup = (email, password) => async (dispatch) => {
       { withCredentials: true }
     );
 
-    dispatch({ type: USER_SIGNUP_SUCCESS, payload: data });
+    dispath({ type: USER_SIGNUP_SUCCESS, payload: data });
 
     return Promise.resolve(data);
   } catch (error) {
-    dispatch({
+    dispath({
       type: USER_SIGNUP_FAILURE,
       payload: error?.response?.data?.message || error.message,
     });
@@ -61,20 +59,19 @@ const signup = (email, password) => async (dispatch) => {
 };
 
 /* Get user profile */
-const getProfile = () => async (dispatch) => {
+const getProfile = () => async (dispath) => {
   try {
-
-    dispatch({ type: USER_GET_PROFILE_REQUEST });
+    dispath({ type: USER_GET_PROFILE_REQUEST });
 
     const { data } = await axios.get(`${config.apiURL}/user/`, {
       withCredentials: true,
     });
-    dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: data });
 
+    dispath({ type: USER_GET_PROFILE_SUCCESS, payload: data });
 
     return Promise.resolve(data);
   } catch (error) {
-    dispatch({
+    dispath({
       type: USER_GET_PROFILE_FAILURE,
       payload: error?.response?.data?.message || error.message,
     });
@@ -82,29 +79,4 @@ const getProfile = () => async (dispatch) => {
   }
 };
 
-/* Update user profile */
-const updateProfile = (formData) => async (dispatch) => {
-  try {
-    dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
-    const { data } = await axios.patch(`${config.apiURL}/user/`, formData, {
-      withCredentials: true,
-    });
-
-    dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
-
-    return Promise.resolve(data);
-  } catch (error) {
-    dispatch({
-      type: USER_UPDATE_PROFILE_FAILURE,
-      payload: error.response.data.message,
-    });
-    return Promise.reject(error.response.data.message);
-  }
-};
-
-const selectPicture = (picture) => async (dispatch) => {
-  dispatch({ type: USER_SELECT_IMAGE, payload: picture });
-  return Promise.resolve();
-};
-
-export { signin, signup, getProfile, updateProfile, selectPicture };
+export { signin, signup, getProfile };
