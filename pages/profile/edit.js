@@ -32,7 +32,6 @@ export default function Edit() {
 
   useEffect(() => {
     dispatch(getProfile()).then(({ data }) => {
-      console.log(data);
       setValue("email", data.email);
     });
   }, []);
@@ -47,9 +46,21 @@ export default function Edit() {
   };
 
   const editHandler = async ({ name, email, password }) => {
-    let formData = new FormData();
-    formData.append("file", currentFile);
-    dispatch(updateProfile(picture, name, email, password))
+    let fd = new FormData();
+    if (currentFile) {
+      fd.append("picture", currentFile);
+    }
+    if (name) {
+      fd.append("name", name);
+    }
+    if (email) {
+      fd.append("email", email);
+    }
+    if (password) {
+      fd.append("password", password);
+    }
+    console.log(fd.get("name"), fd.get("email"), fd.get("password"), fd.get("picture"));
+    dispatch(updateProfile(fd))
       .then((data) => {
         router.push("profile");
       })

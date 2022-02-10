@@ -88,33 +88,24 @@ const getProfile = () => async (dispatch) => {
 };
 
 /* Update user profile */
-const updateProfile =
-  (name = null, email = null, password = null) =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
+const updateProfile = (formData) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
+    const { data } = await axios.patch(`${config.apiURL}/user/`, formData, {
+      withCredentials: true,
+    });
 
-      const { data } = await axios.patch(
-        `${config.apiURL}/user/`,
-        {
-          name,
-          email,
-          password,
-        },
-        { withCredentials: true }
-      );
+    dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
 
-      dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
-
-      return Promise.resolve(data);
-    } catch (error) {
-      dispatch({
-        type: USER_UPDATE_PROFILE_FAILURE,
-        payload: error.response.data.message,
-      });
-      return Promise.reject(error.response.data.message);
-    }
-  };
+    return Promise.resolve(data);
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_PROFILE_FAILURE,
+      payload: error.response.data.message,
+    });
+    return Promise.reject(error.response.data.message);
+  }
+};
 
 const selectPicture = (picture) => async (dispatch) => {
   dispatch({ type: USER_SELECT_IMAGE, payload: picture });
