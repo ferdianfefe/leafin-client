@@ -19,23 +19,23 @@ const signin = (email, password) => async (dispath) => {
   try {
     dispath({ type: USER_SIGNIN_REQUEST });
 
-    // const res = await axios.post(
-    //   `${config.apiURL}/user/signin`,
-    //   { email, password },
-    //   { withCredentials: true }
-    // );
+    const res = await axios.post(
+      `${config.apiURL}/user/signin`,
+      { email, password },
+      { withCredentials: true }
+    );
 
-    // console.log('tes');
-    // console.log(res);
-    // const data = res.data;
-
-    const res = await fetch(`${config.apiURL}/user/signin`, {
-      method: 'POST',
-      credentials: 'include',
-    });
-
+    console.log('tes');
     console.log(res);
-    const data = await res.json();
+    const data = res.data;
+
+    // const res = await fetch(`${config.apiURL}/user/signin`, {
+    //   method: 'POST',
+    //   credentials: 'include',
+    // });
+
+    // console.log(res);
+    // const data = await res.json();
 
     dispath({ type: USER_SIGNIN_SUCCESS, payload: data });
 
