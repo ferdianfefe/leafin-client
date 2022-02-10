@@ -12,6 +12,7 @@ import 'swiper/css/navigation';
 import { useEffect } from 'react';
 import { getProfile } from '@/components/actions/userActions';
 import { USER_GET_PROFILE_SUCCESS } from 'constants/userConstants';
+import config from '../../config';
 
 export default function Profile(props) {
   const dispatch = useDispatch();
@@ -125,7 +126,7 @@ export default function Profile(props) {
 }
 
 // export async function getServerSideProps({ req }) {
-//   const res = await fetch('http://localhost:5000/api/user/', {
+//   const res = await fetch(`${config.apiURL}/api/user/`, {
 //     method: 'GET',
 //     credentials: true,
 //     headers: {

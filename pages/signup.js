@@ -75,11 +75,11 @@ export default function Signup() {
           <p className="text-[12.13px] text-gray-primary">
             I agree to the
             <Link href="/#">
-              <a className="text-primary">Terms & Conditions</a>
+              <a className="text-primary"> Terms & Conditions</a>
             </Link>
             <br /> and
             <Link href="#">
-              <a className="text-primary">Privacy Policy</a>
+              <a className="text-primary"> Privacy Policy</a>
             </Link>
           </p>
 
@@ -89,7 +89,7 @@ export default function Signup() {
                 className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full"
                 role="alert"
               >
-                <strong className="font-bold">Error</strong>
+                <strong className="font-bold w-full">Error</strong>
                 <span className="block sm:inline">
                   You need to accept term & conditions
                 </span>
@@ -103,7 +103,7 @@ export default function Signup() {
                 className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full"
                 role="alert"
               >
-                <strong className="font-bold">Error</strong>
+                <strong className="font-bold w-full">Error</strong>
                 <span className="block sm:inline">{error}</span>
               </div>
             </>
@@ -125,7 +125,7 @@ export default function Signup() {
       <p className="mt-5 font-semibold w-full  text-gray-primary text-[12.13px]">
         Already have an account?
         <Link href="/signin">
-          <a className="text-primary hover:underline">Log in</a>
+          <a className="text-primary hover:underline"> Log in</a>
         </Link>
       </p>
     </div>

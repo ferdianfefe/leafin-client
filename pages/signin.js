@@ -80,7 +80,7 @@ export default function Signin() {
               className="mt-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full"
               role="alert"
             >
-              <strong className="font-bold">Error</strong>
+              <strong className="font-bold w-full">Error</strong>
               <span className="block sm:inline">{error}</span>
             </div>
           </>
@@ -101,7 +101,7 @@ export default function Signin() {
       <p className="mt-5 font-semibold w-full  text-gray-primary text-[12.13px]">
         Not yet have an account?
         <Link href="/signup">
-          <a className="text-primary hover:underline">Register</a>
+          <a className="text-primary hover:underline"> Register</a>
         </Link>
       </p>
     </div>

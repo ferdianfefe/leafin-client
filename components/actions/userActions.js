@@ -11,26 +11,41 @@ import {
 } from '../../constants/userConstants';
 import axios from 'axios';
 import config from '../../config';
+import { data } from 'dom7';
 
 const signin = (email, password) => async (dispath) => {
+  console.log(process.env.NEXT_PUBLIC_TYPE);
+  console.log('tes', config.apiURL);
   try {
     dispath({ type: USER_SIGNIN_REQUEST });
 
-    const { data } = await axios.post(
-      `${config.apiURL}/user/signin`,
-      { email, password },
-      { withCredentials: true }
-    );
+    // const res = await axios.post(
+    //   `${config.apiURL}/user/signin`,
+    //   { email, password },
+    //   { withCredentials: true }
+    // );
+
+    // console.log('tes');
+    // console.log(res);
+    // const data = res.data;
+
+    const res = await fetch(`${config.apiURL}/user/signin`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    console.log(res);
+    const data = await res.json();
 
     dispath({ type: USER_SIGNIN_SUCCESS, payload: data });
 
-    return Promise.resolve(data);
+    return Promise.resolve(res);
   } catch (error) {
     dispath({
       type: USER_SIGNIN_FAILURE,
-      payload: error.response.data.message,
+      payload: error?.response?.data?.message || error.message,
     });
-    return Promise.reject(error.response.data.message);
+    return Promise.reject(error?.response?.data?.message || error.message);
   }
 };
 
@@ -49,10 +64,10 @@ const signup = (email, password) => async (dispath) => {
     return Promise.resolve(data);
   } catch (error) {
     dispath({
-      type: USER_SIGNUP_FAILURE,
-      payload: error.response.data.message,
+      type: USER_SIGNIN_FAILURE,
+      payload: error?.response?.data?.message || error.message,
     });
-    return Promise.reject(error.response.data.message);
+    return Promise.reject(error?.response?.data?.message || error.message);
   }
 };
 
@@ -70,10 +85,10 @@ const getProfile = () => async (dispath) => {
     return Promise.resolve(data);
   } catch (error) {
     dispath({
-      type: USER_GET_PROFILE_FAILURE,
-      payload: error.response.data.message,
+      type: USER_SIGNIN_FAILURE,
+      payload: error?.response?.data?.message || error.message,
     });
-    return Promise.reject(error.response.data.message);
+    return Promise.reject(error?.response?.data?.message || error.message);
   }
 };
 

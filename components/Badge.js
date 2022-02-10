@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
-import { selectUser } from './slices/loginSlice';
 
 const Badge = ({ children }) => {
   return (
