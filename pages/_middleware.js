@@ -7,7 +7,7 @@ export async function middleware(req) {
 
   console.log(url);
   try {
-    const data = await fetch(`${config.apiURL}/api/user/private`, {
+    const data = await fetch(`${config.apiURL}/user/private`, {
       method: 'GET',
       credentials: true,
       headers: {
