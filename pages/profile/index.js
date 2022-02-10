@@ -29,14 +29,14 @@ export default function Profile(props) {
   ];
 
   // Ambil payload pakai SSR
-  // if (user?.user?.data?.email == null) {
-  //   dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: props.user });
-  // }
+  if (user?.user?.data?.email == null) {
+    dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: props.user });
+  }
 
   // Ambil dari client side
-  useEffect(() => {
-    dispatch(getProfile());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getProfile());
+  // }, [dispatch]);
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
       <div className="flex items-center  justify-center w-full">
@@ -125,19 +125,19 @@ export default function Profile(props) {
   );
 }
 
-// export async function getServerSideProps({ req }) {
-//   const res = await fetch(`${config.apiURL}/api/user/`, {
-//     method: 'GET',
-//     credentials: true,
-//     headers: {
-//       cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
-//       content: 'application/json',
-//     },
-//   });
-//   const data = (await res.json()).data;
-//   return {
-//     props: {
-//       user: { data },
-//     },
-//   };
-// }
+export async function getServerSideProps({ req }) {
+  const res = await fetch(`${config.apiURL}/api/user/`, {
+    method: 'GET',
+    credentials: true,
+    headers: {
+      cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
+      content: 'application/json',
+    },
+  });
+  const data = (await res.json()).data;
+  return {
+    props: {
+      user: { data },
+    },
+  };
+}

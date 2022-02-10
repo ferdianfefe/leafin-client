@@ -15,8 +15,6 @@ export async function middleware(req) {
         content: 'application/json',
       },
     });
-    console.log(req.cookies);
-    console.log(data);
     const result = data.status;
     const cookie = data.headers.get('set-cookie')?.split(';');
     if (cookie != null) {
