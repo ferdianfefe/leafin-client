@@ -126,7 +126,7 @@ export default function Profile(props) {
 }
 
 export async function getServerSideProps({ req }) {
-  const res = await fetch(`${config.apiURL}/api/user/`, {
+  const res = await fetch(`${config.apiURL}/user/`, {
     method: 'GET',
     credentials: true,
     headers: {
