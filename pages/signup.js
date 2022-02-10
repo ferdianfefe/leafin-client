@@ -3,8 +3,11 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/Button';
+import { signup } from '@/components/actions/userActions';
+import { useDispatch } from 'react-redux';
 
 export default function Signup() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const {
     register,
@@ -14,20 +17,13 @@ export default function Signup() {
   const [error, setError] = useState('');
 
   const registerHandler = async ({ email, password }) => {
-    const data = await fetch('http://localhost:5000/api/user/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const result = data.status;
-    if (result === 201) {
-      return router.push('profile');
-    } else {
-      return setError(await data.json().then((res) => res.message));
-    }
+    dispatch(signup(email, password))
+      .then(() => {
+        router.push('signin');
+      })
+      .catch((error) => {
+        setError(error);
+      });
   };
 
   return (
@@ -128,7 +124,7 @@ export default function Signup() {
 
       <p className="mt-5 font-semibold w-full  text-gray-primary text-[12.13px]">
         Already have an account?
-        <Link href="signin">
+        <Link href="/signin">
           <a className="text-primary hover:underline">Log in</a>
         </Link>
       </p>
