@@ -8,7 +8,11 @@ import {
   USER_GET_PROFILE_REQUEST,
   USER_GET_PROFILE_SUCCESS,
   USER_GET_PROFILE_FAILURE,
-} from '../../constants/userConstants';
+  USER_UPDATE_PROFILE_REQUEST,
+  USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_PROFILE_FAILURE,
+  USER_SELECT_PICTURE,
+} from "../../constants/userConstants";
 
 const initialState = [];
 
@@ -76,6 +80,35 @@ const userReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         error: payload,
+      };
+    case USER_UPDATE_PROFILE_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+    case USER_UPDATE_PROFILE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        user: payload,
+      };
+    case USER_UPDATE_PROFILE_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: payload,
+      };
+    case USER_SELECT_PICTURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        user: {
+          ...state.user,
+          selectedPicture: payload,
+        },
       };
     default:
       return state;
