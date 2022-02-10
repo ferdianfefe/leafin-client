@@ -1,10 +1,7 @@
 import { Provider } from 'react-redux';
-import '../styles/globals.css';
-import { useEffect } from 'react';
+import '@/styles/globals.css';
 
-import store from '../components/store/store';
-import { getProfile } from '../components/actions/userActions';
-import App from 'next/app';
+import store from '@/components/store/store';
 
 function MyApp({ Component, pageProps }) {
   return (

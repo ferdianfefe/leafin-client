@@ -2,23 +2,22 @@ import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import { getProfile } from '../../components/actions/userActions';
-import Badge from '../../components/Badge';
-import Navbar from '../../components/Navbar';
+import Badge from '@/components/Badge';
+import Navbar from '@/components/Navbar';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-export default function Profile({ user }) {
+import { useEffect } from 'react';
+import { getProfile } from '@/components/actions/userActions';
+import { USER_GET_PROFILE_SUCCESS } from 'constants/userConstants';
+import config from '../../config';
+
+export default function Profile(props) {
   const dispatch = useDispatch();
-  useEffect(async () => {
-    await dispatch(getProfile());
-  }, []);
-  user = useSelector((state) => state.user);
-  console.log(user);
-  const { email } = user;
+  let user = useSelector((state) => state.user);
+
   const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terjadi'];
   const envProfile = [
     { name: 'Humidity', value: '70' },
@@ -29,36 +28,48 @@ export default function Profile({ user }) {
     { name: 'Jumlah', value: '4' },
   ];
 
+  // Ambil payload pakai SSR
+  if (user?.user?.data?.email == null) {
+    dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: props.user });
+  }
+
+  // Ambil dari client side
+  // useEffect(() => {
+  //   dispatch(getProfile());
+  // }, [dispatch]);
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
-      <div className="flex items-center">
-        <h1 className="font-bold text-2xl px-10">My Profile</h1>
-        <Link href="profile/edit">
-          <a href="profile/edit">
-            <div className="w-5 h-5 relative">
+      <div className="flex items-center  justify-center w-full">
+        <h1 className="font-bold text-2xl text-center">My Profile</h1>
+        <Link href="/profile/edit">
+          <a className="fixed ml-64 pt-1">
+            <div className="w-5 h-5 relative items-center justify-self-end">
               <Image
-                src="/edit.svg"
+                src="/assets/edit.svg"
                 objectFit="contain"
                 layout="fill"
                 alt="edit"
+                priority
               ></Image>
             </div>
           </a>
         </Link>
       </div>
 
-      <div className="pt-10 flex w-full items-center ">
+      <div className="pt-10 flex w-full items-center">
         <div className="rounded-full w-20 h-20 relative overflow-hidden">
           <Image
-            src="/profileimage.png"
+            src="/assets/profileimage.png"
             objectFit="cover"
             layout="fill"
             alt="profile picture"
             loading="lazy"
           ></Image>
         </div>
-        <div className="ml-5 flex flex-wrap gap-1">
-          <h1 className="font-bold text-lg w-full">{email}</h1>
+        <div className="w-2/3 ml-5 flex flex-wrap gap-1">
+          <h1 className="font-bold w-full text-lg">
+            {props?.user?.data?.email || user?.user?.data?.email}
+          </h1>
           <p className="text-xs text-gray-light">John is me</p>
         </div>
       </div>
@@ -87,7 +98,7 @@ export default function Profile({ user }) {
         <div className="mt-5 border flex items-center gap-5 w-full rounded-xl p-5 border-gray-400">
           <div className="relative h-24 w-32">
             <Image
-              src="/weather.svg"
+              src="/assets/weather.svg"
               objectFit="contain"
               layout="fill"
               alt="weather"
@@ -115,22 +126,19 @@ export default function Profile({ user }) {
   );
 }
 
-// export async function getServerSideProps({ req }) {
-//   const dispatch = useDispatch();
-//   const { data } = await dispatch(getProfile());
-//   console.log(data);
-//   // const data = await fetch('http://localhost:5000/api/user/', {
-//   //   method: 'GET',
-//   //   credentials: true,
-//   //   headers: {
-//   //     cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
-//   //     content: 'application/json',
-//   //   },
-//   // });
-//   // const result = (await data.json()).data;
-//   return {
-//     props: {
-//       user: data,
-//     },
-//   };
-// }
+export async function getServerSideProps({ req }) {
+  const res = await fetch(`${config.apiURL}/user/`, {
+    method: 'GET',
+    credentials: true,
+    headers: {
+      cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
+      content: 'application/json',
+    },
+  });
+  const data = (await res.json()).data;
+  return {
+    props: {
+      user: { data },
+    },
+  };
+}

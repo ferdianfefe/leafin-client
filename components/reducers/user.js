@@ -14,7 +14,12 @@ import {
   USER_SELECT_PICTURE,
 } from "../../constants/userConstants";
 
-const initialState = [];
+const initialState = {
+  isLoading: false,
+  isLoggedIn: false,
+  error: null,
+  user: null,
+};
 
 const userReducer = (state = initialState, action) => {
   const { type, payload } = action;

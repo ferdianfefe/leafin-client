@@ -170,6 +170,7 @@ export default function Edit() {
       </form>
 
       <Navbar active="profile" />
+
     </div>
   );
 }

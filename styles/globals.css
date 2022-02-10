@@ -34,3 +34,9 @@
 .swiper-pagination-bullet {
   padding: 0.325rem;
 }
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Navbar({ active }) {
   const navs = [
@@ -25,7 +25,7 @@ export default function Navbar({ active }) {
     {
       svg: `M22.4 12C22.4 14.9705 21.22 17.8192 19.1196 19.9196C17.0192 22.0201 14.1704 23.2 11.2 23.2C8.22957 23.2 5.38081 22.0201 3.2804 19.9196C1.18 17.8192 0 14.9705 0 12C0 9.02962 1.18 6.18086 3.2804 4.08045C5.38081 1.98005 8.22957 0.800049 11.2 0.800049C14.1704 0.800049 17.0192 1.98005 19.1196 4.08045C21.22 6.18086 22.4 9.02962 22.4 12ZM14 7.80005C14 8.54265 13.705 9.25484 13.1799 9.77995C12.6548 10.305 11.9426 10.6 11.2 10.6C10.4574 10.6 9.7452 10.305 9.2201 9.77995C8.695 9.25484 8.4 8.54265 8.4 7.80005C8.4 7.05744 8.695 6.34525 9.2201 5.82015C9.7452 5.29505 10.4574 5.00005 11.2 5.00005C11.9426 5.00005 12.6548 5.29505 13.1799 5.82015C13.705 6.34525 14 7.05744 14 7.80005ZM11.2 13.4C9.85964 13.3998 8.54739 13.7843 7.41918 14.508C6.29098 15.2317 5.39426 16.2641 4.8356 17.4824C5.62335 18.3989 6.59998 19.1341 7.69852 19.6377C8.79706 20.1413 9.99153 20.4014 11.2 20.4C12.4085 20.4014 13.6029 20.1413 14.7015 19.6377C15.8 19.1341 16.7767 18.3989 17.5644 17.4824C17.0057 16.2641 16.109 15.2317 14.9808 14.508C13.8526 13.7843 12.5404 13.3998 11.2 13.4Z`,
       name: 'Profile',
-      href: 'profile',
+      href: '/profile',
     },
   ];
 
@@ -36,24 +36,25 @@ export default function Navbar({ active }) {
           let className = `w-full hover:text-[#9F9E9E] justify-center inline-block text-center pt-2 pb-1 text-[#B5B5B5]`;
           if (name.toLowerCase() == active.toLowerCase()) {
             className = `w-full justify-center inline-block text-center pt-2 pb-1 text-[#32B84D]`;
-            href = '#';
           }
 
           return (
-            <a key={i} href={href} className={className}>
-              <svg
-                className="inline-block mb-1 w-full"
-                width="23"
-                height="24"
-                viewBox="0 0 23 24"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path fillRule="evenodd" clipRule="evenodd" d={svg} />
-              </svg>
+            <Link href={href} key={i}>
+              <a className={className}>
+                <svg
+                  className="inline-block mb-1 w-full"
+                  width="23"
+                  height="24"
+                  viewBox="0 0 23 24"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path fillRule="evenodd" clipRule="evenodd" d={svg} />
+                </svg>
 
-              <span className="block font-semibold text-xs">{name}</span>
-            </a>
+                <span className="block font-semibold text-xs">{name}</span>
+              </a>
+            </Link>
           );
         })}
       </div>

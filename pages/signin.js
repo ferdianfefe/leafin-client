@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 
-import Button from "../components/Button";
-import { useDispatch } from "react-redux";
-import { signin } from "../components/actions/userActions";
-import Link from "next/link";
+
+import Button from '@/components/Button';
+import { useDispatch } from 'react-redux';
+import { signin } from '@/components/actions/userActions';
+import Link from 'next/link';
 
 export default function Signin() {
   const router = useRouter();
@@ -20,9 +21,8 @@ export default function Signin() {
 
   const loginHandler = async ({ email, password }) => {
     dispatch(signin(email, password))
-      .then((data) => {
-        // console.log(data);
-        router.push("profile");
+      .then(() => {
+        router.push('profile');
       })
       .catch((error) => {
         setError(error);
@@ -82,7 +82,7 @@ export default function Signin() {
               className="mt-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full"
               role="alert"
             >
-              <strong className="font-bold">Error</strong>
+              <strong className="font-bold w-full">Error</strong>
               <span className="block sm:inline">{error}</span>
             </div>
           </>
@@ -102,8 +102,8 @@ export default function Signin() {
 
       <p className="mt-5 font-semibold w-full text-gray-primary text-[12.13px]">
         Not yet have an account?
-        <Link href="signup">
-          <a className="text-primary hover:underline">Register</a>
+        <Link href="/signup">
+          <a className="text-primary hover:underline"> Register</a>
         </Link>
       </p>
     </div>
