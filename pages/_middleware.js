@@ -40,13 +40,14 @@ export async function middleware(req) {
       return res;
     }
   } catch (err) {
-    if (
-      url !== '/signin' &&
-      url !== '/signup' &&
-      url !== '/home' &&
-      !url.includes('/assets/')
-    ) {
-      return NextResponse.redirect(new URL('/home', req.url));
-    }
+    console.log(err);
+    // if (
+    //   url !== '/signin' &&
+    //   url !== '/signup' &&
+    //   url !== '/home' &&
+    //   !url.includes('/assets/')
+    // ) {
+    //   return NextResponse.redirect(new URL('/home', req.url));
+    // }
   }
 }
