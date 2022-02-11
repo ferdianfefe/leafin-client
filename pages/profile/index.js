@@ -1,31 +1,31 @@
-import Image from 'next/image';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { useDispatch, useSelector } from 'react-redux';
-import Link from 'next/link';
-import Badge from '@/components/Badge';
-import Navbar from '@/components/Navbar';
+import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
+import Badge from "@/components/Badge";
+import Navbar from "@/components/Navbar";
 
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
-import { useEffect } from 'react';
-import { getProfile } from '@/components/actions/userActions';
-import { USER_GET_PROFILE_SUCCESS } from 'constants/userConstants';
-import config from '../../config';
+import { useEffect } from "react";
+import { getProfile } from "@/components/actions/userActions";
+import { USER_GET_PROFILE_SUCCESS } from "constants/userConstants";
+import config from "../../config";
 
 export default function Profile(props) {
   const dispatch = useDispatch();
   let user = useSelector((state) => state.user);
 
-  const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terjadi'];
+  const badges = ["Terajin", "Terbaik", "Tercepat", "Terjadi"];
   const envProfile = [
-    { name: 'Humidity', value: '70' },
-    { name: 'Temperature', value: '70' },
-    { name: 'Kinds', value: '2' },
-    { name: 'Jenis Pupuk', value: 'Kaltim' },
-    { name: 'Jumlah', value: '3' },
-    { name: 'Jumlah', value: '4' },
+    { name: "Humidity", value: "70" },
+    { name: "Temperature", value: "70" },
+    { name: "Kinds", value: "2" },
+    { name: "Jenis Pupuk", value: "Kaltim" },
+    { name: "Jumlah", value: "3" },
+    { name: "Jumlah", value: "4" },
   ];
 
   // Ambil payload pakai SSR
@@ -57,18 +57,29 @@ export default function Profile(props) {
       </div>
 
       <div className="pt-10 flex w-full items-center">
-        <div className="rounded-full w-20 h-20 relative overflow-hidden">
-          <Image
-            src="/assets/profileimage.png"
-            objectFit="cover"
-            layout="fill"
-            alt="profile picture"
-            loading="lazy"
-          ></Image>
-        </div>
+        {props?.user?.data?.pictureFileURL ||
+        user?.user?.data?.pictureFileURL ? (
+          <div className="rounded-full w-20 h-20 relative overflow-hidden">
+            <Image
+              src={
+                props?.user?.data?.pictureFileURL ||
+                user?.user?.data?.pictureFileURL
+              }
+              objectFit="cover"
+              layout="fill"
+              alt="profile picture"
+              loading="lazy"
+            ></Image>
+          </div>
+        ) : (
+          <div className="rounded-full w-20 h-20 bg-[#C4C4C4]"></div>
+        )}
         <div className="w-2/3 ml-5 flex flex-wrap gap-1">
           <h1 className="font-bold w-full text-lg">
-            {props?.user?.data?.email || user?.user?.data?.email}
+            {props?.user?.data?.name ||
+              user?.user?.data?.name ||
+              props?.user?.data?.email ||
+              user?.user?.data?.email}
           </h1>
           <p className="text-xs text-gray-light">John is me</p>
         </div>
@@ -128,11 +139,11 @@ export default function Profile(props) {
 
 export async function getServerSideProps({ req }) {
   const res = await fetch(`${config.apiURL}/user/`, {
-    method: 'GET',
+    method: "GET",
     credentials: true,
     headers: {
       cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
-      content: 'application/json',
+      content: "application/json",
     },
   });
   const data = (await res.json()).data;

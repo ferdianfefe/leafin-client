@@ -2,11 +2,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 
-
-import Button from '@/components/Button';
-import { useDispatch } from 'react-redux';
-import { signin } from '@/components/actions/userActions';
-import Link from 'next/link';
+import Button from "@/components/Button";
+import { useDispatch } from "react-redux";
+import { signin } from "@/components/actions/userActions";
+import Link from "next/link";
 
 export default function Signin() {
   const router = useRouter();
@@ -22,7 +21,7 @@ export default function Signin() {
   const loginHandler = async ({ email, password }) => {
     dispatch(signin(email, password))
       .then(() => {
-        router.push('profile');
+        router.push("profile");
       })
       .catch((error) => {
         setError(error);

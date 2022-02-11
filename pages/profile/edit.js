@@ -5,11 +5,14 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 
-export default function Edit() {
+export default function Edit(props) {
+  const router = useRouter();
   const dispatch = useDispatch();
+
   let user = useSelector((state) => state.user);
   const [error, setError] = useState("");
   const [currentFile, setCurrentFile] = useState(null);
@@ -32,6 +35,7 @@ export default function Edit() {
 
   useEffect(() => {
     dispatch(getProfile()).then(({ data }) => {
+      setValue("name", data.name);
       setValue("email", data.email);
     });
   }, []);
@@ -59,13 +63,14 @@ export default function Edit() {
     if (password) {
       fd.append("password", password);
     }
-    console.log(fd.get("name"), fd.get("email"), fd.get("password"), fd.get("picture"));
     dispatch(updateProfile(fd))
       .then((data) => {
+        console.log("berhasil update data");
         router.push("profile");
       })
       .catch((error) => {
-        setError(error);
+        console.log(error);
+        // setError(error);
       });
   };
 
@@ -74,9 +79,15 @@ export default function Edit() {
       <div className="flex flex-col justify-center items-center">
         <h1 className="font-bold text-2xl px-10 mb-10">Edit Profile</h1>
         {/* Picture preview */}
-        {previewImage ? (
+        {previewImage ||
+        props?.user?.data?.pictureFileURL ||
+        user?.user?.data?.pictureFileURL ? (
           <img
-            src={previewImage}
+            src={
+              previewImage ||
+              props?.user?.data?.pictureFileURL ||
+              user?.user?.data?.pictureFileURL
+            }
             alt="preview"
             className="rounded-full w-24 h-24"
           />
@@ -134,7 +145,7 @@ export default function Edit() {
         <label htmlFor="password" className="mt-5 font-semibold w-full">
           Password
           <input
-            {...register("password", { required: true })}
+            {...register("password", { required: false })}
             placeholder="Password"
             className={`mt-2 px-4 py-4 rounded-xl border border-primary w-full ${
               errors?.password?.type === "required" && "border-red-500"
@@ -170,7 +181,6 @@ export default function Edit() {
       </form>
 
       <Navbar active="profile" />
-
     </div>
   );
 }

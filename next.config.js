@@ -1,17 +1,20 @@
-const withPWA = require('next-pwa');
+const withPWA = require("next-pwa");
 
 module.exports = withPWA({
   reactStrictMode: true,
   pwa: {
-    dest: 'public',
+    dest: "public",
     register: true,
     skipWaiting: true,
+  },
+  images: {
+    domains: ["res.cloudinary.com"],
   },
   async rewrites() {
     return [
       {
-        source: '/ar',
-        destination: '/ar.html',
+        source: "/ar",
+        destination: "/ar.html",
       },
     ];
   },
