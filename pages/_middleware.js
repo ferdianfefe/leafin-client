@@ -37,7 +37,7 @@ export async function middleware(req) {
       res.cookie("accessToken", cookie[0].split("=")[1], {
         httpOnly: true,
         maxAge: cookie[1].split("=")[1] * 1000,
-        domain: con,
+        // domain: con,
       });
     }
 

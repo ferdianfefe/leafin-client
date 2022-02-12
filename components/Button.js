@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
-const Button = ({ children, className, type, href }) => {
+const Button = ({ children, className, type, href, onClick }) => {
   const router = useRouter();
 
   if (href) {
@@ -18,6 +18,7 @@ const Button = ({ children, className, type, href }) => {
       <button
         type={type}
         className={`rounded-xl w-full py-[14px] disabled:opacity-50 ${className}`}
+        onClick={onClick}
       >
         {children}
       </button>
