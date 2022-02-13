@@ -65,25 +65,30 @@ export default function Signup() {
         </label>
 
         <div className="flex items-center flex-wrap justify-start gap-5 mt-5">
-          <input
-            {...register('rememberme', {
-              required: true,
-            })}
-            type="checkbox"
-            className="ml-1 w-5 h-5 default:ring-1 accent-primary"
-          ></input>
-          <p className="text-[12.13px] text-gray-primary">
-            I agree to the
-            <Link href="/#">
-              <a className="text-primary"> Terms & Conditions</a>
-            </Link>
-            <br /> and
-            <Link href="#">
-              <a className="text-primary"> Privacy Policy</a>
-            </Link>
-          </p>
+          <label
+            htmlFor="tnc"
+            className="text-[12.13px] text-gray-primary flex items-center"
+          >
+            <input
+              {...register('tnc', {
+                required: true,
+              })}
+              type="checkbox"
+              className="mr-3 w-5 h-5 default:ring-1 accent-primary"
+            ></input>
+            <span>
+              I agree to the
+              <Link href="/#">
+                <a className="text-primary"> Terms & Conditions</a>
+              </Link>
+              <br /> and
+              <Link href="#">
+                <a className="text-primary"> Privacy Policy</a>
+              </Link>
+            </span>
+          </label>
 
-          {errors?.rememberme?.type === 'required' && (
+          {errors?.tnc?.type === 'required' && (
             <>
               <div
                 className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full"

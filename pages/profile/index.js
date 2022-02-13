@@ -1,48 +1,50 @@
-import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useDispatch, useSelector } from "react-redux";
-import Link from "next/link";
-import Badge from "@/components/Badge";
-import Navbar from "@/components/Navbar";
+import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
+import Badge from '@/components/Badge';
+import Navbar from '@/components/Navbar';
 
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
-import { useEffect } from "react";
-import { getProfile } from "@/components/actions/userActions";
-import { USER_GET_PROFILE_SUCCESS } from "constants/userConstants";
-import config from "../../config";
+import { useEffect } from 'react';
+import { getProfile } from '@/components/actions/userActions';
+import { USER_GET_PROFILE_SUCCESS } from 'constants/userConstants';
+import config from '../../config';
 
 export default function Profile(props) {
   const dispatch = useDispatch();
   let user = useSelector((state) => state.user);
 
-  const badges = ["Terajin", "Terbaik", "Tercepat", "Terjadi"];
+  const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terjadi'];
   const envProfile = [
-    { name: "Humidity", value: "70" },
-    { name: "Temperature", value: "70" },
-    { name: "Kinds", value: "2" },
-    { name: "Jenis Pupuk", value: "Kaltim" },
-    { name: "Jumlah", value: "3" },
-    { name: "Jumlah", value: "4" },
+    { name: 'Humidity', value: '70' },
+    { name: 'Temperature', value: '70' },
+    { name: 'Kinds', value: '2' },
+    { name: 'Jenis Pupuk', value: 'Kaltim' },
+    { name: 'Jumlah', value: '3' },
+    { name: 'Jumlah', value: '4' },
   ];
 
   // Ambil payload pakai SSR
-  if (user?.user?.data?.email == null) {
-    dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: props.user });
-  }
+  // if (user?.user?.data?.email == null) {
+  //   dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: props.user });
+  // }
 
   // Ambil dari client side
-  // useEffect(() => {
-  //   dispatch(getProfile());
-  // }, [dispatch]);
+  useEffect(() => {
+    if (user.user?.data == null) {
+      dispatch(getProfile());
+    }
+  }, []);
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
       <div className="flex items-center  justify-center w-full">
         <h1 className="font-bold text-2xl text-center">My Profile</h1>
         <Link href="/profile/edit">
-          <a className="fixed ml-64 pt-1">
+          <a className="absolute ml-64">
             <div className="w-5 h-5 relative items-center justify-self-end">
               <Image
                 src="/assets/edit.svg"
@@ -81,7 +83,12 @@ export default function Profile(props) {
               props?.user?.data?.email ||
               user?.user?.data?.email}
           </h1>
-          <p className="text-xs text-gray-light">John is me</p>
+          {(props?.user?.data?.description ||
+            user?.user?.data?.description) && (
+            <p className="text-xs text-gray-light">
+              {props?.user?.data?.description || user?.user?.data?.description}
+            </p>
+          )}
         </div>
       </div>
 
@@ -137,19 +144,19 @@ export default function Profile(props) {
   );
 }
 
-export async function getServerSideProps({ req }) {
-  const res = await fetch(`${config.apiURL}/user/`, {
-    method: "GET",
-    credentials: true,
-    headers: {
-      cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
-      content: "application/json",
-    },
-  });
-  const data = (await res.json()).data;
-  return {
-    props: {
-      user: { data },
-    },
-  };
-}
+// export async function getServerSideProps({ req }) {
+//   const res = await fetch(`${config.apiURL}/user/`, {
+//     method: 'GET',
+//     credentials: true,
+//     headers: {
+//       cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
+//       content: 'application/json',
+//     },
+//   });
+//   const data = (await res.json()).data;
+//   return {
+//     props: {
+//       user: { data },
+//     },
+//   };
+// }

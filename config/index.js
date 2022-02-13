@@ -1,10 +1,10 @@
 const api =
-  process.env.NEXT_PUBLIC_TYPE == 'PRODUCTION'
+  process.env.NODE_ENV == 'development'
     ? {
-        apiURL: 'https://api.hunaki.my.id/api',
+        apiURL: 'http://localhost:5000/api',
       }
     : {
-        apiURL: 'http://localhost:5000/api',
+        apiURL: 'https://api.hunaki.my.id/api',
       };
 
 export default api;

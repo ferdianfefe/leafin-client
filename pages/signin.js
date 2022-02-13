@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 
-import Button from "@/components/Button";
-import { useDispatch } from "react-redux";
-import { signin } from "@/components/actions/userActions";
-import Link from "next/link";
+import Button from '@/components/Button';
+import { useDispatch } from 'react-redux';
+import { signin } from '@/components/actions/userActions';
+import Link from 'next/link';
 
 export default function Signin() {
   const router = useRouter();
@@ -15,13 +15,13 @@ export default function Signin() {
     formState: { errors },
   } = useForm();
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const dispatch = useDispatch();
 
   const loginHandler = async ({ email, password }) => {
     dispatch(signin(email, password))
       .then(() => {
-        router.push("profile");
+        router.push('profile');
       })
       .catch((error) => {
         setError(error);
@@ -41,7 +41,7 @@ export default function Signin() {
         <label htmlFor="email" className="font-semibold w-full">
           Email
           <input
-            {...register("email", {
+            {...register('email', {
               required: true,
               pattern:
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -49,30 +49,35 @@ export default function Signin() {
             placeholder="Email"
             type="text"
             className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
-              errors?.email?.type === "required" && "border-red-500"
-            } ${errors?.email?.type === "pattern" && "border-red-500"}`}
+              errors?.email?.type === 'required' && 'border-red-500'
+            } ${errors?.email?.type === 'pattern' && 'border-red-500'}`}
           ></input>
         </label>
 
         <label htmlFor="password" className="mt-5 font-semibold w-full">
           Password
           <input
-            {...register("password", { required: true })}
+            {...register('password', { required: true })}
             placeholder="Password"
             className={`mt-2 px-4 py-4 rounded-xl border border-primary w-full ${
-              errors?.password?.type === "required" && "border-red-500"
+              errors?.password?.type === 'required' && 'border-red-500'
             }`}
             type="password"
           ></input>
         </label>
 
         <div className="flex items-center justify-center gap-5 mt-5">
-          <input
-            {...register("rememberMe")}
-            type="checkbox"
-            className="ml-1 w-5 h-5 accent-primary rounded"
-          ></input>
-          <p className="text-[12.13px] text-gray-primary ">Remember me</p>
+          <label
+            htmlFor="rememberme"
+            className="text-[12.13px] text-gray-primary flex items-center"
+          >
+            <input
+              {...register('rememberMe')}
+              type="checkbox"
+              className="mr-3 w-5 h-5 accent-primary rounded"
+            ></input>
+            Remember me
+          </label>
         </div>
 
         {error && (
@@ -89,13 +94,13 @@ export default function Signin() {
 
         <Button
           type="submit"
-          className={"mt-5 bg-primary text-white font-bold"}
+          className={'mt-5 bg-primary text-white font-bold'}
         >
           Sign in
         </Button>
       </form>
 
-      <Button className={"mt-5 border border-primary text-primary font-bold"}>
+      <Button className={'mt-5 border border-primary text-primary font-bold'}>
         Sign in with Google
       </Button>
 

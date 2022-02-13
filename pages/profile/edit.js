@@ -1,24 +1,26 @@
 import {
   getProfile,
   updateProfile,
-} from "../../components/actions/userActions";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
-import Navbar from "../../components/Navbar";
-import Button from "../../components/Button";
+} from '../../components/actions/userActions';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import Navbar from '../../components/Navbar';
+import Button from '../../components/Button';
+import Link from 'next/link';
+import Image from 'next/image';
 
-export default function Edit(props) {
+export default function Edit() {
   const router = useRouter();
   const dispatch = useDispatch();
 
   let user = useSelector((state) => state.user);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [currentFile, setCurrentFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [imageInfos, setImageInfos] = useState([]);
 
   const selectFile = (e) => {
@@ -34,10 +36,13 @@ export default function Edit(props) {
   } = useForm();
 
   useEffect(() => {
-    dispatch(getProfile()).then(({ data }) => {
-      setValue("name", data.name);
-      setValue("email", data.email);
-    });
+    if (user.user?.data == null) {
+      dispatch(getProfile()).then(({ data }) => {
+        setValue('email', data?.email);
+      });
+    } else {
+      setValue('email', user?.user?.data?.email);
+    }
   }, []);
 
   const pickImageBtnRef = null;
@@ -52,45 +57,57 @@ export default function Edit(props) {
   const editHandler = async ({ name, email, password }) => {
     let fd = new FormData();
     if (currentFile) {
-      fd.append("picture", currentFile);
+      fd.append('picture', currentFile);
     }
     if (name) {
-      fd.append("name", name);
+      fd.append('name', name);
     }
     if (email) {
-      fd.append("email", email);
+      fd.append('email', email);
     }
     if (password) {
-      fd.append("password", password);
+      fd.append('password', password);
     }
     dispatch(updateProfile(fd))
       .then((data) => {
-        console.log("berhasil update data");
-        router.push("profile");
+        console.log('berhasil update data');
+        router.push('profile');
       })
       .catch((error) => {
         console.log(error);
-        // setError(error);
+        setError(error);
       });
   };
 
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
+      <div className="flex flex-col justify-center items-center w-full ">
+        <h1 className="font-bold text-2xl mb-10">Edit Profile</h1>
+        <Link href="/profile">
+          <a className="absolute left-5 mb-10">
+            <div className="w-5 h-5 relative items-center justify-self-end">
+              <Image
+                src="/assets/backBtn.svg"
+                objectFit="contain"
+                layout="fill"
+                alt="edit"
+                priority
+              />
+            </div>
+          </a>
+        </Link>
+      </div>
+      {/* Picture preview */}
       <div className="flex flex-col justify-center items-center">
-        <h1 className="font-bold text-2xl px-10 mb-10">Edit Profile</h1>
-        {/* Picture preview */}
-        {previewImage ||
-        props?.user?.data?.pictureFileURL ||
-        user?.user?.data?.pictureFileURL ? (
-          <img
-            src={
-              previewImage ||
-              props?.user?.data?.pictureFileURL ||
-              user?.user?.data?.pictureFileURL
-            }
-            alt="preview"
-            className="rounded-full w-24 h-24"
-          />
+        {previewImage || user?.user?.data?.pictureFileURL ? (
+          <div className="rounded-full relative w-24 h-24 overflow-hidden">
+            <Image
+              src={previewImage}
+              alt="preview"
+              layout="fill"
+              objectFit="contain"
+            />
+          </div>
         ) : (
           <div className="rounded-full w-24 h-24 bg-[#C4C4C4]"></div>
         )}
@@ -115,13 +132,13 @@ export default function Edit(props) {
         <label htmlFor="name" className="font-semibold w-full">
           Name
           <input
-            {...register("name", {
+            {...register('name', {
               required: true,
             })}
             placeholder="Name"
             type="text"
             className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
-              errors?.email?.type === "required" && "border-red-500"
+              errors?.email?.type === 'required' && 'border-red-500'
             }`}
           ></input>
         </label>
@@ -129,7 +146,7 @@ export default function Edit(props) {
         <label htmlFor="email" className="mt-5 font-semibold w-full">
           Email
           <input
-            {...register("email", {
+            {...register('email', {
               required: true,
               pattern:
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -137,18 +154,18 @@ export default function Edit(props) {
             placeholder="Email"
             type="text"
             className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
-              errors?.email?.type === "required" && "border-red-500"
-            } ${errors?.email?.type === "pattern" && "border-red-500"}`}
+              errors?.email?.type === 'required' && 'border-red-500'
+            } ${errors?.email?.type === 'pattern' && 'border-red-500'}`}
           ></input>
         </label>
 
         <label htmlFor="password" className="mt-5 font-semibold w-full">
           Password
           <input
-            {...register("password", { required: false })}
+            {...register('password', { required: false })}
             placeholder="Password"
             className={`mt-2 px-4 py-4 rounded-xl border border-primary w-full ${
-              errors?.password?.type === "required" && "border-red-500"
+              errors?.password?.type === 'required' && 'border-red-500'
             }`}
             type="password"
           ></input>
@@ -168,19 +185,17 @@ export default function Edit(props) {
 
         <Button
           type="submit"
-          className={"mt-5 bg-primary text-white font-bold"}
+          className={'mt-5 bg-primary text-white font-bold'}
         >
           Save
         </Button>
-        <Button
-          type="submit"
-          className={"mt-5 border border-primary text-primary font-bold"}
-        >
-          Cancel
-        </Button>
       </form>
-
-      <Navbar active="profile" />
+      <Button
+        href={`/profile`}
+        className={'mt-5 mb-20 border border-primary text-primary font-bold'}
+      >
+        Cancel
+      </Button>
     </div>
   );
 }
