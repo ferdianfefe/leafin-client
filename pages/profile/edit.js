@@ -1,15 +1,38 @@
 import {
   getProfile,
+  getServerProfile,
   updateProfile,
-} from '../../components/actions/userActions';
+} from '@/components/actions/userActions';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import Navbar from '../../components/Navbar';
-import Button from '../../components/Button';
+import Button from '@/components/Button';
 import Link from 'next/link';
 import Image from 'next/image';
+import { wrapper } from '@/components/store/store';
+import {
+  USER_GET_PROFILE_REQUEST,
+  USER_GET_PROFILE_SUCCESS,
+} from 'constants/userConstants';
+
+Edit.getInitialProps = wrapper.getInitialPageProps(
+  ({ getState, dispatch }) =>
+    async ({ req }) => {
+      const { user } = getState();
+      if (user.user?.data == null && !process.browser) {
+        dispatch({ type: USER_GET_PROFILE_REQUEST });
+
+        const data = await getServerProfile(req);
+
+        dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: data });
+      } else if (user.user?.data == null) {
+        dispatch(getProfile());
+      } else {
+        console.log('sudah ada data');
+      }
+    }
+);
 
 export default function Edit() {
   const router = useRouter();
@@ -36,14 +59,8 @@ export default function Edit() {
   } = useForm();
 
   useEffect(() => {
-    if (user.user?.data == null) {
-      dispatch(getProfile()).then(({ data }) => {
-        setValue('email', data?.email);
-      });
-    } else {
-      setValue('email', user?.user?.data?.email);
-    }
-  }, []);
+    setValue('email', user.user?.data?.email);
+  }, [setValue, user.user?.data?.email]);
 
   const pickImageBtnRef = null;
 

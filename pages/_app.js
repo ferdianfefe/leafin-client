@@ -1,14 +1,9 @@
-import { Provider } from 'react-redux';
 import '@/styles/globals.css';
 
-import store from '@/components/store/store';
+import { wrapper } from '@/components/store/store';
 
 function MyApp({ Component, pageProps }) {
-  return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-    </Provider>
-  );
+  return <Component {...pageProps} />;
 }
 
 // MyApp.getInitialProps = async (appContext) => {
@@ -20,4 +15,4 @@ function MyApp({ Component, pageProps }) {
 //   }
 // };
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

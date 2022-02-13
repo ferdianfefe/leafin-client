@@ -2,7 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Button from "../components/Button";
 
-export default function question() {
+export default function Question() {
   const [step, setStep] = useState(1);
   const questions = [
     {

@@ -11,12 +11,11 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAILURE,
-} from "../../constants/userConstants";
-import axios from "axios";
-import config from "../../config";
+} from '../../constants/userConstants';
+import axios from 'axios';
+import config from '../../config';
 
 const signin = (email, password) => async (dispatch) => {
-
   try {
     dispatch({ type: USER_SIGNIN_REQUEST });
 
@@ -26,7 +25,7 @@ const signin = (email, password) => async (dispatch) => {
       { withCredentials: true }
     );
 
-    dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
+    dispatch({ type: USER_SIGNIN_SUCCESS, payload: { data: data.message } });
 
     return Promise.resolve(data);
   } catch (error) {
@@ -63,14 +62,12 @@ const signup = (email, password) => async (dispatch) => {
 /* Get user profile */
 const getProfile = () => async (dispatch) => {
   try {
-
     dispatch({ type: USER_GET_PROFILE_REQUEST });
 
     const { data } = await axios.get(`${config.apiURL}/user/`, {
       withCredentials: true,
     });
     dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: data });
-
 
     return Promise.resolve(data);
   } catch (error) {
@@ -80,6 +77,16 @@ const getProfile = () => async (dispatch) => {
     });
     return Promise.reject(error?.response?.data?.message || error.message);
   }
+};
+
+// Get User Profile with SSR Method
+const getServerProfile = async (req) => {
+  const { data } = await axios.get(`${config.apiURL}/user/`, {
+    headers: {
+      cookie: `refreshToken=${req?.cookies?.refreshToken}; accessToken=${req?.cookies?.accessToken};`,
+    },
+  });
+  return data;
 };
 
 /* Update user profile */
@@ -107,4 +114,11 @@ const selectPicture = (picture) => async (dispatch) => {
   return Promise.resolve();
 };
 
-export { signin, signup, getProfile, updateProfile, selectPicture };
+export {
+  signin,
+  signup,
+  getProfile,
+  updateProfile,
+  selectPicture,
+  getServerProfile,
+};

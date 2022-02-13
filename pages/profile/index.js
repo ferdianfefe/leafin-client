@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import Badge from '@/components/Badge';
 import Navbar from '@/components/Navbar';
@@ -9,13 +9,32 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-import { useEffect } from 'react';
-import { getProfile } from '@/components/actions/userActions';
-import { USER_GET_PROFILE_SUCCESS } from 'constants/userConstants';
-import config from '../../config';
+import { getProfile, getServerProfile } from '@/components/actions/userActions';
+import {
+  USER_GET_PROFILE_REQUEST,
+  USER_GET_PROFILE_SUCCESS,
+} from 'constants/userConstants';
+import { wrapper } from '@/components/store/store';
+
+Profile.getInitialProps = wrapper.getInitialPageProps(
+  ({ getState, dispatch }) =>
+    async ({ req }) => {
+      const { user } = getState();
+      if (user.user?.data == null && !process.browser) {
+        dispatch({ type: USER_GET_PROFILE_REQUEST });
+
+        const data = await getServerProfile(req);
+
+        dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: data });
+      } else if (user.user?.data == null) {
+        dispatch(getProfile());
+      } else {
+        console.log('sudah ada data');
+      }
+    }
+);
 
 export default function Profile(props) {
-  const dispatch = useDispatch();
   let user = useSelector((state) => state.user);
 
   const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terjadi'];
@@ -34,11 +53,12 @@ export default function Profile(props) {
   // }
 
   // Ambil dari client side
-  useEffect(() => {
-    if (user.user?.data == null) {
-      dispatch(getProfile());
-    }
-  }, []);
+  // useEffect(() => {
+  //   console.log('user', user);
+  //   if (user.user?.data == null) {
+  //     dispatch(getProfile());
+  //   }
+  // }, []);
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
       <div className="flex items-center  justify-center w-full">
