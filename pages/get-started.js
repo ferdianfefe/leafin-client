@@ -3,7 +3,10 @@ import Image from "next/image";
 import Button from "../components/Button";
 
 export default function question() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState([""]);
+  const answersArray = [];
+
   const questions = [
     {
       question: "Lorem ipsum dolor sit amet?",
@@ -41,10 +44,8 @@ export default function question() {
     },
   ];
 
-  const answers = [];
-
   return (
-    <div className="container mx-auto h-[100vh] p-5 flex flex-wrap justify-center">
+    <div className="container mx-auto h-[100vh] w-[100vw] p-5 flex flex-wrap justify-center">
       <div className="flex flex-col justify-between items-center">
         <div className="top">
           <h1 className="font-bold text-center text-2xl px-10 mb-10">
@@ -67,26 +68,28 @@ export default function question() {
             </div>
           )}
           {step >= 1 && step <= questions.length && (
-            <div>
+            <div className="w-[100%]">
               <h5 className="text-[#FF8900]">
                 <br />
                 Question {step}/{questions.length}
               </h5>
-              <h5 className="mt-5 text-center">
-                {questions[step - 1].question}
-              </h5>
+              <h5 className="mt-5">{questions[step - 1].question}</h5>
               <div className="answers">
                 {questions[step - 1].options.map((option, index) => (
                   <Button
                     key={index}
                     className={`mt-5 border ${
-                      answers[step - 1] == option.text
+                      answers.length && answers[step - 1] == option.text
                         ? " bg-primary text-white"
                         : "border-primary text-primary"
                     } font-bold`}
                     onClick={() => {
-                      answers[step - 1] = option.text;
-                      console.log(answers[step - 1] == option.text);
+                      setAnswers([
+                        ...answers.slice(0, step - 1),
+                        option.text,
+                        ...answers.slice(step),
+                      ]);
+                      console.log(answers);
                     }}
                   >
                     {option.text}
@@ -95,12 +98,12 @@ export default function question() {
               </div>
             </div>
           )}
-          {step === questions.length && (
+          {step === questions.length + 1 && (
             <div>
               <div className="w-[315px] h-[315px] relative mx-auto">
                 <Image
                   loading="lazy"
-                  src="/assets/getStartedImage.svg"
+                  src="/assets/getStartedCompletedImg.svg"
                   alt="get-started Image"
                   layout="fill"
                   objectFit="contain"
@@ -123,12 +126,15 @@ export default function question() {
         {step >= 1 && step <= questions.length && (
           <Button
             className={"mt-5 border bg-primary text-white font-bold"}
-            onClick={() => setStep(step + 1)}
+            onClick={() => {
+              setStep(step + 1);
+              console.log(answers);
+            }}
           >
             Next
           </Button>
         )}
-        {step === questions.length && (
+        {step === questions.length + 1 && (
           <div>
             <Button
               className={"mt-5 border bg-primary text-white font-bold"}
