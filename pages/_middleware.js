@@ -5,14 +5,7 @@ export async function middleware(req) {
   const res = NextResponse.next();
   const url = req.nextUrl.pathname;
 
-  if (
-    url.includes('/assets/') ||
-    url.includes('.svg') ||
-    url.includes('.png') ||
-    url.includes('.ico') ||
-    url.includes('.js') ||
-    url.includes('.json')
-  ) {
+  if (url.includes('/assets') || url.includes('.')) {
     return res;
   }
   try {
