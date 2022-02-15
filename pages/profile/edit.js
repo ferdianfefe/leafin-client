@@ -66,7 +66,7 @@ export default function Edit(props) {
     dispatch(updateProfile(fd))
       .then((data) => {
         console.log("berhasil update data");
-        router.push("profile");
+        router.push("/profile");
       })
       .catch((error) => {
         console.log(error);
