@@ -1,10 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/router';
 
-function Plant() {
+export default function Detail() {
+  const router = useRouter();
+  const { plantName } = router.query;
+
   const plant = {
-    name: 'Bougainvillea',
+    name: plantName,
     data: [
       {
         name: 'ph level',
@@ -145,5 +148,3 @@ function Plant() {
     </div>
   );
 }
-
-export default Plant;
