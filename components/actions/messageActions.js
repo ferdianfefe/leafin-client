@@ -13,14 +13,14 @@ import config from "../../config";
 const sendMessage = (message) => async (dispatch) => {
   try {
     dispatch({ type: MESSAGE_SEND_REQUEST });
-    const { data } = axios.post(
+    const { data } = await axios.post(
       `${config.apiURL}/message`,
       { message },
       {
         withCredentials: true,
       }
     );
-    dispatch({ type: MESSAGE_SEND_SUCCESS, payload: data });
+    dispatch({ type: MESSAGE_SEND_SUCCESS, payload: data.data });
     return Promise.resolve(data);
   } catch (error) {
     dispatch({
@@ -38,8 +38,8 @@ const getUserMessages = (page, limit) => async (dispatch) => {
       params: { page, limit },
       withCredentials: true,
     });
-    dispatch({ type: MESSAGE_GET_SUCCESS, payload: data });
-    return Promise.resolve(data);
+    dispatch({ type: MESSAGE_GET_SUCCESS, payload: data.data });
+    return Promise.resolve(data.data);
   } catch (error) {
     dispatch({
       type: MESSAGE_GET_FAILURE,

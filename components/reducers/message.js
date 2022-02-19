@@ -29,7 +29,6 @@ const messageReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         error: null,
-        messages: payload,
       };
     case MESSAGE_SEND_FAILURE:
       return {
