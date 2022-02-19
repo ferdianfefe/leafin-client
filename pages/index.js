@@ -2,7 +2,44 @@ import Navbar from '@/components/Navbar';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import {
+  getUserPlant,
+  getServerUserPlant,
+} from '@/components/actions/userPlantActions';
+import {
+  USER_GET_USERPLANT_REQUEST,
+  USER_GET_USERPLANT_SUCCESS,
+} from 'constants/userConstants';
+import { wrapper } from '@/components/store/store';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+
+Index.getInitialProps = wrapper.getInitialPageProps(
+  ({ getState, dispatch }) =>
+    async ({ req }) => {
+      const { userPlant } = getState();
+      if (userPlant.plants == null && !process.browser) {
+        dispatch({ type: USER_GET_USERPLANT_REQUEST });
+
+        const data = await getServerUserPlant(req);
+
+        dispatch({ type: USER_GET_USERPLANT_SUCCESS, payload: data });
+      } else if (userPlant.plants == null) {
+        dispatch(getUserPlant());
+      } else {
+        console.log('sudah ada data');
+      }
+    }
+);
+
 export default function Index() {
+  let reduxPlant = useSelector((state) => state.userPlant);
+  const [plant, setPlant] = useState([]);
+
+  useEffect(() => {
+    setPlant(reduxPlant?.plants?.data?.plants || []);
+  }, [setPlant, reduxPlant?.plants?.data?.plants]);
+
   function getWeekDays(locale) {
     let baseDate = new Date();
     let weekDays = [];
@@ -20,20 +57,20 @@ export default function Index() {
 
   const date = getWeekDays('id-ID');
 
-  const plantProgress = [
-    {
-      name: 'Orchidaceae',
-      score: '95%',
-      img: '/assets/orchidaceae.png',
-      href: 'activities/orchidaceae',
-    },
-    {
-      name: 'Jasminum',
-      score: '95%',
-      img: '/assets/jasminum.png',
-      href: 'activities/jasminum',
-    },
-  ];
+  // const plantProgress = [
+  //   {
+  //     name: 'Orchidaceae',
+  //     score: '95%',
+  //     img: '/assets/orchidaceae.png',
+  //     href: 'activities/orchidaceae',
+  //   },
+  //   {
+  //     name: 'Jasminum',
+  //     score: '95%',
+  //     img: '/assets/jasminum.png',
+  //     href: 'activities/jasminum',
+  //   },
+  // ];
   return (
     <>
       <div className="bg-[#CFFFD9] w-full h-72"></div>
@@ -82,24 +119,24 @@ export default function Index() {
           <div className="font-bold mt-10 w-full">
             <label className="text-left">Your Plant Progress</label>
             <div className="flex mt-5 justify-between flex-wrap gap-y-3">
-              {plantProgress.map(({ name, score, img, href }, i) => {
+              {plant.map(({ name, _id, plantType }, i) => {
                 return (
-                  <Link key={i} href={href}>
+                  <Link key={i} href={'activities/' + _id}>
                     <a className="bg-white w-[48%] py-5 rounded-xl flex flex-col items-center justify-center">
                       <div className="rounded-full w-28 h-28 relative overflow-hidden">
                         <Image
-                          src={img}
+                          src={plantType.pictureFileId}
                           objectFit="cover"
                           layout="fill"
                           alt="profile picture"
                           loading="lazy"
                         ></Image>
                       </div>
-                      <p className="text-xs font-normal mt-3 text-[#9FCDA8]">
+                      {/* <p className="text-xs font-normal mt-3 text-[#9FCDA8]">
                         Overal Score{' '}
                         <strong className="text-[#1F8734]">{score}</strong>
-                      </p>
-                      <p className="mt-2">{name}</p>
+                      </p> */}
+                      <p className="mt-5">{name}</p>
                     </a>
                   </Link>
                 );

@@ -1,44 +1,38 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import config from '../../config';
+import Log from '@/components/activities/plant/Log';
+import Error from 'next/error';
 
-export default function Detail() {
-  const router = useRouter();
-  const { plantName } = router.query;
+export async function getServerSideProps({ req, query }) {
+  const res = await fetch(`${config.apiURL}/log/` + query.plantName, {
+    method: 'GET',
+    headers: {
+      cookie: `refreshToken=${req?.cookies?.refreshToken}; accessToken=${req?.cookies?.accessToken};`,
+    },
+  });
 
+  const errorCode = res.ok ? false : res.status;
+  const data = await res.json();
+
+  return {
+    props: {
+      data,
+      errorCode,
+    },
+  };
+}
+
+export default function Detail(props) {
+  if (props.errorCode) {
+    return <Error statusCode={props.errorCode} />;
+  }
+  const data = props.data.data.userPlant;
+  console.log(data);
   const plant = {
-    name: plantName,
-    data: [
-      {
-        name: 'ph level',
-        data: '8',
-        svg: '/assets/ph.svg',
-        color: 'FFC061',
-        secColor: 'FFF0D9',
-      },
-      {
-        name: 'water level',
-        data: '60%',
-        svg: '/assets/water.svg',
-        color: '61B4FF',
-        secColor: 'C7E4FF',
-      },
-      {
-        name: 'fertilizer',
-        data: '52%',
-        svg: '/assets/fertilizer.svg',
-        color: '49AD4D',
-        secColor: 'C6EEC8',
-      },
-      {
-        name: 'soil',
-        data: '37%',
-        svg: '/assets/soil.svg',
-        color: '884D00',
-        secColor: 'FFEDD4',
-      },
-    ],
-    image: '/assets/bougainvillea.png',
+    name: data.plantType.name,
+    userPlantName: data.name,
+    image: data.plantType.pictureFileId,
   };
 
   function getWeekDays(locale) {
@@ -80,7 +74,9 @@ export default function Detail() {
         <Image src={plant.image} layout="fill" alt={plant.name + ' image'} />
       </div>
       <div className="bg-white mt-10 flex flex-wrap justify-center pb-3 border w-full h-full rounded-xl">
-        <p className="mt-2 font-bold mb-2">{plant.name}</p>
+        <p className="mt-2 font-bold w-full flex justify-center mb-2">
+          {plant.userPlantName}
+        </p>
         <div className="flex justify-between items-center px-1">
           {date.map(({ name, date, today }, i) => {
             return (
@@ -108,42 +104,23 @@ export default function Detail() {
         </div>
       </div>
       <div className="flex flex-wrap gap-2 justify-center w-full items-center mt-5">
-        {plant.data.map(({ name, data, svg, color, secColor }, i) => {
-          return (
-            <div
-              key={i}
-              className="flex  justify-center items-center w-full border-2 px-2 h-12 rounded-lg"
-            >
-              <div className="flex w-[33%] text-sm font-semibold items-center">
-                <div className="w-6 h-6 mr-2 relative">
-                  <Image src={svg} layout="fill" alt="ph" />
-                </div>
-                {name}
-              </div>
-              <div className="w-[57%] ml-2">
-                <div
-                  style={{
-                    backgroundColor: `#${secColor}`,
-                  }}
-                  className={`overflow-hidden h-2 text-xs flex rounded `}
-                >
-                  <div
-                    style={{
-                      width: data.includes('%')
-                        ? data
-                        : (data / 14) * 100 + '%',
-                      backgroundColor: `#${color}`,
-                    }}
-                    className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center`}
-                  ></div>
-                </div>
-              </div>
-              <p className="w-[10%] flex items-center justify-end text-xs font-semibold">
-                {data}
-              </p>
+        <Log props={props} />
+      </div>
+      <div className="mt-20 mb-10 w-full">
+        <h1 className="font-bold mb-2">Need Help?</h1>
+        <Link href="/chatbot">
+          <a className="w-full bg-[#1F8734] gap-2 rounded-xl py-3 px-2 flex justify-center items-center">
+            <div className="w-6 h-6 relative">
+              <Image
+                src="/assets/chat.svg"
+                layout="fill"
+                objectFit="contain"
+                alt="chat logo"
+              />
             </div>
-          );
-        })}
+            <p className="text-white font-semibold">Chat Admin</p>
+          </a>
+        </Link>
       </div>
     </div>
   );

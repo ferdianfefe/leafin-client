@@ -19,13 +19,14 @@ export default function Chatbot() {
   useEffect(() => {
     /* Initiate bot response */
     // dispatch(sendMessage("")).then(() => {
-    dispatch(getUserMessages(page, limit)).then((data) => {
-      console.log(data);
-      if (data.docs.length > 0) {
-        setAccMessages([...accMessages, ...data.docs]);
-        setPage(page + 1);
-      }
-    });
+    // dispatch(getUserMessages(page, limit)).then((data) => {
+    //   console.log(data);
+    //   if (data.docs.length > 0) {
+    //     setAccMessages([...data.docs.reverse(), ...accMessages]);
+    //     setPage(page + 1);
+    //   }
+    //   console.log(accMessages);
+    // });
     // });
   }, []);
 
@@ -33,7 +34,7 @@ export default function Chatbot() {
     onEnter: ({ unobserve }) => {
       dispatch(getUserMessages(page, limit)).then((data) => {
         if (data.docs.length > 0) {
-          setAccMessages([...accMessages, ...data.docs]);
+          setAccMessages([...data.docs.reverse(), ...accMessages]);
           setPage(page + 1);
         }
         if (!data.hasNextPage) unobserve();
@@ -100,6 +101,9 @@ export default function Chatbot() {
         </div>
       </div>
       <main className="flex-1 overflow-y-auto px-5">
+        <div ref={observe} className="observer">
+          {inView && <h1></h1>}
+        </div>
         {accMessages &&
           accMessages.map((message, index) => (
             <div key={index} className="">
@@ -112,9 +116,7 @@ export default function Chatbot() {
                   </p>
                 </div>
               ) : null}
-              <div ref={observe} className="observer">
-                {inView && <h1></h1>}
-              </div>
+
               {message.isSenderBot ? (
                 <div className="flex my-7">
                   <div className="rounded-full w-12 h-12 relative">
@@ -127,7 +129,9 @@ export default function Chatbot() {
                     ></Image>
                   </div>
                   <div className="flex-1 py-3 px-7 ml-4 rounded-full bg-[#EBEBEB] ">
-                    <p className="text-[#7A7A7A] text-sm">{message.message}</p>
+                    <p className="text-[#7A7A7A] break-all text-sm">
+                      {message.message}
+                    </p>
                   </div>
                   <div className="flex-none w-auto ml-2 flex items-center">
                     <p className="text-sm text-[#ABABAB]">
@@ -142,8 +146,10 @@ export default function Chatbot() {
                       <Moment format="hh:mm">{message.createdAt}</Moment>
                     </p>
                   </div>
-                  <div className="flex-1 py-3 px-7 ml-4 rounded-full bg-primary ">
-                    <p className="text-white text-sm">{message.message}</p>
+                  <div className="flex-1 py-3 px-7 ml-4 flex-none rounded-full bg-primary ">
+                    <p className="text-white text-sm break-all">
+                      {message.message}
+                    </p>
                   </div>
                 </div>
               )}
@@ -151,7 +157,7 @@ export default function Chatbot() {
           ))}
       </main>
       <form
-        className="flex-none flex p-5 shadow-lg"
+        className="flex-none flex p-5 shadow-md"
         onSubmit={sendMessageHandler}
       >
         <input
