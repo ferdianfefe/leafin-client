@@ -1,18 +1,23 @@
-import Navbar from '@/components/Navbar';
-import Image from 'next/image';
-import Link from 'next/link';
+import Navbar from "@/components/Navbar";
+import Image from "next/image";
+import Link from "next/link";
 
 import {
   getUserPlant,
   getServerUserPlant,
-} from '@/components/actions/userPlantActions';
+} from "@/components/actions/userPlantActions";
+import { getProfile, getServerProfile } from "@/components/actions/userActions";
 import {
   USER_GET_USERPLANT_REQUEST,
   USER_GET_USERPLANT_SUCCESS,
-} from 'constants/userConstants';
-import { wrapper } from '@/components/store/store';
-import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+} from "constants/userConstants";
+import {
+  USER_GET_PROFILE_REQUEST,
+  USER_GET_PROFILE_SUCCESS,
+} from "constants/userConstants";
+import { wrapper } from "@/components/store/store";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 Index.getInitialProps = wrapper.getInitialPageProps(
   ({ getState, dispatch }) =>
@@ -27,13 +32,49 @@ Index.getInitialProps = wrapper.getInitialPageProps(
       } else if (userPlant.plants == null) {
         dispatch(getUserPlant());
       } else {
+        console.log("sudah ada data");
+      }
+
+      /* Get profile */
+      const { user } = getState();
+      if (user.user?.data == null && !process.browser) {
+        dispatch({ type: USER_GET_PROFILE_REQUEST });
+
+        const data = await getServerProfile(req);
+
+        dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: data });
+      } else if (user.user?.data == null) {
+        dispatch(getProfile());
+      } else {
+        console.log("sudah ada data");
+      }
+    }
+);
+
+/* 
+Profile.getInitialProps = wrapper.getInitialPageProps(
+  ({ getState, dispatch }) =>
+    async ({ req }) => {
+      const { user } = getState();
+      if (user.user?.data == null && !process.browser) {
+        dispatch({ type: USER_GET_PROFILE_REQUEST });
+
+        const data = await getServerProfile(req);
+
+        dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: data });
+      } else if (user.user?.data == null) {
+        dispatch(getProfile());
+      } else {
         console.log('sudah ada data');
       }
     }
 );
 
-export default function Index() {
+*/
+
+export default function Index(props) {
   let reduxPlant = useSelector((state) => state.userPlant);
+  let user = useSelector((state) => state.user);
   const [plant, setPlant] = useState([]);
 
   useEffect(() => {
@@ -46,7 +87,7 @@ export default function Index() {
     for (let i = 0; i < 7; i++) {
       const today = i == 0 ? true : false;
       weekDays.push({
-        name: baseDate.toLocaleDateString(locale, { weekday: 'narrow' }),
+        name: baseDate.toLocaleDateString(locale, { weekday: "narrow" }),
         date: baseDate.getDate(),
         today,
       });
@@ -55,7 +96,7 @@ export default function Index() {
     return weekDays;
   }
 
-  const date = getWeekDays('id-ID');
+  const date = getWeekDays("id-ID");
 
   // const plantProgress = [
   //   {
@@ -73,7 +114,45 @@ export default function Index() {
   // ];
   return (
     <>
-      <div className="bg-[#CFFFD9] w-full h-72"></div>
+      <div className="bg-[#CFFFD9] w-full h-72">
+        <nav className="flex flex-between">
+          <div className="mt-10 px-5 flex flex-1 items-center">
+            <div className="w-8 h-8 relative mr-3">
+              <Image
+                src={"/assets/leafinLogo.svg"}
+                layout="fill"
+                alt="leafin"
+              />
+            </div>
+            <h1 className="text-2xl font-extrabold text-primary">Leafin</h1>
+          </div>
+          <div className="mt-10 px-5 flex flex-1 flex-row-reverse items-center">
+            {props?.user?.data?.pictureFileURL ||
+            user?.user?.data?.pictureFileURL ? (
+              <div className="rounded-lg w-8 h-8 relative overflow-hidden">
+                <Image
+                  src={
+                    props?.user?.data?.pictureFileURL ||
+                    user?.user?.data?.pictureFileURL
+                  }
+                  objectFit="cover"
+                  layout="fill"
+                  alt="profile picture"
+                  loading="lazy"
+                ></Image>
+              </div>
+            ) : (
+              <div className="rounded-lg w-20 h-20 bg-[#C4C4C4]"></div>
+            )}
+            <div className="w-6 h-6 relative mr-3">
+              <Image src={"/assets/gearIcon.svg"} layout="fill" alt="gear" />
+            </div>
+            <div className="w-6 h-6 relative mr-3">
+              <Image src={"/assets/bellIcon.svg"} layout="fill" alt="bell" />
+            </div>
+          </div>
+        </nav>
+      </div>
       <div className=" bg-[#E5E5E5]/30 min-h-screen">
         <div className="container mx-auto px-5 flex flex-col">
           <div className="bg-white z-10 pb-3 -mt-12 border w-full h-full rounded-xl">
@@ -83,7 +162,7 @@ export default function Index() {
                   <div
                     key={i}
                     className={`w-full font-prompt flex-wrap flex justify-center text-center pt-2 pb-1 ${
-                      today ? 'text-[#1A9F35]' : 'text-[#D2E7D6]'
+                      today ? "text-[#1A9F35]" : "text-[#D2E7D6]"
                     }`}
                   >
                     <span className="text-xs w-full font-semibold uppercase">
@@ -107,7 +186,7 @@ export default function Index() {
             <a className="mt-5 font-semibold bg-white py-3 border w-full rounded-xl flex justify-center items-center">
               <div className="w-6 h-6 relative mr-3">
                 <Image
-                  src={'/assets/barcode-scanner.svg'}
+                  src={"/assets/barcode-scanner.svg"}
                   layout="fill"
                   alt="barcode"
                 />
@@ -115,13 +194,25 @@ export default function Index() {
               Scan Environment
             </a>
           </Link>
+          <Link href="/ar">
+            <a className="mt-5 font-semibold bg-white py-3 border w-full rounded-xl flex justify-center items-center">
+              <div className="w-6 h-6 relative mr-3">
+                <Image
+                  src={"/assets/plusIcon.svg"}
+                  layout="fill"
+                  alt="barcode"
+                />
+              </div>
+              Add Device
+            </a>
+          </Link>
 
           <div className="font-bold mt-10 w-full">
-            <label className="text-left">Your Plant Progress</label>
+            <label className="text-left">Your Devices</label>
             <div className="flex mt-5 justify-between flex-wrap gap-y-3">
               {plant.map(({ name, _id, plantType }, i) => {
                 return (
-                  <Link key={i} href={'activities/' + _id}>
+                  <Link key={i} href={"activities/" + _id}>
                     <a className="bg-white w-[48%] py-5 rounded-xl flex flex-col items-center justify-center">
                       <div className="rounded-full w-28 h-28 relative overflow-hidden">
                         <Image

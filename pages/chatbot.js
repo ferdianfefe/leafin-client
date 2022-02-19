@@ -14,7 +14,7 @@ export default function Chatbot() {
   const [messageInput, setMessageInput] = useState("");
   const [page, setPage] = useState(1);
   const [accMessages, setAccMessages] = useState([]);
-  const limit = 5;
+  const limit = 7;
 
   useEffect(() => {
     /* Initiate bot response */
@@ -62,9 +62,9 @@ export default function Chatbot() {
       return;
     }
     dispatch(sendMessage(messageInput)).then((data) => {
-      dispatch(getUserMessages(page, 5)).then((data) => {
+      dispatch(getUserMessages(page, limit)).then((data) => {
         if (data.docs.length > 0) {
-          setAccMessages([...accMessages, ...data.docs]);
+          setAccMessages([...data.docs.reverse(), ...accMessages]);
           setPage(page + 1);
         }
         setMessageInput("");

@@ -2,19 +2,19 @@ import {
   getProfile,
   getServerProfile,
   updateProfile,
-} from '@/components/actions/userActions';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
-import Button from '@/components/Button';
-import Link from 'next/link';
-import Image from 'next/image';
-import { wrapper } from '@/components/store/store';
+} from "@/components/actions/userActions";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import Button from "@/components/Button";
+import Link from "next/link";
+import Image from "next/image";
+import { wrapper } from "@/components/store/store";
 import {
   USER_GET_PROFILE_REQUEST,
   USER_GET_PROFILE_SUCCESS,
-} from 'constants/userConstants';
+} from "constants/userConstants";
 
 Edit.getInitialProps = wrapper.getInitialPageProps(
   ({ getState, dispatch }) =>
@@ -29,7 +29,7 @@ Edit.getInitialProps = wrapper.getInitialPageProps(
       } else if (user.user?.data == null) {
         dispatch(getProfile());
       } else {
-        console.log('sudah ada data');
+        console.log("sudah ada data");
       }
     }
 );
@@ -39,11 +39,11 @@ export default function Edit() {
   const dispatch = useDispatch();
 
   let user = useSelector((state) => state.user);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [currentFile, setCurrentFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [imageInfos, setImageInfos] = useState([]);
 
   const selectFile = (e) => {
@@ -59,11 +59,9 @@ export default function Edit() {
   } = useForm();
 
   useEffect(() => {
-    setValue('email', user.user?.data?.email);
-    setValue('name', user.user?.data?.name);
+    setValue("email", user.user?.data?.email);
+    setValue("name", user.user?.data?.name);
   }, [setValue, user.user?.data?.email, user.user?.data?.name]);
-
-  const pickImageBtnRef = null;
 
   const pickPicture = (e) => {
     e.preventDefault();
@@ -73,27 +71,25 @@ export default function Edit() {
   };
 
   const editHandler = async ({ name, email, password }) => {
-    console.log('a');
+    console.log("a");
     let fd = new FormData();
     if (currentFile) {
-      fd.append('picture', currentFile);
+      fd.append("picture", currentFile);
     }
     if (name) {
-      fd.append('name', name);
+      fd.append("name", name);
     }
     if (email) {
-      fd.append('email', email);
+      fd.append("email", email);
     }
     if (password) {
-      fd.append('password', password);
+      fd.append("password", password);
     }
     dispatch(updateProfile(fd))
       .then((data) => {
-        console.log('berhasil update data');
-        router.push('../profile');
+        router.push("../profile");
       })
       .catch((error) => {
-        console.log(error);
         setError(error);
       });
   };
@@ -151,13 +147,13 @@ export default function Edit() {
         <label htmlFor="name" className="font-semibold w-full">
           Name
           <input
-            {...register('name', {
+            {...register("name", {
               required: true,
             })}
             placeholder="Name"
             type="text"
             className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
-              errors?.name?.type === 'required' && 'border-red-500'
+              errors?.name?.type === "required" && "border-red-500"
             }`}
           ></input>
         </label>
@@ -165,7 +161,7 @@ export default function Edit() {
         <label htmlFor="email" className="mt-5 font-semibold w-full">
           Email
           <input
-            {...register('email', {
+            {...register("email", {
               required: true,
               pattern:
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -173,8 +169,8 @@ export default function Edit() {
             placeholder="Email"
             type="text"
             className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
-              errors?.email?.type === 'required' && 'border-red-500'
-            } ${errors?.email?.type === 'pattern' && 'border-red-500'}`}
+              errors?.email?.type === "required" && "border-red-500"
+            } ${errors?.email?.type === "pattern" && "border-red-500"}`}
           ></input>
         </label>
 
@@ -182,10 +178,10 @@ export default function Edit() {
           Password
           <input
             autoComplete="off"
-            {...register('password', { required: false })}
+            {...register("password", { required: false })}
             placeholder="Password"
             className={`mt-2 px-4 py-4 rounded-xl border border-primary w-full ${
-              errors?.password?.type === 'required' && 'border-red-500'
+              errors?.password?.type === "required" && "border-red-500"
             }`}
             type="password"
           ></input>
@@ -205,14 +201,14 @@ export default function Edit() {
 
         <Button
           type="submit"
-          className={'mt-5 bg-primary text-white font-bold'}
+          className={"mt-5 bg-primary text-white font-bold"}
         >
           Save
         </Button>
       </form>
       <Button
         href={`/profile`}
-        className={'mt-5 mb-20 border border-primary text-primary font-bold'}
+        className={"mt-5 mb-20 border border-primary text-primary font-bold"}
       >
         Cancel
       </Button>
