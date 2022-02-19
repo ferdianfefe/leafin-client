@@ -60,7 +60,8 @@ export default function Edit() {
 
   useEffect(() => {
     setValue('email', user.user?.data?.email);
-  }, [setValue, user.user?.data?.email]);
+    setValue('name', user.user?.data?.name);
+  }, [setValue, user.user?.data?.email, user.user?.data?.name]);
 
   const pickImageBtnRef = null;
 
@@ -72,6 +73,7 @@ export default function Edit() {
   };
 
   const editHandler = async ({ name, email, password }) => {
+    console.log('a');
     let fd = new FormData();
     if (currentFile) {
       fd.append('picture', currentFile);
@@ -88,7 +90,7 @@ export default function Edit() {
     dispatch(updateProfile(fd))
       .then((data) => {
         console.log('berhasil update data');
-        router.push('profile');
+        router.push('../profile');
       })
       .catch((error) => {
         console.log(error);
@@ -119,7 +121,7 @@ export default function Edit() {
         {previewImage || user?.user?.data?.pictureFileURL ? (
           <div className="rounded-full relative w-24 h-24 overflow-hidden">
             <Image
-              src={previewImage}
+              src={previewImage || user?.user?.data?.pictureFileURL}
               alt="preview"
               layout="fill"
               objectFit="contain"
@@ -155,7 +157,7 @@ export default function Edit() {
             placeholder="Name"
             type="text"
             className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
-              errors?.email?.type === 'required' && 'border-red-500'
+              errors?.name?.type === 'required' && 'border-red-500'
             }`}
           ></input>
         </label>
@@ -179,6 +181,7 @@ export default function Edit() {
         <label htmlFor="password" className="mt-5 font-semibold w-full">
           Password
           <input
+            autoComplete="off"
             {...register('password', { required: false })}
             placeholder="Password"
             className={`mt-2 px-4 py-4 rounded-xl border border-primary w-full ${
