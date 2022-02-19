@@ -5,13 +5,13 @@ const Log = ({ props }) => {
 
   const plant = {
     data: [
-      {
-        name: 'ph level',
-        data: data.phLevel.toString(),
-        svg: '/assets/ph.svg',
-        color: 'FFC061',
-        secColor: 'FFF0D9',
-      },
+      // {
+      //   name: 'ph level',
+      //   data: data.phLevel.toString(),
+      //   svg: '/assets/ph.svg',
+      //   color: 'FFC061',
+      //   secColor: 'FFF0D9',
+      // },
       {
         name: 'water level',
         data: data.waterLevel + '%',
@@ -19,20 +19,20 @@ const Log = ({ props }) => {
         color: '61B4FF',
         secColor: 'C7E4FF',
       },
-      {
-        name: 'fertilizer',
-        data: data.fertilizer + '%',
-        svg: '/assets/fertilizer.svg',
-        color: '49AD4D',
-        secColor: 'C6EEC8',
-      },
-      {
-        name: 'soil',
-        data: data.soil + '%',
-        svg: '/assets/soil.svg',
-        color: '884D00',
-        secColor: 'FFEDD4',
-      },
+      // {
+      //   name: 'fertilizer',
+      //   data: data.fertilizer + '%',
+      //   svg: '/assets/fertilizer.svg',
+      //   color: '49AD4D',
+      //   secColor: 'C6EEC8',
+      // },
+      // {
+      //   name: 'soil',
+      //   data: data.soil + '%',
+      //   svg: '/assets/soil.svg',
+      //   color: '884D00',
+      //   secColor: 'FFEDD4',
+      // },
     ],
   };
   return (
