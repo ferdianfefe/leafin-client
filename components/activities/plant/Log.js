@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 const Log = ({ props }) => {
   const data = props.data.data;
+  console.log(data);
 
   const plant = {
     data: [
@@ -13,10 +14,24 @@ const Log = ({ props }) => {
       //   secColor: 'FFF0D9',
       // },
       {
+        name: 'sunlight',
+        data: data.lightIntensity + '%',
+        svg: '/assets/sun.svg',
+        color: 'FFC061',
+        secColor: 'FFF0D9',
+      },
+      {
         name: 'water level',
         data: data.waterLevel + '%',
         svg: '/assets/water.svg',
         color: '61B4FF',
+        secColor: 'C7E4FF',
+      },
+      {
+        name: 'humidity',
+        data: data.humidity + '%',
+        svg: '/assets/humidity.svg',
+        color: '0A7BE0',
         secColor: 'C7E4FF',
       },
       // {

@@ -1,17 +1,17 @@
-import Navbar from "../../components/Navbar";
-import { Pagination } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+import Navbar from '../../components/Navbar';
+import { Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 export default function Activities() {
   const test = [
     {
-      text1: "P",
-      text2: "HALO",
+      text1: 'P',
+      text2: 'HALO',
     },
     {
-      text1: "P",
-      text2: "HALO",
+      text1: 'P',
+      text2: 'HALO',
     },
   ];
   return (
@@ -43,6 +43,7 @@ export default function Activities() {
           })}
         </Swiper>
       </div>
+      <Navbar active={'activities'}></Navbar>
     </div>
   );
 }

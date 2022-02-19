@@ -74,7 +74,9 @@ export default function Detail(props) {
         <Image src={plant.image} layout="fill" alt={plant.name + ' image'} />
       </div>
       <div className="bg-white mt-10 flex flex-wrap justify-center pb-3 border w-full h-full rounded-xl">
-        <p className="mt-2 font-bold mb-2">{plant.userPlantName}</p>
+        <p className="mt-2 font-bold w-full flex justify-center mb-2">
+          {plant.userPlantName}
+        </p>
         <div className="flex justify-between items-center px-1">
           {date.map(({ name, date, today }, i) => {
             return (
@@ -103,6 +105,22 @@ export default function Detail(props) {
       </div>
       <div className="flex flex-wrap gap-2 justify-center w-full items-center mt-5">
         <Log props={props} />
+      </div>
+      <div className="mt-20 mb-10 w-full">
+        <h1 className="font-bold mb-2">Need Help?</h1>
+        <Link href="/chatbot">
+          <a className="w-full bg-[#1F8734] gap-2 rounded-xl py-3 px-2 flex justify-center items-center">
+            <div className="w-6 h-6 relative">
+              <Image
+                src="/assets/chat.svg"
+                layout="fill"
+                objectFit="contain"
+                alt="chat logo"
+              />
+            </div>
+            <p className="text-white font-semibold">Chat Admin</p>
+          </a>
+        </Link>
       </div>
     </div>
   );
