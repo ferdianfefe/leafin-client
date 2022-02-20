@@ -16,21 +16,23 @@ export default function Add() {
   return (
     <div className="container mx-auto h-[100vh] w-[100vw] p-5 flex flex-wrap justify-center">
       <div className="flex flex-col justify-between items-center w-full">
-        <div className="flex flex-col justify-center items-center w-full px-5">
-          <h1 className="font-bold text-2xl mb-10">Edit Profile</h1>
-          <Link href="/">
-            <a className="absolute left-5 mb-10">
-              <div className="w-5 h-5 relative items-center justify-self-end">
-                <Image
-                  src="/assets/backBtn.svg"
-                  objectFit="contain"
-                  layout="fill"
-                  alt="edit"
-                  priority
-                />
-              </div>
-            </a>
-          </Link>
+        <div className="">
+          <div className="flex flex-col justify-center items-center w-full px-5">
+            <h1 className="font-bold text-2xl mb-10">Edit Profile</h1>
+            <Link href="/">
+              <a className="absolute left-5 mb-10">
+                <div className="w-5 h-5 relative items-center justify-self-end">
+                  <Image
+                    src="/backBtn.svg"
+                    objectFit="contain"
+                    layout="fill"
+                    alt="edit"
+                    priority
+                  />
+                </div>
+              </a>
+            </Link>
+          </div>
           <label htmlFor="device-name" className="font-semibold w-full">
             Device Name
             <input

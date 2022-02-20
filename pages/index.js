@@ -75,11 +75,60 @@ Profile.getInitialProps = wrapper.getInitialPageProps(
 export default function Index(props) {
   let reduxPlant = useSelector((state) => state.userPlant);
   let user = useSelector((state) => state.user);
-  const [plant, setPlant] = useState([]);
+  const [plant, setPlant] = useState([
+    {
+      _id: 1,
+      name: "Plant 1",
+      plantType: {
+        pictureFileURL: "/assets/leafinLogo.svg",
+      },
+    },
+    {
+      _id: 2,
+      name: "Plant 2",
+      plantType: {
+        pictureFileURL: "/assets/leafinLogo.svg",
+      },
+    },
+  ]);
 
-  useEffect(() => {
-    setPlant(reduxPlant?.plants?.data?.plants || []);
-  }, [setPlant, reduxPlant?.plants?.data?.plants]);
+  const [feeds, setFeeds] = useState([
+    {
+      _id: 1,
+      author: "Budi",
+      title: "Hasil Tanam Menggunakan Alat Otomatis dari Leafin",
+      pictureFileURL: "/assets/leafinLogo.svg",
+      likes: 100,
+      views: 200,
+    },
+    {
+      _id: 2,
+      author: "Sarah",
+      title: "Tips Pemula Dalam Menggunakan Pupuk Kompos",
+      pictureFileURL: "/assets/leafinLogo.svg",
+      likes: 100,
+      views: 200,
+    },
+  ]);
+
+  const [items, setItems] = useState([
+    {
+      _id: 1,
+      name: "Pupuk Navos",
+      price: 12.59,
+      pictureFileURL: "/assets/leafinLogo.svg",
+    },
+    {
+      _id: 2,
+      name: "Pupuk ZA",
+      price: 14.0,
+      pictureFileURL: "/assets/leafinLogo.svg",
+    },
+  ]);
+
+  // useEffect(() => {
+  //   setPlant(reduxPlant?.plants?.data?.plants || []);
+  // }, [setPlant, reduxPlant?.plants?.data?.plants]);
 
   function getWeekDays(locale) {
     let baseDate = new Date();
@@ -183,7 +232,7 @@ export default function Index(props) {
             </div>
           </div>
           <Link href="/ar">
-            <a className="mt-5 font-semibold bg-white py-3 border w-full rounded-xl flex justify-center items-center">
+            <a className="mt-3 font-semibold bg-white py-3 border w-full rounded-xl flex justify-center items-center">
               <div className="w-6 h-6 relative mr-3">
                 <Image
                   src={"/assets/barcode-scanner.svg"}
@@ -194,8 +243,8 @@ export default function Index(props) {
               Scan Environment
             </a>
           </Link>
-          <Link href="/ar">
-            <a className="mt-5 font-semibold bg-white py-3 border w-full rounded-xl flex justify-center items-center">
+          <Link href="/device/add">
+            <a className="mt-3 font-semibold bg-white py-3 border w-full rounded-xl flex justify-center items-center">
               <div className="w-6 h-6 relative mr-3">
                 <Image
                   src={"/assets/plusIcon.svg"}
@@ -214,9 +263,9 @@ export default function Index(props) {
                 return (
                   <Link key={i} href={"activities/" + _id}>
                     <a className="bg-white w-[48%] py-5 rounded-xl flex flex-col items-center justify-center">
-                      <div className="rounded-full w-28 h-28 relative overflow-hidden">
+                      <div className="w-28 h-28 relative overflow-hidden">
                         <Image
-                          src={plantType.pictureFileId}
+                          src={plantType.pictureFileURL}
                           objectFit="cover"
                           layout="fill"
                           alt="profile picture"
@@ -228,6 +277,91 @@ export default function Index(props) {
                         <strong className="text-[#1F8734]">{score}</strong>
                       </p> */}
                       <p className="mt-5">{name}</p>
+                    </a>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="font-bold mt-10 w-full">
+            <label className="text-left">Popular</label>
+            <div className="flex flex-col mt-5 justify-between flex-wrap gap-y-3">
+              {feeds.map(
+                ({ author, title, _id, pictureFileURL, likes, views }, i) => {
+                  return (
+                    <Link key={i} href={"activities/" + _id}>
+                      <a className="bg-white py-5 rounded-xl flex flex">
+                        <div className="rounded-full flex-none w-20 h-fit relative overflow-hidden">
+                          <Image
+                            src={pictureFileURL}
+                            objectFit="cover"
+                            layout="fill"
+                            alt="profile picture"
+                            loading="lazy"
+                          ></Image>
+                        </div>
+                        <div className="flex-1">
+                          <p className="mt-5 text-primary">{author}</p>
+                          <p className="mt-1 font-bold">{title}</p>
+
+                          <div className="flex justify-start mt-5">
+                            <div className="flex-1 flex items-center">
+                              <div className="w-6 h-6 relative mr-3">
+                                <Image
+                                  src={"/assets/borderHeartIcon.svg"}
+                                  layout="fill"
+                                  alt="heart"
+                                />
+                              </div>
+                              <p className="text-[#E1E1E1]">{likes}</p>
+                            </div>
+                            <div className="flex-1 flex items-center">
+                              <div className="w-6 h-6 relative mr-3">
+                                <Image
+                                  src={"/assets/borderEyeIcon.svg"}
+                                  layout="fill"
+                                  alt="eye"
+                                />
+                              </div>
+                              <p className="text-[#E1E1E1]">{views}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                    </Link>
+                  );
+                }
+              )}
+            </div>
+          </div>
+
+          <div className="font-bold mt-10 mb-20 w-full">
+            <label className="text-left">Popular Items</label>
+            <div className="flex mt-5 justify-between flex-wrap gap-y-3">
+              {items.map(({ name, _id, price, pictureFileURL }, i) => {
+                return (
+                  <Link key={i} href={"activities/" + _id}>
+                    <a className="bg-white w-[48%] rounded-xl flex flex-col">
+                      <div className="w-full flex justify-center py-3">
+                        <div className="w-28 h-28 relative overflow-hidden">
+                          <Image
+                            src={pictureFileURL}
+                            objectFit="cover"
+                            layout="fill"
+                            alt="profile picture"
+                            loading="lazy"
+                          ></Image>
+                        </div>
+                      </div>
+                      {/* <p className="text-xs font-normal mt-3 text-[#9FCDA8]">
+                        Overal Score{' '}
+                        <strong className="text-[#1F8734]">{score}</strong>
+                      </p> */}
+                      <div className="p-4">
+                        <p className="">{name}</p>
+                        <p className="mt-2">{price} $</p>
+                      </div>
                     </a>
                   </Link>
                 );

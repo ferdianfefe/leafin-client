@@ -77,7 +77,7 @@ export default function Chatbot() {
       <div className="flex-none px-5 flex justify-start py-3 items-center shadow-md">
         <div className="w-auto h-[20px] relative ml-5">
           <Image
-            src="/assets/backBtn.svg"
+            src="/backBtn.svg"
             objectFit="contain"
             layout="fill"
             alt="edit"
@@ -170,7 +170,7 @@ export default function Chatbot() {
         ></input>
         <div className="flex-none w-20px h-auto relative ml-5">
           <Image
-            src="/assets/attachIcon.svg"
+            src="/attachIcon.svg"
             alt="get-started Image"
             layout="fill"
             objectFit="contain"
@@ -179,7 +179,7 @@ export default function Chatbot() {
         </div>
         <button className="flex-none w-20px h-auto relative ml-5" type="submit">
           <Image
-            src="/assets/sendIcon.svg"
+            src="/sendIcon.svg"
             alt="get-started Image"
             layout="fill"
             objectFit="contain"
