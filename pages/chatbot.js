@@ -2,12 +2,17 @@ import {
   sendMessage,
   getUserMessages,
 } from "@/components/actions/messageActions";
-import { useEffect, useState } from "react";
+import { useEffect, useState, createRef } from "react";
 import useInView from "react-cool-inview";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Image from "next/image";
 import Moment from "react-moment";
 import moment from "moment";
+import ScrollToBottom, {
+  scrollToBottom,
+  useScrollToBottom,
+  useScrollToTop,
+} from "react-scroll-to-bottom";
 
 export default function Chatbot() {
   const dispatch = useDispatch();
@@ -15,6 +20,9 @@ export default function Chatbot() {
   const [page, setPage] = useState(1);
   const [accMessages, setAccMessages] = useState([]);
   const limit = 7;
+
+  const scrollToBottom = useScrollToBottom();
+  const scrollToTop = useScrollToTop();
 
   useEffect(() => {
     /* Initiate bot response */
@@ -36,6 +44,7 @@ export default function Chatbot() {
         if (data.docs.length > 0) {
           setAccMessages([...data.docs.reverse(), ...accMessages]);
           setPage(page + 1);
+          scrollToTop();
         }
         if (!data.hasNextPage) unobserve();
       });
@@ -61,14 +70,11 @@ export default function Chatbot() {
     if (messageInput === "") {
       return;
     }
-    dispatch(sendMessage(messageInput)).then((data) => {
-      dispatch(getUserMessages(page, limit)).then((data) => {
-        if (data.docs.length > 0) {
-          setAccMessages([...data.docs.reverse(), ...accMessages]);
-          setPage(page + 1);
-        }
-        setMessageInput("");
-      });
+    dispatch(sendMessage(messageInput)).then(({ data }) => {
+      console.log("sending", data);
+      setAccMessages([...accMessages, ...data]);
+      scrollToBottom();
+      setMessageInput("");
     });
   };
 
@@ -100,7 +106,7 @@ export default function Chatbot() {
           </p>
         </div>
       </div>
-      <main className="flex-1 overflow-y-auto px-5">
+      <ScrollToBottom className="flex-1 overflow-y-auto px-5">
         <div ref={observe} className="observer">
           {inView && <h1></h1>}
         </div>
@@ -155,7 +161,7 @@ export default function Chatbot() {
               )}
             </div>
           ))}
-      </main>
+      </ScrollToBottom>
       <form
         className="flex-none flex p-5 shadow-md"
         onSubmit={sendMessageHandler}
