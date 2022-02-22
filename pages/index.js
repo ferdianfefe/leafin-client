@@ -51,27 +51,6 @@ Index.getInitialProps = wrapper.getInitialPageProps(
     }
 );
 
-/* 
-Profile.getInitialProps = wrapper.getInitialPageProps(
-  ({ getState, dispatch }) =>
-    async ({ req }) => {
-      const { user } = getState();
-      if (user.user?.data == null && !process.browser) {
-        dispatch({ type: USER_GET_PROFILE_REQUEST });
-
-        const data = await getServerProfile(req);
-
-        dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: data });
-      } else if (user.user?.data == null) {
-        dispatch(getProfile());
-      } else {
-        console.log('sudah ada data');
-      }
-    }
-);
-
-*/
-
 export default function Index(props) {
   let reduxPlant = useSelector((state) => state.userPlant);
   let user = useSelector((state) => state.user);

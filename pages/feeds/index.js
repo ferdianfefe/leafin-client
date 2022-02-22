@@ -1,0 +1,79 @@
+import Navbar from "../../components/Navbar";
+import FilterItem from "../../components/FilterItem";
+import Button from "../../components/Button";
+import Link from "next/link";
+import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { useState } from "react";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+export default function Feeds() {
+  const [selectedFilters, setSelectedFilters] = useState([]);
+
+  const filters = ["Pupuk", "Shovel", "Seeds", "Growx Kit"];
+
+  const selectFilter = (filter) => {
+    if (selectedFilters.includes(filter)) {
+      setSelectedFilters(selectedFilters.filter((item) => item !== filter));
+    } else {
+      setSelectedFilters([...selectedFilters, filter]);
+    }
+  };
+
+  return (
+    <div className="container mx-auto p-5 flex flex-wrap justify-center">
+      <div className="flex flex-col justify-center items-center w-full px-5">
+        <h1 className="font-bold text-2xl mb-10">Add Device</h1>
+        <Link href="/">
+          <a className="absolute left-5 mb-10">
+            <div className="w-5 h-5 relative items-center justify-self-end">
+              <Image
+                src="/ArrowLeft.svg"
+                objectFit="contain"
+                layout="fill"
+                alt="edit"
+                priority
+              />
+            </div>
+          </a>
+        </Link>
+        <Link href="/">
+          <a className="absolute right-5 mb-10">
+            <div className="w-5 h-5 relative items-center justify-self-end">
+              <Image
+                src="/paperPenIcon.svg"
+                objectFit="contain"
+                layout="fill"
+                alt="edit"
+                priority
+              />
+            </div>
+          </a>
+        </Link>
+      </div>
+      <div className="mt-10 flex flex-wrap items-center w-full justify-start">
+        <Swiper
+          slidesPerView={3}
+          spaceBetween={5}
+          slidesPerGroup={3}
+          loopFillGroupWithBlank={true}
+          className="mt-5"
+        >
+          {filters.map((filter, i) => {
+            return (
+              <SwiperSlide key={i}>
+                <Button onClick={selectFilter(filter)}>
+                  <FilterItem text={filter} />
+                </Button>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      </div>
+      <Navbar active={"feeds"}></Navbar>
+    </div>
+  );
+}

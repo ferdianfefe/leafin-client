@@ -18,7 +18,7 @@ export default function Add() {
       <div className="flex flex-col justify-between items-center w-full">
         <div className="">
           <div className="flex flex-col justify-center items-center w-full px-5">
-            <h1 className="font-bold text-2xl mb-10">Edit Profile</h1>
+            <h1 className="font-bold text-2xl mb-10">Add Device</h1>
             <Link href="/">
               <a className="absolute left-5 mb-10">
                 <div className="w-5 h-5 relative items-center justify-self-end">
