@@ -28,7 +28,7 @@ export default function Detail(props) {
     return <Error statusCode={props.errorCode} />;
   }
   const data = props.data.data.userPlant;
-  console.log(data);
+  
   const plant = {
     name: data.plantType.name,
     userPlantName: data.name,
