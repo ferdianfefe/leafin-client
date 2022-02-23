@@ -42,14 +42,11 @@ export default function Edit() {
   const [error, setError] = useState("");
   const [currentFile, setCurrentFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
-  const [progress, setProgress] = useState(0);
-  const [message, setMessage] = useState("");
-  const [imageInfos, setImageInfos] = useState([]);
 
-  const selectFile = (e) => {
-    setCurrentFile(e.target.files[0]);
-    setPreviewImage(URL.createObjectURL(e.target.files[0]));
-  };
+  // const selectFile = (e) => {
+  //   setCurrentFile(e.target.files[0]);
+  //   setPreviewImage(URL.createObjectURL(e.target.files[0]));
+  // };
 
   const {
     register,

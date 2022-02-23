@@ -56,7 +56,7 @@ export default function Feeds() {
           <a className="absolute left-5">
             <div className="w-5 h-5 relative items-center justify-self-end">
               <Image
-                src="/ArrowLeft.svg"
+                src="/assets/backBtn.svg"
                 objectFit="contain"
                 layout="fill"
                 alt="edit"
@@ -65,11 +65,11 @@ export default function Feeds() {
             </div>
           </a>
         </Link>
-        <Link href="/">
+        <Link href="/feeds/write">
           <a className="absolute right-5">
             <div className="w-5 h-5 relative items-center justify-self-end">
               <Image
-                src="/paperPenIcon.svg"
+                src="/assets/paperPenIcon.svg"
                 objectFit="contain"
                 layout="fill"
                 alt="edit"
