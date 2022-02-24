@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import user from './user';
-import userPlant from './userplant';
+import userPlant from './userPlant';
 import message from './message';
 
 export default combineReducers({
