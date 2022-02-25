@@ -2,10 +2,14 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { createFeed } from "@/components/actions/feedActions";
 
 import Button from "@/components/Button";
 
 export default function Write() {
+  const dispatch = useDispatch();
+
   const [error, setError] = useState("");
   const [currentFile, setCurrentFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -23,7 +27,22 @@ export default function Write() {
     setPreviewImage(URL.createObjectURL(file));
   };
 
-  const submitHandler = () => {};
+  const submitHandler = ({ title, tags, content }) => {
+    let fd = new FormData();
+    const separatedTags = tags.split(",").map((tag) => tag.trim());
+    fd.append("image", currentFile);
+    fd.append("title", title);
+    fd.append("tags", separatedTags);
+    fd.append("content", content);
+
+    dispatch(createFeed(fd))
+      .then((data) => {
+        router.push("../feeds");
+      })
+      .catch((error) => {
+        setError(error);
+      });
+  };
 
   return (
     <div className="container mx-auto w-[100vw] p-5 flex flex-wrap justify-center">
@@ -80,7 +99,7 @@ export default function Write() {
 
           <div className="w-full mt-2">
             {previewImage ? (
-              <div className="rounded-full relative w-24 h-24 overflow-hidden">
+              <div className="rounded-md relative w-24 h-24 overflow-hidden">
                 <Image
                   src={previewImage}
                   alt="preview"

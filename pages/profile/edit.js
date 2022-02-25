@@ -68,7 +68,6 @@ export default function Edit() {
   };
 
   const editHandler = async ({ name, email, password }) => {
-    console.log("a");
     let fd = new FormData();
     if (currentFile) {
       fd.append("picture", currentFile);
