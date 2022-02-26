@@ -1,5 +1,4 @@
 import Navbar from '../../components/Navbar';
-import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -7,6 +6,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { wrapper } from '@/components/store/store';
 import {
+  USER_GET_ALL_USERPLANT_LOG_REQUEST,
+  USER_GET_ALL_USERPLANT_LOG_SUCCESS,
   USER_GET_PROFILE_REQUEST,
   USER_GET_PROFILE_SUCCESS,
   USER_GET_USERPLANT_REQUEST,
@@ -19,12 +20,16 @@ import {
 } from '@/components/actions/userPlantActions';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import Badge from '@/components/Badge';
+import {
+  getAllPlantsLogs,
+  getServerAllPlantsLogs,
+} from '@/components/actions/logActions';
 
 Activities.getInitialProps = wrapper.getInitialPageProps(
   ({ getState, dispatch }) =>
     async ({ req }) => {
-      const { userPlant } = getState();
+      const { userPlant, log, user } = getState();
+      /* User Plant */
       if (userPlant.plants == null && !process.browser) {
         dispatch({ type: USER_GET_USERPLANT_REQUEST });
 
@@ -33,28 +38,38 @@ Activities.getInitialProps = wrapper.getInitialPageProps(
         dispatch({ type: USER_GET_USERPLANT_SUCCESS, payload: data });
       } else if (userPlant.plants == null) {
         dispatch(getUserPlant());
-      } else {
-        console.log('sudah ada data');
       }
 
-      /* Get profile */
-      const { user } = getState();
-      if (user.user?.data == null && !process.browser) {
-        dispatch({ type: USER_GET_PROFILE_REQUEST });
+      /* Logs */
+      if (log.logs == null && !process.browser) {
+        dispatch({ type: USER_GET_ALL_USERPLANT_LOG_REQUEST });
 
-        const data = await getServerProfile(req);
+        const data = await getServerAllPlantsLogs(req);
 
-        dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: data });
-      } else if (user.user?.data == null) {
-        dispatch(getProfile());
-      } else {
-        console.log('sudah ada data');
+        dispatch({ type: USER_GET_ALL_USERPLANT_LOG_SUCCESS, payload: data });
+      } else if (log.logs == null) {
+        dispatch(getAllPlantsLogs());
       }
     }
 );
 
 export default function Activities() {
   let reduxPlant = useSelector((state) => state.userPlant);
+  let reduxLogs = useSelector((state) => state.log);
+  const [logs, setLogs] = useState([
+    {
+      name: 'Water Level',
+      data: [],
+    },
+    {
+      name: 'Humidity',
+      data: [],
+    },
+    {
+      name: 'Light Intensity',
+      data: [],
+    },
+  ]);
   // const [plant, setPlant] = useState([]);
 
   // useEffect(() => {
@@ -62,62 +77,83 @@ export default function Activities() {
   //   setPlant(reduxPlant?.plants?.data?.plants || []);
   // }, [setPlant, reduxPlant?.plants?.data?.plants]);
 
-  const test = [
-    {
-      name: 'Water Level',
-      data: [
-        {
-          name: 'Orchidaceae',
-          percentage: 54,
-        },
-        {
-          name: 'Zingiberofficinale',
-          percentage: 29,
-        },
-        {
-          name: 'Jasminum',
-          percentage: 63,
-        },
-        {
-          name: 'Bougainville',
-          percentage: 48,
-        },
-        {
-          name: 'Oryzasativa',
-          percentage: 16,
-        },
-      ],
-    },
-    {
-      name: 'Daym Level',
-      data: [
-        {
-          name: 'Orchidaceae',
-          percentage: 54,
-        },
-        {
-          name: 'Zingiberofficinale',
-          percentage: 29,
-        },
-        {
-          name: 'Jasminum',
-          percentage: 63,
-        },
-        {
-          name: 'Bougainville',
-          percentage: 48,
-        },
-        {
-          name: 'Oryzasativa',
-          percentage: 16,
-        },
-        {
-          name: 'Rosa',
-          percentage: 59,
-        },
-      ],
-    },
-  ];
+  useEffect(() => {
+    reduxLogs.logs?.data.map((data) => {
+      if (data != null) {
+        const { waterLevel, humidity, lightIntensity, userPlant } = data;
+        logs[0].data.push({
+          name: userPlant.plantType.name,
+          percentage: waterLevel,
+        });
+        logs[1].data.push({
+          name: userPlant.plantType.name,
+          percentage: humidity,
+        });
+        logs[2].data.push({
+          name: userPlant.plantType.name,
+          percentage: lightIntensity,
+        });
+        setLogs((prevState) => [...prevState]);
+      }
+    });
+  }, []);
+
+  // const test = [
+  //   {
+  //     name: 'Water Level',
+  //     data: [
+  //       {
+  //         name: 'Orchidaceae',
+  //         percentage: 54,
+  //       },
+  //       {
+  //         name: 'Zingiberofficinale',
+  //         percentage: 29,
+  //       },
+  //       {
+  //         name: 'Jasminum',
+  //         percentage: 63,
+  //       },
+  //       {
+  //         name: 'Bougainville',
+  //         percentage: 48,
+  //       },
+  //       {
+  //         name: 'Oryzasativa',
+  //         percentage: 16,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     name: 'Daym Level',
+  //     data: [
+  //       {
+  //         name: 'Orchidaceae',
+  //         percentage: 54,
+  //       },
+  //       {
+  //         name: 'Zingiberofficinale',
+  //         percentage: 29,
+  //       },
+  //       {
+  //         name: 'Jasminum',
+  //         percentage: 63,
+  //       },
+  //       {
+  //         name: 'Bougainville',
+  //         percentage: 48,
+  //       },
+  //       {
+  //         name: 'Oryzasativa',
+  //         percentage: 16,
+  //       },
+  //       {
+  //         name: 'Rosa',
+  //         percentage: 59,
+  //       },
+  //     ],
+  //   },
+  // ];
 
   const [plant, setPlant] = useState([
     {
@@ -165,7 +201,7 @@ export default function Activities() {
           Activities
         </h1>
         <Swiper className="w-full">
-          {test.map(({ name, data }, i) => {
+          {logs.map(({ name, data }, i) => {
             const length = data.length < 5 ? data.length : 5;
             const width = (1 / length) * 100;
             return (
