@@ -5,8 +5,8 @@ import Image from "next/image";
 const FeedItem = ({ slug, imageUrl, author, title, tags }) => {
   return (
     <Link href={"feeds/" + slug}>
-      <a className="bg-white py-5 rounded-xl flex flex">
-        <div className="rounded-full flex-none w-20 h-fit relative overflow-hidden">
+      <a className="bg-white p-5 rounded-xl flex flex shadow-md">
+        <div className="rounded-md flex-none w-20 h-20 mr-3 my-auto relative overflow-hidden">
           <Image
             src={imageUrl}
             objectFit="cover"
@@ -21,7 +21,7 @@ const FeedItem = ({ slug, imageUrl, author, title, tags }) => {
 
           <div className="flex justify-start mt-5">
             {tags.map((tag, index) => (
-              <Tag key={index} text={tag} />
+              <Tag key={index} text={tag.name} />
             ))}
           </div>
         </div>

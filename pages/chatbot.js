@@ -9,7 +9,6 @@ import Image from "next/image";
 import Moment from "react-moment";
 import moment from "moment";
 import ScrollToBottom, {
-  scrollToBottom,
   useScrollToBottom,
   useScrollToTop,
 } from "react-scroll-to-bottom";
@@ -23,20 +22,6 @@ export default function Chatbot() {
 
   const scrollToBottom = useScrollToBottom();
   const scrollToTop = useScrollToTop();
-
-  useEffect(() => {
-    /* Initiate bot response */
-    // dispatch(sendMessage("")).then(() => {
-    // dispatch(getUserMessages(page, limit)).then((data) => {
-    //   console.log(data);
-    //   if (data.docs.length > 0) {
-    //     setAccMessages([...data.docs.reverse(), ...accMessages]);
-    //     setPage(page + 1);
-    //   }
-    //   console.log(accMessages);
-    // });
-    // });
-  }, []);
 
   const { observe, inView } = useInView({
     onEnter: ({ unobserve }) => {

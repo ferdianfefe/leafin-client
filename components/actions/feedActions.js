@@ -14,10 +14,15 @@ import axios from "axios";
 import config from "../../config";
 
 /* Get all feeds */
-const getAllFeeds = () => async (dispatch) => {
+const getAllFeeds = (page, limit, selectedFilters) => async (dispatch) => {
   try {
     dispatch({ type: FEED_GET_ALL_REQUEST });
     const { data } = await axios.get(`${config.apiURL}/feed`, {
+      params: {
+        page,
+        limit,
+        tags: selectedFilters,
+      },
       withCredentials: true,
     });
     dispatch({ type: FEED_GET_ALL_SUCCESS, payload: data.data });

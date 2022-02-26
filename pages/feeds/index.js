@@ -5,40 +5,74 @@ import Button from "../../components/Button";
 import Link from "next/link";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import ScrollToBottom, { useScrollToBottom } from "react-scroll-to-bottom";
+import useInView from "react-cool-inview";
+import { getAllFeeds } from "@/components/actions/feedActions";
 
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 export default function Feeds() {
+  const dispatch = useDispatch();
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [page, setPage] = useState(1);
+  const [accFeeds, setAccFeeds] = useState([]);
+  const limit = 5;
+
+  const scrollToBottom = useScrollToBottom();
+
+  const { observe, inView } = useInView({
+    onEnter: ({ unobserve }) => {
+      dispatch(getAllFeeds(page, limit, selectedFilters)).then((data) => {
+        if (data.length > 0) {
+          setAccFeeds([...accFeeds, ...data]);
+          console.log(data)
+          setPage(page + 1);
+          scrollToBottom();
+        }
+        if (!data.hasNextPage) unobserve();
+      });
+    },
+  });
+
+  // useEffect(() => {
+  //   setPage(1);
+  //   dispatch(getAllFeeds(page, limit, selectedFilters)).then((data) => {
+  //     if (data.length > 0) {
+  //       setAccFeeds([...data]);
+  //       setPage(page + 1);
+  //     }
+  //   });
+  // }, [selectedFilters]);
 
   const filters = ["Pupuk", "Shovel", "Seeds", "Growx Kit"];
 
-  const feeds = [
-    {
-      imageUrl: "/assets/leafinLogo.svg",
-      author: "Budi",
-      title: "Hasil menanam menggunakan alat dari Leafin",
-      slug: "menanam-dengan-alat-dari-leafin",
-      tags: ["Pupuk", "Shovel"],
-    },
-    {
-      imageUrl: "/assets/leafinLogo.svg",
-      author: "Sarah",
-      title: "Tips pemula dalam menggunakan pupuk kompos",
-      slug: "tips-pemula-dalam-menggunakan-pupuk-kompos",
-      tags: ["Shovel"],
-    },
-    {
-      imageUrl: "/assets/leafinLogo.svg",
-      author: "Budi",
-      title: "Setelah menggunakan Growx Kit, apa yang harus dilakukan?",
-      slug: "setelah-menggunakan-growx-kit-apa-yang-harus-dilakukan",
-      tags: ["Growx Kit", "Seeds"],
-    },
-  ];
+  // const feeds = [
+  //   {
+  //     imageUrl: "/assets/leafinLogo.svg",
+  //     author: "Budi",
+  //     title: "Hasil menanam menggunakan alat dari Leafin",
+  //     slug: "menanam-dengan-alat-dari-leafin",
+  //     tags: ["Pupuk", "Shovel"],
+  //   },
+  //   {
+  //     imageUrl: "/assets/leafinLogo.svg",
+  //     author: "Sarah",
+  //     title: "Tips pemula dalam menggunakan pupuk kompos",
+  //     slug: "tips-pemula-dalam-menggunakan-pupuk-kompos",
+  //     tags: ["Shovel"],
+  //   },
+  //   {
+  //     imageUrl: "/assets/leafinLogo.svg",
+  //     author: "Budi",
+  //     title: "Setelah menggunakan Growx Kit, apa yang harus dilakukan?",
+  //     slug: "setelah-menggunakan-growx-kit-apa-yang-harus-dilakukan",
+  //     tags: ["Growx Kit", "Seeds"],
+  //   },
+  // ];
 
   const selectFilter = (filter) => {
     if (selectedFilters.includes(filter)) {
@@ -105,17 +139,20 @@ export default function Feeds() {
           })}
         </Swiper>
       </div>
-      <div className="mb-20">
-        {feeds.map((feed, i) => (
+      <scrollToBottom className="mb-20">
+        {accFeeds.map((feed) => (
           <FeedItem
-            key={i}
-            imageUrl={feed.imageUrl}
-            author={feed.author}
+            key={feed._id}
+            imageUrl={feed.imageFileURL}
+            author={feed.authorId.name}
             title={feed.title}
             slug={feed.slug}
             tags={feed.tags}
           />
         ))}
+      </scrollToBottom>
+      <div ref={observe} className="observer">
+        {inView && <h1></h1>}
       </div>
       <Navbar active={"feeds"}></Navbar>
     </div>
