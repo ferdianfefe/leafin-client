@@ -1,23 +1,23 @@
-import Navbar from "@/components/Navbar";
-import Image from "next/image";
-import Link from "next/link";
+import Navbar from '@/components/Navbar';
+import Image from 'next/image';
+import Link from 'next/link';
 
 import {
   getUserPlant,
   getServerUserPlant,
-} from "@/components/actions/userPlantActions";
-import { getProfile, getServerProfile } from "@/components/actions/userActions";
+} from '@/components/actions/userPlantActions';
+import { getProfile, getServerProfile } from '@/components/actions/userActions';
 import {
   USER_GET_USERPLANT_REQUEST,
   USER_GET_USERPLANT_SUCCESS,
-} from "constants/userConstants";
+} from 'constants/userConstants';
 import {
   USER_GET_PROFILE_REQUEST,
   USER_GET_PROFILE_SUCCESS,
-} from "constants/userConstants";
-import { wrapper } from "@/components/store/store";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+} from 'constants/userConstants';
+import { wrapper } from '@/components/store/store';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 Index.getInitialProps = wrapper.getInitialPageProps(
   ({ getState, dispatch }) =>
@@ -32,7 +32,7 @@ Index.getInitialProps = wrapper.getInitialPageProps(
       } else if (userPlant.plants == null) {
         dispatch(getUserPlant());
       } else {
-        console.log("sudah ada data");
+        console.log('sudah ada data');
       }
 
       /* Get profile */
@@ -46,7 +46,7 @@ Index.getInitialProps = wrapper.getInitialPageProps(
       } else if (user.user?.data == null) {
         dispatch(getProfile());
       } else {
-        console.log("sudah ada data");
+        console.log('sudah ada data');
       }
     }
 );
@@ -54,37 +54,38 @@ Index.getInitialProps = wrapper.getInitialPageProps(
 export default function Index(props) {
   let reduxPlant = useSelector((state) => state.userPlant);
   let user = useSelector((state) => state.user);
-  const [plant, setPlant] = useState([
-    {
-      _id: 1,
-      name: "Plant 1",
-      plantType: {
-        pictureFileURL: "/assets/leafinLogo.svg",
-      },
-    },
-    {
-      _id: 2,
-      name: "Plant 2",
-      plantType: {
-        pictureFileURL: "/assets/leafinLogo.svg",
-      },
-    },
-  ]);
+  const [plant, setPlant] = useState([]);
+  // const [plant, setPlant] = useState([
+  //   {
+  //     _id: 1,
+  //     name: "Plant 1",
+  //     plantType: {
+  //       pictureFileURL: "/assets/leafinLogo.svg",
+  //     },
+  //   },
+  //   {
+  //     _id: 2,
+  //     name: "Plant 2",
+  //     plantType: {
+  //       pictureFileURL: "/assets/leafinLogo.svg",
+  //     },
+  //   },
+  // ]);
 
   const [feeds, setFeeds] = useState([
     {
       _id: 1,
-      author: "Budi",
-      title: "Hasil Tanam Menggunakan Alat Otomatis dari Leafin",
-      pictureFileURL: "/assets/leafinLogo.svg",
+      author: 'Budi',
+      title: 'Hasil Tanam Menggunakan Alat Otomatis dari Leafin',
+      pictureFileURL: '/assets/leafinLogo.svg',
       likes: 100,
       views: 200,
     },
     {
       _id: 2,
-      author: "Sarah",
-      title: "Tips Pemula Dalam Menggunakan Pupuk Kompos",
-      pictureFileURL: "/assets/leafinLogo.svg",
+      author: 'Sarah',
+      title: 'Tips Pemula Dalam Menggunakan Pupuk Kompos',
+      pictureFileURL: '/assets/leafinLogo.svg',
       likes: 100,
       views: 200,
     },
@@ -93,21 +94,22 @@ export default function Index(props) {
   const [items, setItems] = useState([
     {
       _id: 1,
-      name: "Pupuk Navos",
+      name: 'Pupuk Navos',
       price: 12.59,
-      pictureFileURL: "/assets/leafinLogo.svg",
+      pictureFileURL: '/assets/leafinLogo.svg',
     },
     {
       _id: 2,
-      name: "Pupuk ZA",
+      name: 'Pupuk ZA',
       price: 14.0,
-      pictureFileURL: "/assets/leafinLogo.svg",
+      pictureFileURL: '/assets/leafinLogo.svg',
     },
   ]);
 
-  // useEffect(() => {
-  //   setPlant(reduxPlant?.plants?.data?.plants || []);
-  // }, [setPlant, reduxPlant?.plants?.data?.plants]);
+  useEffect(() => {
+    console.log(reduxPlant?.plants?.data?.plants);
+    setPlant(reduxPlant?.plants?.data?.plants || []);
+  }, [setPlant, reduxPlant?.plants?.data?.plants]);
 
   function getWeekDays(locale) {
     let baseDate = new Date();
@@ -115,7 +117,7 @@ export default function Index(props) {
     for (let i = 0; i < 7; i++) {
       const today = i == 0 ? true : false;
       weekDays.push({
-        name: baseDate.toLocaleDateString(locale, { weekday: "narrow" }),
+        name: baseDate.toLocaleDateString(locale, { weekday: 'narrow' }),
         date: baseDate.getDate(),
         today,
       });
@@ -124,7 +126,7 @@ export default function Index(props) {
     return weekDays;
   }
 
-  const date = getWeekDays("id-ID");
+  const date = getWeekDays('id-ID');
 
   // const plantProgress = [
   //   {
@@ -147,7 +149,7 @@ export default function Index(props) {
           <div className="mt-10 px-5 flex flex-1 items-center">
             <div className="w-8 h-8 relative mr-3">
               <Image
-                src={"/assets/leafinLogo.svg"}
+                src={'/assets/leafinLogo.svg'}
                 layout="fill"
                 alt="leafin"
               />
@@ -173,10 +175,10 @@ export default function Index(props) {
               <div className="rounded-lg w-20 h-20 bg-[#C4C4C4]"></div>
             )}
             <div className="w-6 h-6 relative mr-3">
-              <Image src={"/assets/gearIcon.svg"} layout="fill" alt="gear" />
+              <Image src={'/assets/gearIcon.svg'} layout="fill" alt="gear" />
             </div>
             <div className="w-6 h-6 relative mr-3">
-              <Image src={"/assets/bellIcon.svg"} layout="fill" alt="bell" />
+              <Image src={'/assets/bellIcon.svg'} layout="fill" alt="bell" />
             </div>
           </div>
         </nav>
@@ -190,7 +192,7 @@ export default function Index(props) {
                   <div
                     key={i}
                     className={`w-full font-prompt flex-wrap flex justify-center text-center pt-2 pb-1 ${
-                      today ? "text-[#1A9F35]" : "text-[#D2E7D6]"
+                      today ? 'text-[#1A9F35]' : 'text-[#D2E7D6]'
                     }`}
                   >
                     <span className="text-xs w-full font-semibold uppercase">
@@ -214,7 +216,7 @@ export default function Index(props) {
             <a className="mt-3 font-semibold bg-white py-3 border w-full rounded-xl flex justify-center items-center">
               <div className="w-6 h-6 relative mr-3">
                 <Image
-                  src={"/assets/barcode-scanner.svg"}
+                  src={'/assets/barcode-scanner.svg'}
                   layout="fill"
                   alt="barcode"
                 />
@@ -226,7 +228,7 @@ export default function Index(props) {
             <a className="mt-3 font-semibold bg-white py-3 border w-full rounded-xl flex justify-center items-center">
               <div className="w-6 h-6 relative mr-3">
                 <Image
-                  src={"/assets/plusIcon.svg"}
+                  src={'/assets/plusIcon.svg'}
                   layout="fill"
                   alt="barcode"
                 />
@@ -240,11 +242,11 @@ export default function Index(props) {
             <div className="flex mt-5 justify-between flex-wrap gap-y-3">
               {plant.map(({ name, _id, plantType }, i) => {
                 return (
-                  <Link key={i} href={"activities/" + _id}>
+                  <Link key={i} href={'activities/' + _id}>
                     <a className="bg-white w-[48%] py-5 rounded-xl flex flex-col items-center justify-center">
-                      <div className="w-28 h-28 relative overflow-hidden">
+                      <div className="w-28 h-28 rounded-full relative overflow-hidden">
                         <Image
-                          src={plantType.pictureFileURL}
+                          src={plantType.pictureFileId}
                           objectFit="cover"
                           layout="fill"
                           alt="profile picture"
@@ -269,8 +271,8 @@ export default function Index(props) {
               {feeds.map(
                 ({ author, title, _id, pictureFileURL, likes, views }, i) => {
                   return (
-                    <Link key={i} href={"activities/" + _id}>
-                      <a className="bg-white py-5 rounded-xl flex flex">
+                    <Link key={i} href={'activities/' + _id}>
+                      <a className="bg-white py-5 rounded-xl flex">
                         <div className="rounded-full flex-none w-20 h-fit relative overflow-hidden">
                           <Image
                             src={pictureFileURL}
@@ -288,7 +290,7 @@ export default function Index(props) {
                             <div className="flex-1 flex items-center">
                               <div className="w-6 h-6 relative mr-3">
                                 <Image
-                                  src={"/assets/borderHeartIcon.svg"}
+                                  src={'/assets/borderHeartIcon.svg'}
                                   layout="fill"
                                   alt="heart"
                                 />
@@ -298,7 +300,7 @@ export default function Index(props) {
                             <div className="flex-1 flex items-center">
                               <div className="w-6 h-6 relative mr-3">
                                 <Image
-                                  src={"/assets/borderEyeIcon.svg"}
+                                  src={'/assets/borderEyeIcon.svg'}
                                   layout="fill"
                                   alt="eye"
                                 />
@@ -320,7 +322,7 @@ export default function Index(props) {
             <div className="flex mt-5 justify-between flex-wrap gap-y-3">
               {items.map(({ name, _id, price, pictureFileURL }, i) => {
                 return (
-                  <Link key={i} href={"activities/" + _id}>
+                  <Link key={i} href={'activities/' + _id}>
                     <a className="bg-white w-[48%] rounded-xl flex flex-col">
                       <div className="w-full flex justify-center py-3">
                         <div className="w-28 h-28 relative overflow-hidden">
