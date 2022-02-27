@@ -1,25 +1,32 @@
 import Link from "next/link";
 import Image from "next/image";
 import Tag from "../../components/Tag";
+import { useSelector } from "react-redux";
+import { getServerFeed, getFeed } from "@/components/actions/feedActions";
+import { wrapper } from "@/components/store/store";
+import { FEED_GET_REQUEST, FEED_GET_SUCCESS } from "constants/feedConstants";
 
-// export async function getServerSideProps({ req, query }) {}
+Read.getInitialProps = wrapper.getInitialPageProps(
+  ({ getState, dispatch }) =>
+    async ({ req, query }) => {
+      /* Get feed */
+      if(!process.browser){
+        dispatch({ type: FEED_GET_REQUEST });
+        const feed = await getServerFeed(req, query.slug);
+        dispatch({ type: FEED_GET_SUCCESS, payload: feed });
+      }else{
+        dispatch(getFeed(query.slug));
+      }
+    }
+);
 
 export default function Read() {
-  const articleData = {
-    title: "Hasil menanam menggunakan alat dari Leafin",
-    author: "Budi",
-    tags: ["Pupuk", "Shovel"],
-    body: `
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Donec euismod, nisi eget consectetur venenatis, erat nunc aliquet nunc, eget tincidunt nisl nunc euismod erat.
-        Sed euismod, nisi eget consectetur venenatis, erat nunc aliquet nunc, eget tincidunt nisl nunc euismod erat.
-        Sed euismod, nisi eget consectetur venenatis, erat nunc aliquet nunc, eget tincidunt nisl nunc euismod erat. 
+  const feed = useSelector((state) => state.feed.feed);
 
-        Sed euismod, nisi eget consectetur venenatis, erat nunc aliquet nunc, eget tincidunt nisl nunc euismod erat. 
-        Sed euismod, nisi eget consectetur venenatis, erat nunc aliquet nunc, eget tincidunt nisl nunc euismod erat. 
-        Sed euismod, nisi eget consectetur venenatis, erat nunc aliquet nunc, eget tincidunt nisl nunc euismod erat. 
-    `,
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
+
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
       <div className="flex flex-col justify-center items-center w-full px-5">
@@ -38,15 +45,16 @@ export default function Read() {
         </Link>
       </div>
       <div className="">
-        <p className="mt-5 font-black text-primary text-lg">{articleData.author}</p>
-        <p className="mt-2 font-black text-2xl">{articleData.title}</p>
-
+        <p className="mt-5 font-black text-primary text-lg">
+          {feed.authorId.name}
+        </p>
+        <p className="mt-2 font-black text-2xl">{feed.title}</p>
         <div className="flex justify-start mt-5">
-          {articleData.tags.map((tag, index) => (
-            <Tag key={index} text={tag} />
+          {feed.tags.map((tag, index) => (
+            <Tag key={index} text={capitalizeFirstLetter(tag.name)} />
           ))}
         </div>
-        <p className="mt-5 text-sm">{articleData.body}</p>
+        <p className="mt-5 text-sm">{feed.content}</p>
       </div>
     </div>
   );

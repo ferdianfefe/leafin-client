@@ -8,7 +8,10 @@ import {
   FEED_CREATE_REQUEST,
   FEED_CREATE_SUCCESS,
   FEED_CREATE_FAILURE,
-} from "../../constants/feedConstant";
+  FEED_GET_TAGS_REQUEST,
+  FEED_GET_TAGS_SUCCESS,
+  FEED_GET_TAGS_FAILURE,
+} from "../../constants/feedConstants";
 
 import axios from "axios";
 import config from "../../config";
@@ -37,6 +40,15 @@ const getAllFeeds = (page, limit, selectedFilters) => async (dispatch) => {
 };
 
 /* Get one feed */
+const getServerFeed = async (req, slug) => {
+  const { data } = await axios.get(`${config.apiURL}/feed/${slug}`, {
+    headers: {
+      cookie: `refreshToken=${req?.cookies?.refreshToken}; accessToken=${req?.cookies?.accessToken};`,
+    },
+  });
+  return data.data;
+};
+
 const getFeed = (slug) => async (dispatch) => {
   try {
     dispatch({ type: FEED_GET_REQUEST });
@@ -72,4 +84,38 @@ const createFeed = (feed) => async (dispatch) => {
   }
 };
 
-export { getAllFeeds, getFeed, createFeed };
+/* Get feed tags */
+const getServerFeedTags = async (req) => {
+  const { data } = await axios.get(`${config.apiURL}/feed/tag`, {
+    headers: {
+      cookie: `refreshToken=${req?.cookies?.refreshToken}; accessToken=${req?.cookies?.accessToken};`,
+    },
+  });
+  return data.data;
+};
+
+const getFeedTags = () => async (dispatch) => {
+  try {
+    dispatch({ type: FEED_GET_TAGS_REQUEST });
+    const { data } = await axios.get(`${config.apiURL}/feed/tag`, {
+      withCredentials: true,
+    });
+    dispatch({ type: FEED_GET_TAGS_SUCCESS, payload: data.data });
+    return Promise.resolve(data.data);
+  } catch (error) {
+    dispatch({
+      type: FEED_GET_TAGS_FAILURE,
+      payload: error?.response?.data?.message || error.message,
+    });
+    return Promise.reject(error?.response?.data?.message || error.message);
+  }
+};
+
+export {
+  getAllFeeds,
+  getServerFeed,
+  getFeed,
+  createFeed,
+  getServerFeedTags,
+  getFeedTags,
+};

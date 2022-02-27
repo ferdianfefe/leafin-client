@@ -8,10 +8,14 @@ import {
   FEED_CREATE_REQUEST,
   FEED_CREATE_SUCCESS,
   FEED_CREATE_FAILURE,
-} from "../../constants/feedConstant";
+  FEED_GET_TAGS_REQUEST,
+  FEED_GET_TAGS_SUCCESS,
+  FEED_GET_TAGS_FAILURE,
+} from "../../constants/feedConstants";
 
 const initialState = {
   feeds: [],
+  tags: [],
   feed: {},
   loading: false,
   error: null,
@@ -73,6 +77,25 @@ const feedReducer = (state = initialState, action) => {
         feed: payload,
       };
     case FEED_CREATE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: payload,
+      };
+    case FEED_GET_TAGS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case FEED_GET_TAGS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        tags: payload,
+      };
+    case FEED_GET_TAGS_FAILURE:
       return {
         ...state,
         loading: false,
