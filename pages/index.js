@@ -55,29 +55,13 @@ export default function Index(props) {
   let reduxPlant = useSelector((state) => state.userPlant);
   let user = useSelector((state) => state.user);
   const [plant, setPlant] = useState([]);
-  // const [plant, setPlant] = useState([
-  //   {
-  //     _id: 1,
-  //     name: "Plant 1",
-  //     plantType: {
-  //       pictureFileURL: "/assets/leafinLogo.svg",
-  //     },
-  //   },
-  //   {
-  //     _id: 2,
-  //     name: "Plant 2",
-  //     plantType: {
-  //       pictureFileURL: "/assets/leafinLogo.svg",
-  //     },
-  //   },
-  // ]);
 
   const [feeds, setFeeds] = useState([
     {
       _id: 1,
       author: 'Budi',
       title: 'Hasil Tanam Menggunakan Alat Otomatis dari Leafin',
-      pictureFileURL: '/assets/leafinLogo.svg',
+      pictureFileURL: '/assets/Pupuk-Za.png',
       likes: 100,
       views: 200,
     },
@@ -85,7 +69,7 @@ export default function Index(props) {
       _id: 2,
       author: 'Sarah',
       title: 'Tips Pemula Dalam Menggunakan Pupuk Kompos',
-      pictureFileURL: '/assets/leafinLogo.svg',
+      pictureFileURL: '/assets/Pupuk-Za.png',
       likes: 100,
       views: 200,
     },
@@ -93,16 +77,16 @@ export default function Index(props) {
 
   const [items, setItems] = useState([
     {
-      _id: 1,
-      name: 'Pupuk Navos',
-      price: 12.59,
-      pictureFileURL: '/assets/leafinLogo.svg',
+      name: 'Pupuk Nafos',
+      price: 12.69,
+      image: '/assets/Pupuk-Nafos.png',
+      stars: 4,
     },
     {
-      _id: 2,
       name: 'Pupuk ZA',
-      price: 14.0,
-      pictureFileURL: '/assets/leafinLogo.svg',
+      price: 12.69,
+      image: '/assets/Pupuk-Za.png',
+      stars: 4,
     },
   ]);
 
@@ -128,33 +112,32 @@ export default function Index(props) {
 
   const date = getWeekDays('id-ID');
 
-  // const plantProgress = [
-  //   {
-  //     name: 'Orchidaceae',
-  //     score: '95%',
-  //     img: '/assets/orchidaceae.png',
-  //     href: 'activities/orchidaceae',
-  //   },
-  //   {
-  //     name: 'Jasminum',
-  //     score: '95%',
-  //     img: '/assets/jasminum.png',
-  //     href: 'activities/jasminum',
-  //   },
-  // ];
+  const funcStars = (stars) => {
+    let result = [];
+    for (let i = 0; i < stars; i++) {
+      result.push(
+        <div className="w-[9px] h-[9px] relative">
+          <Image src="/assets/stars.svg" alt="stars" layout="fill" />
+        </div>
+      );
+    }
+    return result;
+  };
   return (
     <>
-      <div className="bg-[#CFFFD9] w-full h-72">
+      <div className="bg-[#CFFFD9] w-full h-[325px] relative overflow-hidden">
         <nav className="flex flex-between">
           <div className="mt-10 px-5 flex flex-1 items-center">
-            <div className="w-8 h-8 relative mr-3">
+            <div className="w-7 h-7 relative mr-3">
               <Image
                 src={'/assets/leafinLogo.svg'}
                 layout="fill"
                 alt="leafin"
               />
             </div>
-            <h1 className="text-2xl font-extrabold text-primary">Leafin</h1>
+            <h1 className="text-xl font-extrabold bg-clip-text bg-gradient-to-r from-[#34C551] to-primary text-transparent">
+              Leafin
+            </h1>
           </div>
           <div className="mt-10 px-5 flex flex-1 flex-row-reverse items-center">
             {props?.user?.data?.pictureFileURL ||
@@ -172,7 +155,7 @@ export default function Index(props) {
                 ></Image>
               </div>
             ) : (
-              <div className="rounded-lg w-20 h-20 bg-[#C4C4C4]"></div>
+              <div className="rounded-lg w-8 h-8 bg-[#C4C4C4]"></div>
             )}
             <div className="w-6 h-6 relative mr-3">
               <Image src={'/assets/gearIcon.svg'} layout="fill" alt="gear" />
@@ -182,6 +165,12 @@ export default function Index(props) {
             </div>
           </div>
         </nav>
+        <div className="absolute w-[319px] h-[296px] left-0 right-0 mx-auto top-[110px]">
+          <Image src="/assets/white.svg" layout="fill" alt="white" />
+        </div>
+        <div className="absolute w-auto h-full left-2 right-0 mx-auto top-[82px]">
+          <Image src="/assets/full.svg" layout="fill" alt="home" />
+        </div>
       </div>
       <div className=" bg-[#E5E5E5]/30 min-h-screen">
         <div className="container mx-auto px-5 flex flex-col">
@@ -253,10 +242,6 @@ export default function Index(props) {
                           loading="lazy"
                         ></Image>
                       </div>
-                      {/* <p className="text-xs font-normal mt-3 text-[#9FCDA8]">
-                        Overal Score{' '}
-                        <strong className="text-[#1F8734]">{score}</strong>
-                      </p> */}
                       <p className="mt-5">{name}</p>
                     </a>
                   </Link>
@@ -272,8 +257,8 @@ export default function Index(props) {
                 ({ author, title, _id, pictureFileURL, likes, views }, i) => {
                   return (
                     <Link key={i} href={'activities/' + _id}>
-                      <a className="bg-white py-5 rounded-xl flex">
-                        <div className="rounded-full flex-none w-20 h-fit relative overflow-hidden">
+                      <a className="bg-white py-5 rounded-xl flex items-center">
+                        <div className="rounded-xl flex-none w-20 h-[100px] mx-3 relative overflow-hidden">
                           <Image
                             src={pictureFileURL}
                             objectFit="cover"
@@ -283,29 +268,33 @@ export default function Index(props) {
                           ></Image>
                         </div>
                         <div className="flex-1">
-                          <p className="mt-5 text-primary">{author}</p>
-                          <p className="mt-1 font-bold">{title}</p>
+                          <p className="text-primary font-semibold">{author}</p>
+                          <p className="mt-1 font-bold pr-2">{title}</p>
 
-                          <div className="flex justify-start mt-5">
+                          <div className="flex justify-start mt-3">
                             <div className="flex-1 flex items-center">
-                              <div className="w-6 h-6 relative mr-3">
+                              <div className="w-4 h-4 relative mr-1">
                                 <Image
                                   src={'/assets/borderHeartIcon.svg'}
                                   layout="fill"
                                   alt="heart"
                                 />
                               </div>
-                              <p className="text-[#E1E1E1]">{likes}</p>
+                              <p className="text-[#E1E1E1] text-xs font-normal">
+                                {likes} likes
+                              </p>
                             </div>
                             <div className="flex-1 flex items-center">
-                              <div className="w-6 h-6 relative mr-3">
+                              <div className="w-4 h-4 relative mr-1">
                                 <Image
                                   src={'/assets/borderEyeIcon.svg'}
                                   layout="fill"
                                   alt="eye"
                                 />
                               </div>
-                              <p className="text-[#E1E1E1]">{views}</p>
+                              <p className="text-[#E1E1E1] text-xs font-normal">
+                                {views} Views
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -320,28 +309,24 @@ export default function Index(props) {
           <div className="font-bold mt-10 mb-20 w-full">
             <label className="text-left">Popular Items</label>
             <div className="flex mt-5 justify-between flex-wrap gap-y-3">
-              {items.map(({ name, _id, price, pictureFileURL }, i) => {
+              {items.map(({ stars, name, price, image }, i) => {
                 return (
-                  <Link key={i} href={'activities/' + _id}>
-                    <a className="bg-white w-[48%] rounded-xl flex flex-col">
-                      <div className="w-full flex justify-center py-3">
-                        <div className="w-28 h-28 relative overflow-hidden">
-                          <Image
-                            src={pictureFileURL}
-                            objectFit="cover"
-                            layout="fill"
-                            alt="profile picture"
-                            loading="lazy"
-                          ></Image>
-                        </div>
+                  <Link key={i} href={'marketplace/' + name}>
+                    <a className="h-[269px] rounded-xl w-[48%] mb-3">
+                      <div className="relative h-[182px] overflow-hidden rounded-t-xl">
+                        <Image
+                          src={image}
+                          alt={name}
+                          loading="lazy"
+                          layout="fill"
+                        />
                       </div>
-                      {/* <p className="text-xs font-normal mt-3 text-[#9FCDA8]">
-                        Overal Score{' '}
-                        <strong className="text-[#1F8734]">{score}</strong>
-                      </p> */}
-                      <div className="p-4">
-                        <p className="">{name}</p>
-                        <p className="mt-2">{price} $</p>
+                      <div className="border-x-2 border-b-2 rounded-b-xl flex flex-col px-3">
+                        <div className="pt-2 pb-1 flex gap-[2px]">
+                          {funcStars(stars)}
+                        </div>
+                        <div className="font-semibold mb-2">{name}</div>
+                        <div className="font-bold mb-1">{price}</div>
                       </div>
                     </a>
                   </Link>

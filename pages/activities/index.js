@@ -42,12 +42,14 @@ Activities.getInitialProps = wrapper.getInitialPageProps(
 
       /* Logs */
       if (log.logs == null && !process.browser) {
+        console.log('sini1');
         dispatch({ type: USER_GET_ALL_USERPLANT_LOG_REQUEST });
 
         const data = await getServerAllPlantsLogs(req);
 
         dispatch({ type: USER_GET_ALL_USERPLANT_LOG_SUCCESS, payload: data });
       } else if (log.logs == null) {
+        console.log('sini2');
         dispatch(getAllPlantsLogs());
       }
     }
@@ -96,7 +98,7 @@ export default function Activities() {
         setLogs((prevState) => [...prevState]);
       }
     });
-  }, []);
+  }, [reduxLogs.logs?.data]);
 
   // const test = [
   //   {
