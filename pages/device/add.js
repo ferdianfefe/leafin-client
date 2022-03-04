@@ -23,7 +23,7 @@ export default function Add() {
               <a className="absolute left-5 mb-10">
                 <div className="w-5 h-5 relative items-center justify-self-end">
                   <Image
-                    src="/backBtn.svg"
+                    src="/assets/backBtn.svg"
                     objectFit="contain"
                     layout="fill"
                     alt="edit"

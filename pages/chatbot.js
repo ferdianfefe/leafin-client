@@ -12,6 +12,7 @@ import ScrollToBottom, {
   useScrollToBottom,
   useScrollToTop,
 } from "react-scroll-to-bottom";
+import Link from "next/link";
 
 export default function Chatbot() {
   const dispatch = useDispatch();
@@ -56,25 +57,26 @@ export default function Chatbot() {
       return;
     }
     dispatch(sendMessage(messageInput)).then(({ data }) => {
-      console.log("sending", data);
       setAccMessages([...accMessages, ...data]);
-      scrollToBottom();
       setMessageInput("");
+      scrollToBottom();
     });
   };
 
   return (
     <div className="container flex flex-col h-[100vh]">
       <div className="flex-none px-5 flex justify-start py-3 items-center shadow-md">
-        <div className="w-auto h-[20px] relative ml-5">
-          <Image
-            src="/backBtn.svg"
-            objectFit="contain"
-            layout="fill"
-            alt="edit"
-            priority
-          ></Image>
-        </div>
+        <Link href="/">
+          <div className="w-[20px] h-[20px] relative ml-3">
+            <Image
+              src="/assets/backBtn.svg"
+              objectFit="contain"
+              layout="fill"
+              alt="edit"
+              priority
+            ></Image>
+          </div>
+        </Link>
         <div className="rounded-full w-10 h-10 ml-5 relative overflow-hidden">
           <Image
             src="/icon-512x512.png"
@@ -148,29 +150,29 @@ export default function Chatbot() {
           ))}
       </ScrollToBottom>
       <form
-        className="flex-none flex p-5 shadow-md"
+        className="flex-none flex justify-center items-center p-5 shadow-md"
         onSubmit={sendMessageHandler}
       >
         <input
-          className="flex-1 placeholder-gray-500 w-full h-[50px] rounded-full px-3 py-3"
+          className="flex-1 bg-[#F5F5F5] placeholder-gray-500 w-full h-[50px] rounded-full px-3 py-3"
           type="text"
           name="message"
           placeholder="Type a message..."
           onChange={handleMessageChange}
           value={messageInput}
         ></input>
-        <div className="flex-none w-20px h-auto relative ml-5">
+        <div className="flex-none items-center w-8 h-8 relative ml-4">
           <Image
-            src="/attachIcon.svg"
+            src="/assets/attachIcon.svg"
             alt="get-started Image"
             layout="fill"
             objectFit="contain"
             loading="lazy"
           ></Image>
         </div>
-        <button className="flex-none w-20px h-auto relative ml-5" type="submit">
+        <button className="flex-none w-8 h-8 relative ml-4" type="submit">
           <Image
-            src="/sendIcon.svg"
+            src="/assets/sendIcon.svg"
             alt="get-started Image"
             layout="fill"
             objectFit="contain"

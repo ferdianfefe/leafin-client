@@ -41,6 +41,12 @@ Feeds.getInitialProps = wrapper.getInitialPageProps(
     }
 );
 
+// export async function getServerSideProps() {
+//   await wrapper.dispatch({ type: FEED_GET_TAGS_REQUEST });
+//   const data = await getServerFeedTags();
+//   await wrapper.dispatch({ type: FEED_GET_TAGS_SUCCESS, payload: data });
+// }
+
 export default function Feeds() {
   const tags = useSelector((state) => state.feed.tags);
   const dispatch = useDispatch();
@@ -65,19 +71,37 @@ export default function Feeds() {
     },
   });
 
-  const filters = ["Pupuk", "Shovel", "Seeds", "Growx Kit"];
+  useEffect(() => {
+    /* Get feeds with specified tags */
+    setPage(1);
+    console.log(selectedFilters);
+    dispatch(getAllFeeds(page, limit, selectedFilters)).then((data) => {
+      if (data.length > 0) {
+        setAccFeeds(data);
+        setPage(page + 1);
+        scrollToBottom();
+      }
+    });
+  }, [selectedFilters]);
 
   const selectFilter = (filter) => {
+    console.log(filter);
     if (selectedFilters.includes(filter)) {
-      setSelectedFilters(selectedFilters.filter((item) => item !== filter));
+      setSelectedFilters(
+        selectedFilters.filter((item) => item.name !== filter.name)
+      );
     } else {
       setSelectedFilters([...selectedFilters, filter]);
     }
   };
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
-      {console.log(tags)}
+      {console.log()}
       <div className="flex flex-col justify-center items-center w-full px-5">
         <h1 className="font-bold text-2xl">Feeds</h1>
         <Link href="/">
@@ -108,32 +132,32 @@ export default function Feeds() {
         </Link>
       </div>
       <div className=" flex flex-wrap items-center w-full justify-start">
-        {tags.length && (
-          <Swiper
-            slidesPerView={3}
-            spaceBetween={5}
-            slidesPerGroup={3}
-            loopFillGroupWithBlank={true}
-            className="mt-2"
-          >
-            {tags.map((tag, i) => {
-              return (
-                <SwiperSlide key={i}>
-                  <Button
-                    onClick={() => {
-                      selectFilter(tag.name);
-                    }}
-                  >
-                    <FilterItem
-                      text={tag.name}
-                      active={selectedFilters.includes(tag.name)}
-                    />
-                  </Button>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
-        )}
+        <Swiper
+          slidesPerView={3}
+          spaceBetween={5}
+          slidesPerGroup={3}
+          loopFillGroupWithBlank={true}
+          className="mt-2"
+        >
+          {tags.map((tag, i) => {
+            return (
+              <SwiperSlide key={i}>
+                <Button
+                  onClick={() => {
+                    selectFilter(tag);
+                  }}
+                >
+                  <FilterItem
+                    text={capitalizeFirstLetter(tag.name)}
+                    active={selectedFilters.includes(tag)}
+                  />
+                </Button>
+              </SwiperSlide>
+            );
+          })}
+          {/* Akal-akalan supaya bisa muncul kalau pakai data dinamis */}
+          <SwiperSlide style={{ width: "0px" }}></SwiperSlide>
+        </Swiper>
       </div>
       <ScrollToBottom className="mb-20">
         {accFeeds.map((feed) => (

@@ -50,7 +50,7 @@ export default function Write() {
         <div className="">
           <div className="flex flex-col justify-center items-center w-full px-5">
             <h1 className="font-bold text-2xl">Write</h1>
-            <Link href="/">
+            <Link href="/feeds">
               <a className="absolute left-5">
                 <div className="w-5 h-5 relative items-center justify-self-end">
                   <Image

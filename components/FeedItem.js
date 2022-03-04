@@ -3,6 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 const FeedItem = ({ slug, imageUrl, author, title, tags }) => {
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
   return (
     <Link href={"feeds/" + slug}>
       <a className="bg-white p-5 rounded-xl flex flex shadow-md">
@@ -21,7 +24,7 @@ const FeedItem = ({ slug, imageUrl, author, title, tags }) => {
 
           <div className="flex justify-start mt-5">
             {tags.map((tag, index) => (
-              <Tag key={index} text={tag.name} />
+              <Tag key={index} text={capitalizeFirstLetter(tag.name)} />
             ))}
           </div>
         </div>
