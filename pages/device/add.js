@@ -2,10 +2,15 @@ import Button from "@/components/Button";
 import Link from "next/link";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addUserPlant } from "@/components/actions/userPlantActions";
+import { useRouter } from "next/router";
 
 export default function Add() {
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const {
     register,
@@ -13,9 +18,28 @@ export default function Add() {
     setValue,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    setValue("deviceID", "cgTlKPTGS89Tb0RaSm-xDJb3emLQLq1J");
+  });
+
+  const submitHandler = (formData) => {
+    dispatch(addUserPlant(formData))
+      .then((data) => {
+        router.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error);
+      });
+  };
+
   return (
     <div className="container mx-auto h-[100vh] w-[100vw] p-5 flex flex-wrap justify-center">
-      <div className="flex flex-col justify-between items-center w-full">
+      <form
+        className="flex flex-col justify-between items-center w-full"
+        onSubmit={handleSubmit(submitHandler)}
+      >
         <div className="">
           <div className="flex flex-col justify-center items-center w-full px-5">
             <h1 className="font-bold text-2xl mb-10">Add Device</h1>
@@ -33,16 +57,43 @@ export default function Add() {
               </a>
             </Link>
           </div>
-          <label htmlFor="device-name" className="font-semibold w-full">
-            Device Name
+          <label htmlFor="deviceID" className="font-semibold w-full">
+            Device ID(Token)
             <input
-              {...register("device-name", {
+              {...register("deviceID", {
                 required: true,
               })}
               placeholder="Hu Tao"
               type="text"
+              disabled
               className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
-                errors?.name?.type === "required" && "border-red-500"
+                errors?.deviceID?.type === "required" && "border-red-500"
+              }`}
+            ></input>
+          </label>
+          <label htmlFor="plantName" className="font-semibold w-full mt-4">
+            Plant Name
+            <input
+              {...register("plantName", {
+                required: true,
+              })}
+              placeholder="Ex: My Lovely Celery"
+              type="text"
+              className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
+                errors?.plantName?.type === "required" && "border-red-500"
+              }`}
+            ></input>
+          </label>
+          <label htmlFor="plantType" className="font-semibold w-full mt-4">
+            Plant Type
+            <input
+              {...register("plantType", {
+                required: true,
+              })}
+              placeholder="Ex: Celery"
+              type="text"
+              className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
+                errors?.plantType?.type === "required" && "border-red-500"
               }`}
             ></input>
           </label>
@@ -59,8 +110,13 @@ export default function Add() {
             </>
           )}
         </div>
-        <Button className="bg-primary text-white font-bold w-full">Save</Button>
-      </div>
+        <Button
+          type={"submit"}
+          className="bg-primary text-white font-bold w-full"
+        >
+          Save
+        </Button>
+      </form>
     </div>
   );
 }

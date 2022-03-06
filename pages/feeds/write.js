@@ -78,7 +78,7 @@ export default function Write() {
             })}
             type="text"
             className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
-              errors?.name?.type === "required" && "border-red-500"
+              errors?.title?.type === "required" && "border-red-500"
             }`}
           ></input>
         </label>
@@ -122,7 +122,7 @@ export default function Write() {
             placeholder="Example: Tag1, Tag2, Tag3"
             type="text"
             className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
-              errors?.name?.type === "required" && "border-red-500"
+              errors?.tags?.type === "required" && "border-red-500"
             }`}
           ></input>
         </label>
@@ -134,7 +134,7 @@ export default function Write() {
             })}
             type="text"
             className={`mt-2 px-4 border-primary border h-[15rem] w-full py-4 rounded-xl ${
-              errors?.name?.type === "required" && "border-red-500"
+              errors?.content?.type === "required" && "border-red-500"
             }`}
           ></textarea>
         </label>
