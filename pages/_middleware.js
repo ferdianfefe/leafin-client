@@ -5,6 +5,21 @@ export async function middleware(req) {
   const res = NextResponse.next();
   const url = req.nextUrl.pathname;
 
+  if (url.includes('/api/logout')) {
+    res.cookie('refreshToken', '', {
+      httpOnly: true,
+      maxAge: 0,
+      domain:
+        process.env.NODE_ENV === 'development' ? 'localhost' : '.hunaki.my.id',
+    });
+    res.cookie('accessToken', '', {
+      httpOnly: true,
+      maxAge: 0,
+      domain:
+        process.env.NODE_ENV === 'development' ? 'localhost' : '.hunaki.my.id',
+    });
+  }
+
   if (url.includes('/assets') || url.includes('.')) {
     return res;
   }

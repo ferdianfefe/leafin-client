@@ -13,13 +13,22 @@ import { getProfile, getServerProfile } from '@/components/actions/userActions';
 import {
   USER_GET_PROFILE_REQUEST,
   USER_GET_PROFILE_SUCCESS,
+  USER_GET_USERPLANT_REQUEST,
+  USER_GET_USERPLANT_SUCCESS,
 } from 'constants/userConstants';
 import { wrapper } from '@/components/store/store';
+import { useEffect, useState } from 'react';
+import {
+  getServerUserPlant,
+  getUserPlant,
+} from '@/components/actions/userPlantActions';
+import { useRouter } from 'next/router';
+import Button from '@/components/Button';
 
 Profile.getInitialProps = wrapper.getInitialPageProps(
   ({ getState, dispatch }) =>
     async ({ req }) => {
-      const { user } = getState();
+      const { user, userPlant } = getState();
       if (user.user?.data == null && !process.browser) {
         dispatch({ type: USER_GET_PROFILE_REQUEST });
 
@@ -31,13 +40,31 @@ Profile.getInitialProps = wrapper.getInitialPageProps(
       } else {
         console.log('sudah ada data');
       }
+
+      /* User Plant */
+      if (userPlant.plants == null && !process.browser) {
+        dispatch({ type: USER_GET_USERPLANT_REQUEST });
+
+        const data = await getServerUserPlant(req);
+
+        dispatch({ type: USER_GET_USERPLANT_SUCCESS, payload: data });
+      } else if (userPlant.plants == null) {
+        dispatch(getUserPlant());
+      }
     }
 );
 
 export default function Profile(props) {
   let user = useSelector((state) => state.user);
+  let reduxPlant = useSelector((state) => state.userPlant);
+  const [plant, setPlant] = useState([]);
+  const router = useRouter();
 
-  const badges = ['Terajin', 'Terbaik', 'Tercepat', 'Terjadi'];
+  useEffect(() => {
+    console.log(reduxPlant?.plants?.data?.plants);
+    setPlant(reduxPlant?.plants?.data?.plants || []);
+  }, [setPlant, reduxPlant?.plants?.data?.plants]);
+
   const envProfile = [
     { name: 'Humidity', value: '70' },
     { name: 'Temperature', value: '70' },
@@ -46,6 +73,14 @@ export default function Profile(props) {
     { name: 'Jumlah', value: '3' },
     { name: 'Jumlah', value: '4' },
   ];
+
+  const logout = async () => {
+    const res = await fetch(`/api/logout`, {
+      method: 'GET',
+    });
+
+    router.push('/');
+  };
 
   // Ambil payload pakai SSR
   // if (user?.user?.data?.email == null) {
@@ -113,8 +148,9 @@ export default function Profile(props) {
       </div>
 
       <div className="mt-10 flex flex-wrap items-center w-full justify-start">
-        <h1 className="font-bold text-lg w-full">Badges</h1>
-        <Swiper
+        <h1 className="font-bold text-lg w-full mb-2">Badges</h1>
+        <Badge>Level 1</Badge>
+        {/* <Swiper
           slidesPerView={3}
           spaceBetween={5}
           slidesPerGroup={3}
@@ -128,10 +164,50 @@ export default function Profile(props) {
               </SwiperSlide>
             );
           })}
-        </Swiper>
+        </Swiper> */}
+      </div>
+      {plant.length != 0 && (
+        <div className="font-bold mt-10 w-full">
+          <label className="text-left">Devices</label>
+          <div className="flex mt-5 justify-between flex-wrap gap-y-3">
+            {plant.map(({ name, _id, plantType }, i) => {
+              if (i < 2)
+                return (
+                  <Link key={i} href={'activities/' + _id}>
+                    <a className="bg-white w-[48%] py-5 rounded-xl flex flex-col items-center justify-center">
+                      <div className="w-28 h-28 rounded-full relative overflow-hidden">
+                        <Image
+                          src={plantType.pictureFileId}
+                          objectFit="cover"
+                          layout="fill"
+                          alt="profile picture"
+                          loading="lazy"
+                        ></Image>
+                      </div>
+                      <p className="mt-5">{name}</p>
+                    </a>
+                  </Link>
+                );
+            })}
+          </div>
+        </div>
+      )}
+
+      <div className="mt-8 mb-20 w-full h-full">
+        <Button
+          className="border border-primary font-bold text-primary"
+          onClick={logout}
+        >
+          Switch to other account
+        </Button>
+        <div className="mt-5 flex w-full justify-center">
+          <button className="text-[#A7A7A7] font-bold" onClick={logout}>
+            Log Out
+          </button>
+        </div>
       </div>
 
-      <div className="mt-10 flex flex-wrap w-full">
+      {/* <div className="mt-10 flex flex-wrap w-full">
         <h1 className="font-bold text-lg w-full">Env Profile</h1>
         <div className="mt-5 border flex items-center gap-5 w-full rounded-xl p-5 border-gray-400">
           <div className="relative h-24 w-32">
@@ -157,7 +233,7 @@ export default function Profile(props) {
             })}
           </div>
         </div>
-      </div>
+      </div> */}
 
       <Navbar active="profile" />
     </div>

@@ -100,9 +100,9 @@ export default function Signin() {
         </Button>
       </form>
 
-      <Button className={'mt-5 border border-primary text-primary font-bold'}>
+      {/* <Button className={'mt-5 border border-primary text-primary font-bold'}>
         Sign in with Google
-      </Button>
+      </Button> */}
 
       <p className="mt-5 font-semibold w-full text-gray-primary text-[12.13px]">
         Not yet have an account?
