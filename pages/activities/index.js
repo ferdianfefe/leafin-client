@@ -8,12 +8,9 @@ import { wrapper } from '@/components/store/store';
 import {
   USER_GET_ALL_USERPLANT_LOG_REQUEST,
   USER_GET_ALL_USERPLANT_LOG_SUCCESS,
-  USER_GET_PROFILE_REQUEST,
-  USER_GET_PROFILE_SUCCESS,
   USER_GET_USERPLANT_REQUEST,
   USER_GET_USERPLANT_SUCCESS,
 } from 'constants/userConstants';
-import { getProfile, getServerProfile } from '@/components/actions/userActions';
 import {
   getServerUserPlant,
   getUserPlant,
@@ -28,7 +25,7 @@ import {
 Activities.getInitialProps = wrapper.getInitialPageProps(
   ({ getState, dispatch }) =>
     async ({ req }) => {
-      const { userPlant, log, user } = getState();
+      const { userPlant, log } = getState();
       /* User Plant */
       if (userPlant.plants == null && !process.browser) {
         dispatch({ type: USER_GET_USERPLANT_REQUEST });
@@ -72,12 +69,12 @@ export default function Activities() {
       data: [],
     },
   ]);
-  // const [plant, setPlant] = useState([]);
+  const [plant, setPlant] = useState([]);
 
-  // useEffect(() => {
-  //   console.log(reduxPlant?.plants?.data?.plants);
-  //   setPlant(reduxPlant?.plants?.data?.plants || []);
-  // }, [setPlant, reduxPlant?.plants?.data?.plants]);
+  useEffect(() => {
+    console.log(reduxPlant?.plants?.data?.plants);
+    setPlant(reduxPlant?.plants?.data?.plants || []);
+  }, [setPlant, reduxPlant?.plants?.data?.plants]);
 
   useEffect(() => {
     reduxLogs.logs?.data.map((data) => {
@@ -100,100 +97,14 @@ export default function Activities() {
     });
   }, [reduxLogs.logs?.data]);
 
-  // const test = [
-  //   {
-  //     name: 'Water Level',
-  //     data: [
-  //       {
-  //         name: 'Orchidaceae',
-  //         percentage: 54,
-  //       },
-  //       {
-  //         name: 'Zingiberofficinale',
-  //         percentage: 29,
-  //       },
-  //       {
-  //         name: 'Jasminum',
-  //         percentage: 63,
-  //       },
-  //       {
-  //         name: 'Bougainville',
-  //         percentage: 48,
-  //       },
-  //       {
-  //         name: 'Oryzasativa',
-  //         percentage: 16,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     name: 'Daym Level',
-  //     data: [
-  //       {
-  //         name: 'Orchidaceae',
-  //         percentage: 54,
-  //       },
-  //       {
-  //         name: 'Zingiberofficinale',
-  //         percentage: 29,
-  //       },
-  //       {
-  //         name: 'Jasminum',
-  //         percentage: 63,
-  //       },
-  //       {
-  //         name: 'Bougainville',
-  //         percentage: 48,
-  //       },
-  //       {
-  //         name: 'Oryzasativa',
-  //         percentage: 16,
-  //       },
-  //       {
-  //         name: 'Rosa',
-  //         percentage: 59,
-  //       },
-  //     ],
-  //   },
-  // ];
-
-  const [plant, setPlant] = useState([
-    {
-      _id: 1,
-      name: 'Plant 1',
-      plantType: {
-        pictureFileId: '/assets/leafinLogo.svg',
-      },
-    },
-    {
-      _id: 2,
-      name: 'Plant 2',
-      plantType: {
-        pictureFileId: '/assets/leafinLogo.svg',
-      },
-    },
-    {
-      _id: 3,
-      name: 'Plant 3',
-      plantType: {
-        pictureFileId: '/assets/leafinLogo.svg',
-      },
-    },
-    {
-      _id: 4,
-      name: 'Plant 4',
-      plantType: {
-        pictureFileId: '/assets/leafinLogo.svg',
-      },
-    },
-  ]);
-
   const todolist = [
     { svg: '/assets/water.svg', todo: 'Watering Orchidaceae' },
     { svg: '/assets/water.svg', todo: 'Watering Orchidaceae' },
 
     { svg: '/assets/water.svg', todo: 'Watering Rosa' },
   ];
+
+  const [tallest, setTallest] = useState([0, 0, 0]);
 
   return (
     <>
@@ -202,13 +113,13 @@ export default function Activities() {
         <h1 className="font-bold text-2xl text-center px-10 w-full mb-5">
           Activities
         </h1>
-        <Swiper className="w-full">
-          {logs.map(({ name, data }, i) => {
+        <Swiper className="w-full h-full">
+          {logs.map(({ name, data }, x) => {
             const length = data.length < 5 ? data.length : 5;
             const width = (1 / length) * 100;
             return (
               <SwiperSlide
-                key={i}
+                key={x}
 
                 // className="flex flex-wrap justify-center items-center mb-10"
               >
@@ -219,11 +130,17 @@ export default function Activities() {
                   <div className={`flex items-end w-full mx-3`}>
                     {data.map(({ name, percentage }, i) => {
                       const height = percentage * 2 + 'px';
+                      if (tallest[x] < parseInt(height)) {
+                        tallest[x] = parseInt(height);
+                        setTallest((prevState) => [...prevState]);
+                        console.log(tallest);
+                      }
                       const color = percentage > 30 ? '#24A3FF' : '#F2575D';
                       const textColor = percentage > 30 ? '#000000' : '#F2575D';
                       if (i < length) {
                         return (
                           <div
+                            key={i}
                             style={{ width: width + '%' }}
                             className={`flex flex-col justify-center items-center`}
                           >
@@ -240,8 +157,9 @@ export default function Activities() {
                             <p
                               style={{
                                 wordWrap: 'break-word',
+                                top: tallest[x] + 85,
                               }}
-                              className={`text-xs text-center  w-[50px] bottom-1 absolute items-start`}
+                              className={`text-xs text-center  w-[50px] absolute items-start`}
                             >
                               {name}
                             </p>

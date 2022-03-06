@@ -36,6 +36,20 @@ export default function Signup() {
         className="mt-5 flex w-full flex-wrap"
         autoComplete="false"
       >
+        {/* <label htmlFor="name" className="font-semibold w-full">
+          Name
+          <input
+            {...register('name', {
+              required: true,
+            })}
+            placeholder="Name"
+            type="text"
+            className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
+              errors?.email?.type === 'required' && 'border-red-500'
+            }`}
+          ></input>
+        </label> */}
+
         <label htmlFor="email" className="font-semibold w-full">
           Email
           <input
@@ -123,9 +137,9 @@ export default function Signup() {
         </Button>
       </form>
 
-      <Button className={'mt-5 border border-primary text-primary font-bold'}>
+      {/* <Button className={'mt-5 border border-primary text-primary font-bold'}>
         Sign up with Google
-      </Button>
+      </Button> */}
 
       <p className="mt-5 font-semibold w-full  text-gray-primary text-[12.13px]">
         Already have an account?

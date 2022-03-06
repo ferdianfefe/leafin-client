@@ -5,7 +5,7 @@ import Log from '@/components/activities/plant/Log';
 import Error from 'next/error';
 
 export async function getServerSideProps({ req, query }) {
-  const res = await fetch(`${config.apiURL}/log/` + query.plantName, {
+  const res = await fetch(`${config.apiURL}/log/one/` + query.plantName, {
     method: 'GET',
     headers: {
       cookie: `refreshToken=${req?.cookies?.refreshToken}; accessToken=${req?.cookies?.accessToken};`,
@@ -28,7 +28,7 @@ export default function Detail(props) {
     return <Error statusCode={props.errorCode} />;
   }
   const data = props.data.data.userPlant;
-  
+
   const plant = {
     name: data.plantType.name,
     userPlantName: data.name,
