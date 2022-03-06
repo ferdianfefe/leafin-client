@@ -20,7 +20,7 @@ export default function Add() {
   } = useForm();
 
   useEffect(() => {
-    setValue("deviceID", "cgTlKPTGS89Tb0RaSm-xDJb3emLQLq1J");
+    setValue("token", "cgTlKPTGS89Tb0RaSm-xDJb3emLQLq1J");
   });
 
   const submitHandler = (formData) => {
@@ -57,17 +57,17 @@ export default function Add() {
               </a>
             </Link>
           </div>
-          <label htmlFor="deviceID" className="font-semibold w-full">
+          <label htmlFor="token" className="font-semibold w-full">
             Device ID(Token)
             <input
-              {...register("deviceID", {
+              {...register("token", {
                 required: true,
               })}
               placeholder="Hu Tao"
               type="text"
               disabled
               className={`mt-2 px-4 border-primary border w-full py-4 rounded-xl ${
-                errors?.deviceID?.type === "required" && "border-red-500"
+                errors?.token?.type === "required" && "border-red-500"
               }`}
             ></input>
           </label>

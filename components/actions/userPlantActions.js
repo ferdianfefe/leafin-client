@@ -7,7 +7,7 @@ import axios from "axios";
 import config from "../../config";
 
 const addUserPlant =
-  ({ iotToken, plantName, plantType }) =>
+  ({ token, plantName, plantType }) =>
   async (dispatch) => {
     try {
       dispatch({ type: USER_GET_USERPLANT_REQUEST });
@@ -15,7 +15,7 @@ const addUserPlant =
       const { data } = await axios.post(
         `${config.apiURL}/user-plant/`,
         {
-          iotToken,
+          token,
           plantName,
           plantType,
         },
