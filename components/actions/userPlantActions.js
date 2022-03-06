@@ -2,9 +2,38 @@ import {
   USER_GET_USERPLANT_REQUEST,
   USER_GET_USERPLANT_SUCCESS,
   USER_GET_USERPLANT_FAILURE,
-} from '../../constants/userConstants';
-import axios from 'axios';
-import config from '../../config';
+} from "../../constants/userConstants";
+import axios from "axios";
+import config from "../../config";
+
+const addUserPlant =
+  ({ iotToken, plantName, plantType }) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: USER_GET_USERPLANT_REQUEST });
+
+      const { data } = await axios.post(
+        `${config.apiURL}/user-plant/`,
+        {
+          iotToken,
+          plantName,
+          plantType,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch({ type: USER_GET_USERPLANT_SUCCESS, payload: data });
+
+      return Promise.resolve(data);
+    } catch (error) {
+      dispatch({
+        type: USER_GET_USERPLANT_FAILURE,
+        payload: error?.response?.data?.message || error.message,
+      });
+      return Promise.reject(error?.response?.data?.message || error.message);
+    }
+  };
 
 const getUserPlant = () => async (dispatch) => {
   try {
@@ -34,4 +63,4 @@ const getServerUserPlant = async (req) => {
   return data;
 };
 
-export { getUserPlant, getServerUserPlant };
+export { addUserPlant, getUserPlant, getServerUserPlant };
