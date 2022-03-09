@@ -109,7 +109,7 @@ export default function Marketplace() {
         <div className="flex flex-wrap items-center w-full justify-between mb-20">
           {barang.map(({ stars, name, price, image }, i) => {
             return (
-              <Link key={i} href={'marketplace/' + name}>
+              <Link key={i} href={'marketplace/' + name.replace(' ', '-')}>
                 <a className="h-[269px] rounded-xl w-[48%] mb-3">
                   <div className="relative h-[182px] overflow-hidden rounded-t-xl">
                     <Image

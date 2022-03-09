@@ -180,7 +180,7 @@ export default function Activities() {
           <label className="text-left">All Plants</label>
           <div className="flex mt-3 justify-between flex-wrap gap-y-3">
             <Swiper
-              slidesPerView={3}
+              slidesPerView={plant.length < 3 ? plant.length : 3}
               spaceBetween={5}
               slidesPerGroup={3}
               loopFillGroupWithBlank={true}
@@ -192,7 +192,10 @@ export default function Activities() {
                       <a className="bg-[#DCFFE3] pt-2 pb-9 px-3 rounded-full flex flex-col items-center justify-center">
                         <div className="w-20 h-20 rounded-full relative overflow-hidden">
                           <Image
-                            src={plantType.pictureFileURL}
+                            src={
+                              plantType.pictureFileURL ||
+                              plantType.pictureFileId
+                            }
                             objectFit="cover"
                             layout="fill"
                             alt="profile picture"

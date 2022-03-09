@@ -8,7 +8,7 @@ const FeedItem = ({ slug, imageUrl, author, title, tags }) => {
   };
   return (
     <Link href={"feeds/" + slug}>
-      <a className="bg-white p-5 rounded-xl flex flex shadow-md">
+      <a className="bg-white p-5 rounded-xl flex shadow-md">
         <div className="rounded-md flex-none w-20 h-20 mr-3 my-auto relative overflow-hidden">
           <Image
             src={imageUrl}

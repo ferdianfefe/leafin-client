@@ -37,8 +37,6 @@ Profile.getInitialProps = wrapper.getInitialPageProps(
         dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: data });
       } else if (user.user?.data == null) {
         dispatch(getProfile());
-      } else {
-        console.log('sudah ada data');
       }
 
       /* User Plant */
@@ -61,7 +59,6 @@ export default function Profile(props) {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(reduxPlant?.plants?.data?.plants);
     setPlant(reduxPlant?.plants?.data?.plants || []);
   }, [setPlant, reduxPlant?.plants?.data?.plants]);
 
@@ -79,7 +76,7 @@ export default function Profile(props) {
       method: 'GET',
     });
 
-    router.push('/');
+    router.push('/home');
   };
 
   // Ambil payload pakai SSR
@@ -177,7 +174,13 @@ export default function Profile(props) {
                     <a className="bg-white w-[48%] py-5 rounded-xl flex flex-col items-center justify-center">
                       <div className="w-28 h-28 rounded-full relative overflow-hidden">
                         <Image
+<<<<<<< HEAD
                           src={plantType.pictureFileURL}
+=======
+                          src={
+                            plantType.pictureFileURL || plantType.pictureFileId
+                          }
+>>>>>>> 1ad5b3d2d88d9ddfb0642b40b7b64bd700d765fa
                           objectFit="cover"
                           layout="fill"
                           alt="profile picture"

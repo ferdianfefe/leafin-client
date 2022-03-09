@@ -28,8 +28,6 @@ Edit.getInitialProps = wrapper.getInitialPageProps(
         dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: data });
       } else if (user.user?.data == null) {
         dispatch(getProfile());
-      } else {
-        console.log("sudah ada data");
       }
     }
 );
