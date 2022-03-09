@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 export default function Idmarketplace() {
   const router = useRouter();
   const { id } = router.query;
-  const image = id.replace(' ', '-');
   return (
     <>
       <Link href="/marketplace">
@@ -23,7 +22,7 @@ export default function Idmarketplace() {
         </a>
       </Link>
       <div className="relative w-full h-[400px] -z-10">
-        <Image src={`/assets/${image}.png`} layout="fill" alt="Pupuk Navos" />
+        <Image src={`/assets/${id}.png`} layout="fill" alt="Pupuk Navos" />
       </div>
       <div className="fixed bottom-0 container mx-auto px-5 rounded-t-2xl bg-white">
         <div className="flex justify-between font-bold items-center pt-3">

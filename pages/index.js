@@ -31,8 +31,6 @@ Index.getInitialProps = wrapper.getInitialPageProps(
         dispatch({ type: USER_GET_USERPLANT_SUCCESS, payload: data });
       } else if (userPlant.plants == null) {
         dispatch(getUserPlant());
-      } else {
-        console.log('sudah ada data');
       }
 
       /* Get profile */
@@ -45,8 +43,6 @@ Index.getInitialProps = wrapper.getInitialPageProps(
         dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: data });
       } else if (user.user?.data == null) {
         dispatch(getProfile());
-      } else {
-        console.log('sudah ada data');
       }
     }
 );
@@ -230,7 +226,9 @@ export default function Index(props) {
                     <a className="bg-white w-[48%] py-5 rounded-xl flex flex-col items-center justify-center">
                       <div className="w-28 h-28 rounded-full relative overflow-hidden">
                         <Image
-                          src={plantType.pictureFileId}
+                          src={
+                            plantType.pictureFileURL || plantType.pictureFileId
+                          }
                           objectFit="cover"
                           layout="fill"
                           alt="profile picture"
@@ -306,7 +304,7 @@ export default function Index(props) {
             <div className="flex mt-5 justify-between flex-wrap gap-y-3">
               {items.map(({ stars, name, price, image }, i) => {
                 return (
-                  <Link key={i} href={'marketplace/' + name}>
+                  <Link key={i} href={'marketplace/' + name.replace(' ', '-')}>
                     <a className="h-[269px] rounded-xl w-[48%] mb-3">
                       <div className="relative h-[182px] overflow-hidden rounded-t-xl">
                         <Image
