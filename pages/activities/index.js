@@ -107,7 +107,7 @@ export default function Activities() {
   const [tallest, setTallest] = useState([0, 0, 0]);
 
   return (
-    <>
+  <>
       <div className="container mx-auto p-5 flex flex-wrap justify-center">
         {/* <div className="flex flex-col w-full justify-center items-center"> */}
         <h1 className="font-bold text-2xl text-center px-10 w-full mb-5">
@@ -192,7 +192,7 @@ export default function Activities() {
                       <a className="bg-[#DCFFE3] pt-2 pb-9 px-3 rounded-full flex flex-col items-center justify-center">
                         <div className="w-20 h-20 rounded-full relative overflow-hidden">
                           <Image
-                            src={plantType.pictureFileId}
+                            src={plantType.pictureFileURL}
                             objectFit="cover"
                             layout="fill"
                             alt="profile picture"
