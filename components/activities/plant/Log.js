@@ -1,33 +1,53 @@
-import Image from "next/image";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import io from "socket.io-client";
-import { getPlantLog } from "@/components/actions/logActions";
-import config from "../../../config";
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+// import io from 'socket.io-client';
+import { getPlantLog } from '@/components/actions/logActions';
+// import config from '../../../config';
 
 const Log = ({ props }) => {
   const userPlantLog = useSelector((state) => state.log.log);
-  const data = userPlantLog ? userPlantLog : props.data.data;
+  const [data, setData] = useState(
+    userPlantLog ? userPlantLog : props.data.data
+  );
+  // const data = userPlantLog ? userPlantLog : props.data.data;
   const plantID = props.data.data.userPlant._id;
-  let socket;
+  // let socket;
 
   const dispatch = useDispatch();
 
-  useEffect(() => socketInitializer(), []);
+  // useEffect(() => socketInitializer(), []);
 
-  const socketInitializer = async () => {
-    socket = io(config.socketURL);
+  // const socketInitializer = async () => {
+  //   socket = io(config.socketURL);
 
-    socket.on("iot-data-update", async () => {
+  //   socket.on('iot-data-update', async () => {
+  //     console.log('socket data update');
+  //     dispatch(getPlantLog(plantID));
+  //   });
+  // };
+
+  useEffect(() => {
+    console.log(userPlantLog);
+    setData(userPlantLog || props.data.data);
+  }, [setData, userPlantLog]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
       dispatch(getPlantLog(plantID));
-    });
-  };
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   /* Destroy socket io connection */
-  useEffect(() => () => {
-    console.log("Destroying socket io connection");
-    socket.disconnect();
-  }, []);
+  // useEffect(
+  //   () => () => {
+  //     console.log('Destroying socket io connection');
+  //     socket.disconnect();
+  //   },
+  //   []
+  // );
 
   const plant = {
     data: [
@@ -39,25 +59,25 @@ const Log = ({ props }) => {
       //   secColor: 'FFF0D9',
       // },
       {
-        name: "sunlight",
-        data: data.lightIntensity || 0 + "%",
-        svg: "/assets/sun.svg",
-        color: "FFC061",
-        secColor: "FFF0D9",
+        name: 'sunlight',
+        data: data.lightIntensity || 0 + '%',
+        svg: '/assets/sun.svg',
+        color: 'FFC061',
+        secColor: 'FFF0D9',
       },
       {
-        name: "water level",
-        data: data.waterLevel || 0 + "%",
-        svg: "/assets/water.svg",
-        color: "61B4FF",
-        secColor: "C7E4FF",
+        name: 'water level',
+        data: data.waterLevel || 0 + '%',
+        svg: '/assets/water.svg',
+        color: '61B4FF',
+        secColor: 'C7E4FF',
       },
       {
-        name: "humidity",
-        data: data.humidity || 0 + "%",
-        svg: "/assets/humidity.svg",
-        color: "0A7BE0",
-        secColor: "C7E4FF",
+        name: 'humidity',
+        data: data.humidity || 0 + '%',
+        svg: '/assets/humidity.svg',
+        color: '0A7BE0',
+        secColor: 'C7E4FF',
       },
       // {
       //   name: 'fertilizer',
@@ -98,7 +118,7 @@ const Log = ({ props }) => {
               >
                 <div
                   style={{
-                    width: name != "ph level" ? data : (data / 14) * 100 + "%",
+                    width: name != 'ph level' ? data : (data / 14) * 100 + '%',
                     backgroundColor: `#${color}`,
                   }}
                   className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center`}
