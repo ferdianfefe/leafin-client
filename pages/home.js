@@ -18,16 +18,16 @@ export default function Home() {
     {
       image: '/assets/homepage2.svg',
       altImg: 'homepage Image',
-      title: 'Suitable reccomendation',
+      title: 'Suitable recommendation',
       description: 'Having difficulties in choosing what to plant?',
-      description_bottom: 'We will reccomend it to you',
+      description_bottom: 'We will recommend it to you',
     },
     {
       image: '/assets/homepage3.svg',
       altImg: 'homepage Image',
       title: 'The all ready assistance',
       description: 'Having difficulties using our apps?',
-      description_bottom: 'We always ready to help',
+      description_bottom: 'We are always ready to help',
     },
   ];
 
