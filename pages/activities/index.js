@@ -45,8 +45,7 @@ Activities.getInitialProps = wrapper.getInitialPageProps(
         const data = await getServerAllPlantsLogs(req);
 
         dispatch({ type: USER_GET_ALL_USERPLANT_LOG_SUCCESS, payload: data });
-      } else if (log.logs == null) {
-        console.log("sini2");
+      } else {
         dispatch(getAllPlantsLogs());
       }
     }
@@ -76,7 +75,7 @@ export default function Activities() {
     console.log(reduxPlant?.plants?.data?.plants);
     setPlant(reduxPlant?.plants?.data?.plants || []);
   }, [setPlant, reduxPlant?.plants?.data?.plants]);
-
+  
   useEffect(() => {
     reduxLogs.logs?.data.map((data) => {
       if (data != null) {
@@ -96,7 +95,7 @@ export default function Activities() {
         setLogs((prevState) => [...prevState]);
       }
     });
-  }, [reduxLogs.logs?.data]);
+  }, []);
 
   const todolist = [
     { svg: "/assets/water.svg", todo: "Watering Orchidaceae" },

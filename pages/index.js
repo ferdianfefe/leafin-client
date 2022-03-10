@@ -11,9 +11,7 @@ import {
   USER_GET_USERPLANT_REQUEST,
   USER_GET_USERPLANT_SUCCESS,
 } from "constants/userConstants";
-import {
-  
-} from "constants/feedConstants";
+import {} from "constants/feedConstants";
 import {
   USER_GET_PROFILE_REQUEST,
   USER_GET_PROFILE_SUCCESS,
@@ -33,7 +31,7 @@ Index.getInitialProps = wrapper.getInitialPageProps(
         const data = await getServerUserPlant(req);
 
         dispatch({ type: USER_GET_USERPLANT_SUCCESS, payload: data });
-      } else if (userPlant.plants == null) {
+      } else {
         dispatch(getUserPlant());
       }
 
@@ -224,6 +222,11 @@ export default function Index(props) {
           <div className="font-bold mt-10 w-full">
             <label className="text-left">Your Devices</label>
             <div className="flex mt-5 justify-between flex-wrap gap-y-3">
+              {plant.length == 0 && (
+                <small className="text-[#B8B8B8] text-thin">
+                  You don't have a device
+                </small>
+              )}
               {plant.map(({ name, _id, plantType }, i) => {
                 return (
                   <Link key={i} href={"activities/" + _id}>

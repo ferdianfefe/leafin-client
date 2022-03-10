@@ -57,7 +57,7 @@ export default function Detail(props) {
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
       <div className="flex flex-col justify-center items-center w-full ">
         <h1 className="font-bold text-2xl mb-10">{plant.name}</h1>
-        <Link href="/">
+        <Link href="/activities">
           <a className="absolute left-5 mb-10">
             <div className="w-5 h-5 relative items-center justify-self-end">
               <Image
