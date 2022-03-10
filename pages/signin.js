@@ -20,8 +20,12 @@ export default function Signin() {
 
   const loginHandler = async ({ email, password }) => {
     dispatch(signin(email, password))
-      .then(() => {
-        router.push("profile");
+      .then((data) => {
+        if (data.hasSubmittedQuiz) {
+          router.push("/");
+        } else {
+          router.push("/get-started");
+        }
       })
       .catch((error) => {
         setError(error);

@@ -12,6 +12,9 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAILURE,
   USER_SELECT_PICTURE,
+  USER_SET_QUIZ_STATUS_REQUEST,
+  USER_SET_QUIZ_STATUS_SUCCESS,
+  USER_SET_QUIZ_STATUS_FAILURE,
 } from "../../constants/userConstants";
 
 const initialState = {
@@ -113,6 +116,22 @@ const userReducer = (state = initialState, action) => {
         user: {
           ...state.user,
           selectedPicture: payload,
+        },
+      };
+    case USER_SET_QUIZ_STATUS_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+    case USER_SET_QUIZ_STATUS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        user: {
+          ...state.user,
+          hasSubmittedQuiz: payload,
         },
       };
     default:

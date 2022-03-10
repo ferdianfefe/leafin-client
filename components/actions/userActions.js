@@ -11,9 +11,12 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAILURE,
-} from '../../constants/userConstants';
-import axios from 'axios';
-import config from '../../config';
+  USER_SET_QUIZ_STATUS_REQUEST,
+  USER_SET_QUIZ_STATUS_SUCCESS,
+  USER_SET_QUIZ_STATUS_FAILURE,
+} from "../../constants/userConstants";
+import axios from "axios";
+import config from "../../config";
 
 const signin = (email, password) => async (dispatch) => {
   try {
@@ -27,7 +30,7 @@ const signin = (email, password) => async (dispatch) => {
 
     dispatch({ type: USER_SIGNIN_SUCCESS, payload: { data: data.message } });
 
-    return Promise.resolve(data);
+    return Promise.resolve(data.message);
   } catch (error) {
     dispatch({
       type: USER_SIGNIN_FAILURE,
@@ -114,6 +117,30 @@ const selectPicture = (picture) => async (dispatch) => {
   return Promise.resolve();
 };
 
+const setQuizStatus = () => async (dispatch) => {
+  try {
+    dispatch({ type: USER_SET_QUIZ_STATUS_REQUEST });
+
+    const { data } = await axios.post(
+      `${config.apiURL}/user/quiz/`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+
+    dispatch({ type: USER_SET_QUIZ_STATUS_SUCCESS, payload: data.data });
+
+    return Promise.resolve(data);
+  } catch (error) {
+    dispatch({
+      type: USER_SET_QUIZ_STATUS_FAILURE,
+      payload: error?.response?.data?.message || error.message,
+    });
+    return Promise.reject(error?.response?.data?.message || error.message);
+  }
+};
+
 export {
   signin,
   signup,
@@ -121,4 +148,5 @@ export {
   updateProfile,
   selectPicture,
   getServerProfile,
+  setQuizStatus,
 };

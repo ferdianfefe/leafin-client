@@ -1,26 +1,30 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setQuizStatus } from "../components/actions/userActions";
 import Image from "next/image";
 import Button from "../components/Button";
 
 export default function Question() {
+  const dispatch = useDispatch();
+
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState([]);
 
-  useEffect(() => {
-    console.log(answers);
+  useEffect(async () => {
     if (step === 0) {
       setAnswers([]);
     }
   }, [answers]);
 
+  const submitQuiz = () => {
+    dispatch(setQuizStatus());
+  };
   const recommendationList = [
     {
       name: "Orchid",
       image: "/images/orchid.jpg",
-    }
-  ]
-  
-
+    },
+  ];
 
   const questions = [
     {
@@ -42,10 +46,7 @@ export default function Question() {
     },
     {
       question: "Are you adventorous in choosing the plants?",
-      options: [
-        {text: "Yes"},
-        {text: "No"},
-      ],
+      options: [{ text: "Yes" }, { text: "No" }],
     },
   ];
 
@@ -131,7 +132,9 @@ export default function Question() {
           className={"mt-5 border bg-primary text-white font-bold"}
           onClick={() => {
             setStep(step + 1);
-            console.log(answers);
+            if (step === questions.length) {
+              submitQuiz();
+            }
           }}
         >
           Next
