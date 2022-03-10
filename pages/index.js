@@ -12,9 +12,13 @@ import {
   USER_GET_USERPLANT_SUCCESS,
 } from "constants/userConstants";
 import {
+  
+} from "constants/feedConstants";
+import {
   USER_GET_PROFILE_REQUEST,
   USER_GET_PROFILE_SUCCESS,
 } from "constants/userConstants";
+
 import { wrapper } from "@/components/store/store";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -304,7 +308,7 @@ export default function Index(props) {
             <div className="flex mt-5 justify-between flex-wrap gap-y-3">
               {items.map(({ stars, name, price, image }, i) => {
                 return (
-                  <Link key={i} href={'marketplace/' + name.replace(' ', '-')}>
+                  <Link key={i} href={"marketplace/" + name.replace(" ", "-")}>
                     <a className="h-[269px] rounded-xl w-[48%] mb-3">
                       <div className="relative h-[182px] overflow-hidden rounded-t-xl">
                         <Image

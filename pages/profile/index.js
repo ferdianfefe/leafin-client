@@ -174,13 +174,9 @@ export default function Profile(props) {
                     <a className="bg-white w-[48%] py-5 rounded-xl flex flex-col items-center justify-center">
                       <div className="w-28 h-28 rounded-full relative overflow-hidden">
                         <Image
-<<<<<<< HEAD
-                          src={plantType.pictureFileURL}
-=======
                           src={
                             plantType.pictureFileURL || plantType.pictureFileId
                           }
->>>>>>> 1ad5b3d2d88d9ddfb0642b40b7b64bd700d765fa
                           objectFit="cover"
                           layout="fill"
                           alt="profile picture"
