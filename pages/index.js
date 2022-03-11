@@ -114,7 +114,7 @@ export default function Index(props) {
     for (let i = 0; i < stars; i++) {
       result.push(
         <div className="w-[9px] h-[9px] relative">
-          <Image src="/assets/stars.svg" alt="stars" layout="fill" />
+          <Image key={i} src="/assets/stars.svg" alt="stars" layout="fill" />
         </div>
       );
     }

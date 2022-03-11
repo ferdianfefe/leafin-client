@@ -100,9 +100,8 @@ export default function Feeds() {
   };
 
   return (
-    <div className="container mx-auto p-5 flex flex-wrap justify-center">
-      {console.log()}
-      <div className="flex flex-col justify-center items-center w-full px-5">
+    <div className="container h-[100vh] mx-auto p-5 flex flex-col justify-center">
+      <div className="flex-none flex flex-col justify-center items-center w-full px-5">
         <h1 className="font-bold text-2xl">Feeds</h1>
         <Link href="/">
           <a className="absolute left-5">
@@ -131,7 +130,7 @@ export default function Feeds() {
           </a>
         </Link>
       </div>
-      <div className=" flex flex-wrap items-center w-full justify-start">
+      <div className="flex-none flex flex-wrap items-center w-full justify-start">
         <Swiper
           slidesPerView={3}
           spaceBetween={5}
@@ -159,7 +158,7 @@ export default function Feeds() {
           <SwiperSlide style={{ width: "0px" }}></SwiperSlide>
         </Swiper>
       </div>
-      <ScrollToBottom className="mb-20">
+      <ScrollToBottom className="flex-1 overflow-y-auto">
         {accFeeds.map((feed) => (
           <FeedItem
             key={feed._id}
@@ -170,10 +169,10 @@ export default function Feeds() {
             tags={feed.tags}
           />
         ))}
+        <div ref={observe} className="observer">
+          {inView && <h1></h1>}
+        </div>
       </ScrollToBottom>
-      <div ref={observe} className="observer">
-        {inView && <h1></h1>}
-      </div>
       <Navbar active={"feeds"}></Navbar>
     </div>
   );

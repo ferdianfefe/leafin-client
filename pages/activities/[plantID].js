@@ -1,12 +1,12 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import config from '../../config';
-import Log from '@/components/activities/plant/Log';
-import Error from 'next/error';
+import Image from "next/image";
+import Link from "next/link";
+import config from "../../config";
+import Log from "@/components/activities/plant/Log";
+import Error from "next/error";
 
 export async function getServerSideProps({ req, query }) {
   const res = await fetch(`${config.apiURL}/log/one/` + query.plantID, {
-    method: 'GET',
+    method: "GET",
     headers: {
       cookie: `refreshToken=${req?.cookies?.refreshToken}; accessToken=${req?.cookies?.accessToken};`,
     },
@@ -42,7 +42,7 @@ export default function Detail(props) {
     for (let i = 0; i < 7; i++) {
       const today = i == 0 ? true : false;
       weekDays.push({
-        name: baseDate.toLocaleDateString(locale, { weekday: 'narrow' }),
+        name: baseDate.toLocaleDateString(locale, { weekday: "narrow" }),
         date: baseDate.getDate(),
         today,
       });
@@ -51,7 +51,7 @@ export default function Detail(props) {
     return weekDays;
   }
 
-  const date = getWeekDays('id-ID');
+  const date = getWeekDays("id-ID");
 
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
@@ -72,7 +72,7 @@ export default function Detail(props) {
         </Link>
       </div>
       <div className="h-52 w-64 relative rounded-xl overflow-hidden">
-        <Image src={plant.image} layout="fill" alt={plant.name + ' image'} />
+        <Image src={plant.image} layout="fill" alt={plant.name + " image"} />
       </div>
       <div className="bg-white mt-10 flex flex-wrap justify-center pb-3 border w-full h-full rounded-xl">
         <p className="mt-2 font-bold w-full flex justify-center mb-2">
@@ -84,7 +84,7 @@ export default function Detail(props) {
               <div
                 key={i}
                 className={`w-full font-prompt flex-wrap flex justify-center text-center pt-2 pb-1 ${
-                  today ? 'text-[#1A9F35]' : 'text-[#D2E7D6]'
+                  today ? "text-[#1A9F35]" : "text-[#D2E7D6]"
                 }`}
               >
                 <span className="text-xs w-full font-semibold uppercase">
