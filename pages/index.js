@@ -1,25 +1,25 @@
-import Navbar from "@/components/Navbar";
-import Image from "next/image";
-import Link from "next/link";
+import Navbar from '@/components/Navbar';
+import Image from 'next/image';
+import Link from 'next/link';
 
 import {
   getUserPlant,
   getServerUserPlant,
-} from "@/components/actions/userPlantActions";
-import { getProfile, getServerProfile } from "@/components/actions/userActions";
+} from '@/components/actions/userPlantActions';
+import { getProfile, getServerProfile } from '@/components/actions/userActions';
 import {
   USER_GET_USERPLANT_REQUEST,
   USER_GET_USERPLANT_SUCCESS,
-} from "constants/userConstants";
-import {} from "constants/feedConstants";
+} from 'constants/userConstants';
+import {} from 'constants/feedConstants';
 import {
   USER_GET_PROFILE_REQUEST,
   USER_GET_PROFILE_SUCCESS,
-} from "constants/userConstants";
+} from 'constants/userConstants';
 
-import { wrapper } from "@/components/store/store";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { wrapper } from '@/components/store/store';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 Index.getInitialProps = wrapper.getInitialPageProps(
   ({ getState, dispatch }) =>
@@ -57,17 +57,17 @@ export default function Index(props) {
   const [feeds, setFeeds] = useState([
     {
       _id: 1,
-      author: "Budi",
-      title: "Hasil Tanam Menggunakan Alat Otomatis dari Leafin",
-      pictureFileURL: "/assets/Pupuk-Za.png",
+      author: 'Budi',
+      title: 'Hasil Tanam Menggunakan Alat Otomatis dari Leafin',
+      pictureFileURL: '/assets/Pupuk-ZA.jpg',
       likes: 100,
       views: 200,
     },
     {
       _id: 2,
-      author: "Sarah",
-      title: "Tips Pemula Dalam Menggunakan Pupuk Kompos",
-      pictureFileURL: "/assets/Pupuk-Za.png",
+      author: 'Sarah',
+      title: 'Tips Pemula Dalam Menggunakan Pupuk Kompos',
+      pictureFileURL: '/assets/Pupuk-ZA.jpg',
       likes: 100,
       views: 200,
     },
@@ -75,15 +75,15 @@ export default function Index(props) {
 
   const [items, setItems] = useState([
     {
-      name: "Pupuk Nafos",
+      name: 'Pupuk Nafos',
       price: 12.69,
-      image: "/assets/Pupuk-Nafos.png",
+      image: '/assets/Pupuk-Nafos.jpg',
       stars: 4,
     },
     {
-      name: "Pupuk ZA",
+      name: 'Pupuk ZA',
       price: 12.69,
-      image: "/assets/Pupuk-Za.png",
+      image: '/assets/Pupuk-ZA.jpg',
       stars: 4,
     },
   ]);
@@ -98,7 +98,7 @@ export default function Index(props) {
     for (let i = 0; i < 7; i++) {
       const today = i == 0 ? true : false;
       weekDays.push({
-        name: baseDate.toLocaleDateString(locale, { weekday: "narrow" }),
+        name: baseDate.toLocaleDateString(locale, { weekday: 'narrow' }),
         date: baseDate.getDate(),
         today,
       });
@@ -107,14 +107,19 @@ export default function Index(props) {
     return weekDays;
   }
 
-  const date = getWeekDays("id-ID");
+  const date = getWeekDays('id-ID');
 
   const funcStars = (stars) => {
     let result = [];
     for (let i = 0; i < stars; i++) {
       result.push(
         <div className="w-[9px] h-[9px] relative">
-          <Image key={i} src="/assets/stars.svg" alt="stars" layout="fill" />
+          <Image
+            src="/assets/stars.svg"
+            alt="stars"
+            layout="fill"
+            loading="lazy"
+          />
         </div>
       );
     }
@@ -126,7 +131,12 @@ export default function Index(props) {
         <nav className="flex flex-between">
           <div className="mt-10 px-5 flex flex-1 items-center">
             <div className="w-7 h-7 relative mr-3">
-              <Image src="/assets/leafinLogo.svg" layout="fill" alt="leafin" />
+              <Image
+                src="/assets/leafinLogo.svg"
+                layout="fill"
+                alt="leafin"
+                loading="lazy"
+              />
             </div>
             <h1 className="text-xl font-extrabold bg-clip-text bg-gradient-to-r from-[#34C551] to-primary text-transparent">
               Leafin
@@ -151,18 +161,33 @@ export default function Index(props) {
               <div className="rounded-lg w-8 h-8 bg-[#C4C4C4]"></div>
             )}
             <div className="w-6 h-6 relative mr-3">
-              <Image src={"/assets/gearIcon.svg"} layout="fill" alt="gear" />
+              <Image
+                src={'/assets/gearIcon.svg'}
+                layout="fill"
+                alt="gear"
+                loading="lazy"
+              />
             </div>
             <div className="w-6 h-6 relative mr-3">
-              <Image src={"/assets/bellIcon.svg"} layout="fill" alt="bell" />
+              <Image
+                src={'/assets/bellIcon.svg'}
+                layout="fill"
+                alt="bell"
+                loading="lazy"
+              />
             </div>
           </div>
         </nav>
         <div className="absolute w-[319px] h-[296px] left-0 right-0 mx-auto top-[110px]">
-          <Image src="/assets/white.svg" layout="fill" alt="white" />
+          <Image src="/assets/white.svg" layout="fill" alt="white" priority />
         </div>
         <div className="absolute w-auto h-full left-2 right-0 mx-auto top-[82px]">
-          <Image src="/assets/full.svg" layout="fill" alt="home" />
+          <Image
+            src="/assets/full.svg"
+            layout="fill"
+            alt="home"
+            loading="lazy"
+          />
         </div>
       </div>
       <div className=" bg-[#E5E5E5]/30 min-h-screen">
@@ -174,7 +199,7 @@ export default function Index(props) {
                   <div
                     key={i}
                     className={`w-full font-prompt flex-wrap flex justify-center text-center pt-2 pb-1 ${
-                      today ? "text-[#1A9F35]" : "text-[#D2E7D6]"
+                      today ? 'text-[#1A9F35]' : 'text-[#D2E7D6]'
                     }`}
                   >
                     <span className="text-xs w-full font-semibold uppercase">
@@ -198,9 +223,10 @@ export default function Index(props) {
             <a className="mt-3 font-semibold bg-white py-3 border w-full rounded-xl flex justify-center items-center">
               <div className="w-6 h-6 relative mr-3">
                 <Image
-                  src={"/assets/barcode-scanner.svg"}
+                  src={'/assets/barcode-scanner.svg'}
                   layout="fill"
-                  alt="barcode"
+                  alt="barcode icon"
+                  loading="lazy"
                 />
               </div>
               Scan Environment
@@ -210,9 +236,10 @@ export default function Index(props) {
             <a className="mt-3 font-semibold bg-white py-3 border w-full rounded-xl flex justify-center items-center">
               <div className="w-6 h-6 relative mr-3">
                 <Image
-                  src={"/assets/plusIcon.svg"}
+                  src={'/assets/plusIcon.svg'}
                   layout="fill"
-                  alt="barcode"
+                  alt="add icon"
+                  loading="lazy"
                 />
               </div>
               Add Device
@@ -224,12 +251,12 @@ export default function Index(props) {
             <div className="flex mt-5 justify-between flex-wrap gap-y-3">
               {plant.length == 0 && (
                 <small className="text-[#B8B8B8] text-thin">
-                  You don't have a device
+                  {"You don't have a device"}
                 </small>
               )}
               {plant.map(({ name, _id, plantType }, i) => {
                 return (
-                  <Link key={i} href={"activities/" + _id}>
+                  <Link key={i} href={'activities/' + _id}>
                     <a className="bg-white w-[48%] py-5 rounded-xl flex flex-col items-center justify-center">
                       <div className="w-28 h-28 rounded-full relative overflow-hidden">
                         <Image
@@ -256,7 +283,7 @@ export default function Index(props) {
               {feeds.map(
                 ({ author, title, _id, pictureFileURL, likes, views }, i) => {
                   return (
-                    <Link key={i} href={"activities/" + _id}>
+                    <Link key={i} href={'activities/' + _id}>
                       <a className="bg-white py-5 rounded-xl flex items-center">
                         <div className="rounded-xl flex-none w-20 h-[100px] mx-3 relative overflow-hidden">
                           <Image
@@ -275,9 +302,10 @@ export default function Index(props) {
                             <div className="flex-1 flex items-center">
                               <div className="w-4 h-4 relative mr-1">
                                 <Image
-                                  src={"/assets/borderHeartIcon.svg"}
+                                  src={'/assets/borderHeartIcon.svg'}
                                   layout="fill"
                                   alt="heart"
+                                  loading="lazy"
                                 />
                               </div>
                               <p className="text-[#E1E1E1] text-xs font-normal">
@@ -287,9 +315,10 @@ export default function Index(props) {
                             <div className="flex-1 flex items-center">
                               <div className="w-4 h-4 relative mr-1">
                                 <Image
-                                  src={"/assets/borderEyeIcon.svg"}
+                                  src={'/assets/borderEyeIcon.svg'}
                                   layout="fill"
                                   alt="eye"
+                                  loading="lazy"
                                 />
                               </div>
                               <p className="text-[#E1E1E1] text-xs font-normal">
@@ -311,7 +340,7 @@ export default function Index(props) {
             <div className="flex mt-5 justify-between flex-wrap gap-y-3">
               {items.map(({ stars, name, price, image }, i) => {
                 return (
-                  <Link key={i} href={"marketplace/" + name.replace(" ", "-")}>
+                  <Link key={i} href={'marketplace/' + name.replace(' ', '-')}>
                     <a className="h-[269px] rounded-xl w-[48%] mb-3">
                       <div className="relative h-[182px] overflow-hidden rounded-t-xl">
                         <Image

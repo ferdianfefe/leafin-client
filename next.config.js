@@ -9,7 +9,12 @@ module.exports = withPWA({
     register: true,
     skipWaiting: true,
     disable: process.env.NODE_ENV === 'development',
-    buildExcludes: [/middleware-manifest\.json$/],
+    buildExcludes: [
+      /middleware-manifest\.json$/,
+      /_middleware.js$/,
+      /_middleware.js.map$/,
+      /middleware-runtime.js$/,
+    ],
   },
   images: {
     domains: ['res.cloudinary.com'],

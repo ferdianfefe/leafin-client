@@ -1,26 +1,26 @@
-import Navbar from "../../components/Navbar";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import Image from "next/image";
-import Link from "next/link";
-import { wrapper } from "@/components/store/store";
+import Navbar from '../../components/Navbar';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import Image from 'next/image';
+import Link from 'next/link';
+import { wrapper } from '@/components/store/store';
 import {
   USER_GET_ALL_USERPLANT_LOG_REQUEST,
   USER_GET_ALL_USERPLANT_LOG_SUCCESS,
   USER_GET_USERPLANT_REQUEST,
   USER_GET_USERPLANT_SUCCESS,
-} from "constants/userConstants";
+} from 'constants/userConstants';
 import {
   getServerUserPlant,
   getUserPlant,
-} from "@/components/actions/userPlantActions";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+} from '@/components/actions/userPlantActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import {
   getAllPlantsLogs,
   getServerAllPlantsLogs,
-} from "@/components/actions/logActions";
+} from '@/components/actions/logActions';
 
 Activities.getInitialProps = wrapper.getInitialPageProps(
   ({ getState, dispatch }) =>
@@ -39,7 +39,6 @@ Activities.getInitialProps = wrapper.getInitialPageProps(
 
       /* Logs */
       if (log.logs == null && !process.browser) {
-        console.log("sini1");
         dispatch({ type: USER_GET_ALL_USERPLANT_LOG_REQUEST });
 
         const data = await getServerAllPlantsLogs(req);
@@ -54,55 +53,119 @@ Activities.getInitialProps = wrapper.getInitialPageProps(
 export default function Activities() {
   let reduxPlant = useSelector((state) => state.userPlant);
   let reduxLogs = useSelector((state) => state.log);
+  const [todo, setTodo] = useState([]);
+  const [humidity, setHumidity] = useState(80);
+  const [temperature, setTemperature] = useState(27);
+  const [lightIntensity, setLightIntensity] = useState(1000);
+
+  const dispatch = useDispatch();
 
   const [logs, setLogs] = useState([
     {
-      name: "Water Level",
+      name: 'Temperature',
       data: [],
     },
     {
-      name: "Humidity",
+      name: 'Humidity',
       data: [],
     },
     {
-      name: "Light Intensity",
+      name: 'Sunlight',
       data: [],
     },
   ]);
   const [plant, setPlant] = useState([]);
 
   useEffect(() => {
-    console.log(reduxPlant?.plants?.data?.plants);
     setPlant(reduxPlant?.plants?.data?.plants || []);
   }, [setPlant, reduxPlant?.plants?.data?.plants]);
-  
+
   useEffect(() => {
-    reduxLogs.logs?.data.map((data) => {
+    reduxLogs.logs?.data.map((data, i) => {
       if (data != null) {
-        const { waterLevel, humidity, lightIntensity, userPlant } = data;
-        logs[0].data.push({
+        // const { temperature, humidity, lightIntensity, userPlant } = data;
+        const { userPlant } = data;
+
+        logs[0].data[i] = {
           name: userPlant.plantType.name,
-          percentage: waterLevel,
-        });
-        logs[1].data.push({
+          percentage: temperature,
+          batasAman: 28,
+        };
+        // if (temperature > 28) {
+        //   const data = `Move ${userPlant.plantType.name} to darker area`;
+        //   // console.log(todo);
+        //   const x = todo.filter((x) => x.todo == data);
+        //   if (x.length == 0) addTodo('/assets/water.svg', data);
+        // } else {
+        //   removeTodo(`Move ${userPlant.plantType.name} to darker area`);
+        // }
+
+        logs[1].data[i] = {
           name: userPlant.plantType.name,
           percentage: humidity,
-        });
-        logs[2].data.push({
+          batasAman: 70,
+        };
+
+        if (humidity < 70) {
+          removeTodo(`Water your ${userPlant.plantType.name}`);
+          const data = `Your ${userPlant.plantType.name} automatically watered`;
+          const x = todo.filter((x) => x.todo == data);
+          if (x.length == 0) addTodo('/assets/water.svg', data);
+        } else if (humidity < 75) {
+          removeTodo(`Your ${userPlant.plantType.name} automatically watered`);
+          const data = `Water your ${userPlant.plantType.name}`;
+          const x = todo.filter((x) => x.todo == data);
+          if (x.length == 0) addTodo('/assets/water.svg', data);
+        } else {
+          removeTodo(`Your ${userPlant.plantType.name} automatically watered`);
+          removeTodo(`Water your ${userPlant.plantType.name}`);
+        }
+
+        logs[2].data[i] = {
           name: userPlant.plantType.name,
-          percentage: lightIntensity,
-        });
+          percentage: Math.ceil((lightIntensity / 10000) * 100),
+          batasAman: 50,
+        };
+        if (lightIntensity > 5000) {
+          removeTodo(`Move ${userPlant.plantType.name} to brighter area`);
+          const data = `Move ${userPlant.plantType.name} to darker area`;
+          const x = todo.filter((x) => x.todo == data);
+          if (x.length == 0) addTodo('/assets/sun.svg', data);
+        } else if (lightIntensity < 1000) {
+          removeTodo(`Move ${userPlant.plantType.name} to darker area`);
+          const data = `Move ${userPlant.plantType.name} to brighter area`;
+          const x = todo.filter((x) => x.todo == data);
+          if (x.length == 0) addTodo('/assets/sun.svg', data);
+        } else {
+          removeTodo(`Move ${userPlant.plantType.name} to darker area`);
+          removeTodo(`Move ${userPlant.plantType.name} to brighter area`);
+        }
+        setTallest([0, 0, 0]);
         setLogs((prevState) => [...prevState]);
       }
     });
+  }, [reduxLogs]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(getAllPlantsLogs());
+      setHumidity(humidity--);
+      const light = lightIntensity + 25;
+      setLightIntensity(light);
+      setTemperature(Math.floor(Math.random() * (28 - 26 + 1)) + 26);
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  const todolist = [
-    { svg: "/assets/water.svg", todo: "Watering Orchidaceae" },
-    { svg: "/assets/water.svg", todo: "Watering Orchidaceae" },
+  const addTodo = (svg, todo) => {
+    // console.log('add todo' + todos
+    setTodo((prevState) => [...prevState, { svg, todo }]);
+  };
 
-    { svg: "/assets/water.svg", todo: "Watering Rosa" },
-  ];
+  const removeTodo = (todo) => {
+    setTodo((prevState) => prevState.filter((index) => index.todo !== todo));
+  };
 
   const [tallest, setTallest] = useState([0, 0, 0]);
 
@@ -117,6 +180,7 @@ export default function Activities() {
           {logs.map(({ name, data }, x) => {
             const length = data.length < 5 ? data.length : 5;
             const width = (1 / length) * 100;
+            // if (x == 0) setTallest([0, 0, 0]);
             return (
               <SwiperSlide
                 key={x}
@@ -128,24 +192,38 @@ export default function Activities() {
                     {name}
                   </p>
                   <div className={`flex items-end w-full mx-3`}>
-                    {data.map(({ name, percentage }, i) => {
-                      const height = percentage * 2 + "px";
+                    {data.map(({ name, percentage, batasAman }, i) => {
+                      const height = percentage * 2 + 'px';
+
                       if (tallest[x] < parseInt(height)) {
                         tallest[x] = parseInt(height);
                         setTallest((prevState) => [...prevState]);
-                        console.log(tallest);
                       }
-                      const color = percentage > 30 ? "#24A3FF" : "#F2575D";
-                      const textColor = percentage > 30 ? "#000000" : "#F2575D";
+                      const color =
+                        x == 0
+                          ? percentage < batasAman
+                            ? '#24A3FF'
+                            : '#F2575D'
+                          : percentage > batasAman
+                          ? '#24A3FF'
+                          : '#F2575D';
+                      const textColor =
+                        x == 0
+                          ? percentage < batasAman
+                            ? '#000000'
+                            : '#F2575D'
+                          : percentage > batasAman
+                          ? '#000000'
+                          : '#F2575D';
                       if (i < length) {
                         return (
                           <div
                             key={i}
-                            style={{ width: width + "%" }}
+                            style={{ width: width + '%' }}
                             className={`flex flex-col justify-center items-center`}
                           >
                             <p style={{ color: textColor }} className="text-sm">
-                              {percentage}%
+                              {x == 0 ? percentage : percentage + '%'}
                             </p>
                             <div
                               style={{
@@ -156,7 +234,7 @@ export default function Activities() {
                             ></div>
                             <p
                               style={{
-                                wordWrap: "break-word",
+                                wordWrap: 'break-word',
                                 top: tallest[x] + 85,
                               }}
                               className={`text-xs text-center  w-[50px] absolute items-start`}
@@ -188,7 +266,7 @@ export default function Activities() {
               {plant.map(({ name, _id, plantType }, i) => {
                 return (
                   <SwiperSlide key={i}>
-                    <Link href={"activities/" + _id}>
+                    <Link href={'activities/' + _id}>
                       <a className="bg-[#DCFFE3] pt-2 pb-9 px-3 rounded-full flex flex-col items-center justify-center">
                         <div className="w-20 h-20 rounded-full relative overflow-hidden">
                           <Image
@@ -213,9 +291,9 @@ export default function Activities() {
         </div>
 
         <div className="font-bold mt-10 w-full mb-14">
-          <label className="text-left">Todo List</label>
+          <label className="text-left">To do List</label>
           <div className="flex flex-wrap gap-2 justify-center w-full items-center mt-5">
-            {todolist.map(({ svg, todo }, i) => {
+            {todo.map(({ svg, todo }, i) => {
               return (
                 <div
                   key={i}
@@ -231,7 +309,7 @@ export default function Activities() {
           </div>
         </div>
       </div>
-      <Navbar active={"activities"}></Navbar>
+      <Navbar active={'activities'}></Navbar>
     </>
   );
 }

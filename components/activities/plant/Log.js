@@ -14,6 +14,10 @@ const Log = ({ props }) => {
   const plantID = props.data.data.userPlant._id;
   // let socket;
 
+  const [humidity, setHumidity] = useState(80);
+  const [temperature, setTemperature] = useState(27);
+  const [lightIntensity, setLightIntensity] = useState(1000);
+
   const dispatch = useDispatch();
 
   // useEffect(() => socketInitializer(), []);
@@ -28,14 +32,18 @@ const Log = ({ props }) => {
   // };
 
   useEffect(() => {
-    console.log(userPlantLog);
+    // console.log(userPlantLog);
     setData(userPlantLog || props.data.data);
   }, [setData, userPlantLog]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(getPlantLog(plantID));
-    }, 10000);
+      setHumidity(humidity--);
+      const light = lightIntensity + 25;
+      setLightIntensity(light);
+      setTemperature(Math.floor(Math.random() * (28 - 26 + 1)) + 26);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -51,53 +59,38 @@ const Log = ({ props }) => {
 
   const plant = {
     data: [
-      // {
-      //   name: 'ph level',
-      //   data: data.phLevel.toString(),
-      //   svg: '/assets/ph.svg',
-      //   color: 'FFC061',
-      //   secColor: 'FFF0D9',
-      // },
       {
         name: 'sunlight',
-        data: data.lightIntensity || 0 + '%',
+        // data: data.lightIntensity || 0 + '%',
+        data: lightIntensity || 0 + '%',
         svg: '/assets/sun.svg',
         color: 'FFC061',
         secColor: 'FFF0D9',
+        batas: 10000,
       },
       {
-        name: 'water level',
-        data: data.waterLevel || 0 + '%',
+        name: 'temperature',
+        // data: data.temperature || 0 + '%',
+        data: temperature || 0 + '%',
         svg: '/assets/water.svg',
         color: '61B4FF',
         secColor: 'C7E4FF',
+        batas: 50,
       },
       {
         name: 'humidity',
-        data: data.humidity || 0 + '%',
+        // data: data.humidity || 0 + '%',
+        data: humidity || 0 + '%',
         svg: '/assets/humidity.svg',
         color: '0A7BE0',
         secColor: 'C7E4FF',
+        batas: 100,
       },
-      // {
-      //   name: 'fertilizer',
-      //   data: data.fertilizer + '%',
-      //   svg: '/assets/fertilizer.svg',
-      //   color: '49AD4D',
-      //   secColor: 'C6EEC8',
-      // },
-      // {
-      //   name: 'soil',
-      //   data: data.soil + '%',
-      //   svg: '/assets/soil.svg',
-      //   color: '884D00',
-      //   secColor: 'FFEDD4',
-      // },
     ],
   };
   return (
     <div className="flex flex-wrap gap-2 justify-center w-full items-center mt-5">
-      {plant.data.map(({ name, data, svg, color, secColor }, i) => {
+      {plant.data.map(({ name, data, svg, color, secColor, batas }, i) => {
         return (
           <div
             key={i}
@@ -118,7 +111,7 @@ const Log = ({ props }) => {
               >
                 <div
                   style={{
-                    width: name != 'ph level' ? data : (data / 14) * 100 + '%',
+                    width: (data / batas) * 100 + '%',
                     backgroundColor: `#${color}`,
                   }}
                   className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center`}

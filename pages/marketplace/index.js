@@ -25,37 +25,37 @@ export default function Marketplace() {
       stars: 4,
       name: 'Pupuk Nafos',
       price: '12.69',
-      image: '/assets/Pupuk-Nafos.png',
+      image: '/assets/Pupuk-Nafos.jpg',
     },
     {
       stars: 4,
       name: 'Pupuk ZA',
       price: '12.69',
-      image: '/assets/Pupuk-Za.png',
+      image: '/assets/Pupuk-ZA.jpg',
     },
     {
       stars: 4,
       name: 'Pupuk Kaltim',
       price: '12.69',
-      image: '/assets/Pupuk-Kaltim.png',
+      image: '/assets/Pupuk-Kaltim.jpg',
     },
     {
       stars: 4,
       name: 'Pupuk Dinosaurus',
       price: '12.69',
-      image: '/assets/Pupuk-Dinosaurus.png',
+      image: '/assets/Pupuk-Dinosaurus.jpg',
     },
     {
       stars: 4,
       name: 'Pupuk Petro',
       price: '12.69',
-      image: '/assets/Pupuk-Petro.png',
+      image: '/assets/Pupuk-Petro.jpg',
     },
     {
       stars: 3,
       name: 'Pupuk Biotara',
       price: '12.69',
-      image: '/assets/Pupuk-Biotara.png',
+      image: '/assets/Pupuk-Biotara.jpg',
     },
   ];
 
