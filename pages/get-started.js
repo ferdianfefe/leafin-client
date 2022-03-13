@@ -129,6 +129,7 @@ export default function Question() {
       )}
       {step >= 1 && step <= questions.length && (
         <Button
+          disabled={!answers[step - 1]}
           className={"mt-5 border bg-primary text-white font-bold"}
           onClick={() => {
             setStep(step + 1);
