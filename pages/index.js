@@ -57,7 +57,7 @@ export default function Index(props) {
       _id: 1,
       author: 'Budi',
       title: 'Hasil Tanam Menggunakan Alat Otomatis dari Leafin',
-      pictureFileURL: '/assets/Pupuk-Za.png',
+      pictureFileURL: '/assets/Pupuk-ZA.jpg',
       likes: 100,
       views: 200,
     },
@@ -65,7 +65,7 @@ export default function Index(props) {
       _id: 2,
       author: 'Sarah',
       title: 'Tips Pemula Dalam Menggunakan Pupuk Kompos',
-      pictureFileURL: '/assets/Pupuk-Za.png',
+      pictureFileURL: '/assets/Pupuk-ZA.jpg',
       likes: 100,
       views: 200,
     },
@@ -75,13 +75,13 @@ export default function Index(props) {
     {
       name: 'Pupuk Nafos',
       price: 12.69,
-      image: '/assets/Pupuk-Nafos.png',
+      image: '/assets/Pupuk-Nafos.jpg',
       stars: 4,
     },
     {
       name: 'Pupuk ZA',
       price: 12.69,
-      image: '/assets/Pupuk-Za.png',
+      image: '/assets/Pupuk-ZA.jpg',
       stars: 4,
     },
   ]);
@@ -112,7 +112,12 @@ export default function Index(props) {
     for (let i = 0; i < stars; i++) {
       result.push(
         <div className="w-[9px] h-[9px] relative">
-          <Image src="/assets/stars.svg" alt="stars" layout="fill" />
+          <Image
+            src="/assets/stars.svg"
+            alt="stars"
+            layout="fill"
+            loading="lazy"
+          />
         </div>
       );
     }
@@ -124,7 +129,12 @@ export default function Index(props) {
         <nav className="flex flex-between">
           <div className="mt-10 px-5 flex flex-1 items-center">
             <div className="w-7 h-7 relative mr-3">
-              <Image src="/assets/leafinLogo.svg" layout="fill" alt="leafin" />
+              <Image
+                src="/assets/leafinLogo.svg"
+                layout="fill"
+                alt="leafin"
+                loading="lazy"
+              />
             </div>
             <h1 className="text-xl font-extrabold bg-clip-text bg-gradient-to-r from-[#34C551] to-primary text-transparent">
               Leafin
@@ -149,18 +159,33 @@ export default function Index(props) {
               <div className="rounded-lg w-8 h-8 bg-[#C4C4C4]"></div>
             )}
             <div className="w-6 h-6 relative mr-3">
-              <Image src={'/assets/gearIcon.svg'} layout="fill" alt="gear" />
+              <Image
+                src={'/assets/gearIcon.svg'}
+                layout="fill"
+                alt="gear"
+                loading="lazy"
+              />
             </div>
             <div className="w-6 h-6 relative mr-3">
-              <Image src={'/assets/bellIcon.svg'} layout="fill" alt="bell" />
+              <Image
+                src={'/assets/bellIcon.svg'}
+                layout="fill"
+                alt="bell"
+                loading="lazy"
+              />
             </div>
           </div>
         </nav>
         <div className="absolute w-[319px] h-[296px] left-0 right-0 mx-auto top-[110px]">
-          <Image src="/assets/white.svg" layout="fill" alt="white" />
+          <Image src="/assets/white.svg" layout="fill" alt="white" priority />
         </div>
         <div className="absolute w-auto h-full left-2 right-0 mx-auto top-[82px]">
-          <Image src="/assets/full.svg" layout="fill" alt="home" />
+          <Image
+            src="/assets/full.svg"
+            layout="fill"
+            alt="home"
+            loading="lazy"
+          />
         </div>
       </div>
       <div className=" bg-[#E5E5E5]/30 min-h-screen">
@@ -198,7 +223,8 @@ export default function Index(props) {
                 <Image
                   src={'/assets/barcode-scanner.svg'}
                   layout="fill"
-                  alt="barcode"
+                  alt="barcode icon"
+                  loading="lazy"
                 />
               </div>
               Scan Environment
@@ -210,7 +236,8 @@ export default function Index(props) {
                 <Image
                   src={'/assets/plusIcon.svg'}
                   layout="fill"
-                  alt="barcode"
+                  alt="add icon"
+                  loading="lazy"
                 />
               </div>
               Add Device
@@ -271,6 +298,7 @@ export default function Index(props) {
                                   src={'/assets/borderHeartIcon.svg'}
                                   layout="fill"
                                   alt="heart"
+                                  loading="lazy"
                                 />
                               </div>
                               <p className="text-[#E1E1E1] text-xs font-normal">
@@ -283,6 +311,7 @@ export default function Index(props) {
                                   src={'/assets/borderEyeIcon.svg'}
                                   layout="fill"
                                   alt="eye"
+                                  loading="lazy"
                                 />
                               </div>
                               <p className="text-[#E1E1E1] text-xs font-normal">

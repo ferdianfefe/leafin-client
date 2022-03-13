@@ -9,14 +9,14 @@ export async function middleware(req) {
     res.cookie('refreshToken', '', {
       httpOnly: true,
       maxAge: 0,
-      domain: 'localhost',
-      // process.env.NODE_ENV === 'development' ? 'localhost' : '.hunaki.my.id',
+      domain:
+        process.env.NODE_ENV === 'development' ? 'localhost' : '.hunaki.my.id',
     });
     res.cookie('accessToken', '', {
       httpOnly: true,
       maxAge: 0,
-      domain: 'localhost',
-      // process.env.NODE_ENV === 'development' ? 'localhost' : '.hunaki.my.id',
+      domain:
+        process.env.NODE_ENV === 'development' ? 'localhost' : '.hunaki.my.id',
     });
 
     return res;

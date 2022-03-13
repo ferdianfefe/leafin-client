@@ -28,7 +28,7 @@ const Log = ({ props }) => {
   // };
 
   useEffect(() => {
-    console.log(userPlantLog);
+    // console.log(userPlantLog);
     setData(userPlantLog || props.data.data);
   }, [setData, userPlantLog]);
 
