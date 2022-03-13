@@ -3,6 +3,7 @@ import Link from 'next/link';
 import config from '../../config';
 import Log from '@/components/activities/plant/Log';
 import Error from 'next/error';
+import Button from '@/components/Button';
 
 export async function getServerSideProps({ req, query }) {
   const res = await fetch(`${config.apiURL}/log/one/` + query.plantID, {
@@ -57,7 +58,7 @@ export default function Detail(props) {
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
       <div className="flex flex-col justify-center items-center w-full ">
         <h1 className="font-bold text-2xl mb-10">{plant.name}</h1>
-        <Link href="/">
+        <Link href="/activities">
           <a className="absolute left-5 mb-10">
             <div className="w-5 h-5 relative items-center justify-self-end">
               <Image
@@ -108,6 +109,9 @@ export default function Detail(props) {
         <Log props={props} />
       </div>
       <div className="mt-20 mb-10 w-full">
+        <Button className={'mb-5 text-white font-semibold bg-primary'}>
+          Water Your Plant
+        </Button>
         <h1 className="font-bold mb-2">Need Help?</h1>
         <Link href="/chatbot">
           <a className="w-full bg-[#1F8734] gap-2 rounded-xl py-3 px-2 flex justify-center items-center">

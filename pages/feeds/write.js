@@ -4,11 +4,13 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { createFeed } from "@/components/actions/feedActions";
+import { useRouter } from "next/router";
 
 import Button from "@/components/Button";
 
 export default function Write() {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [error, setError] = useState("");
   const [currentFile, setCurrentFile] = useState(null);
@@ -37,7 +39,7 @@ export default function Write() {
 
     dispatch(createFeed(fd))
       .then((data) => {
-        router.push("../feeds");
+        router.push("/feeds");
       })
       .catch((error) => {
         setError(error);
