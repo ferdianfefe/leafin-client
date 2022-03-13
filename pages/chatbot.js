@@ -26,16 +26,24 @@ export default function Chatbot() {
 
   const { observe, inView } = useInView({
     onEnter: ({ unobserve }) => {
-      dispatch(getUserMessages(page, limit)).then((data) => {
-        if (data.docs.length > 0) {
-          setAccMessages([...data.docs.reverse(), ...accMessages]);
-          setPage(page + 1);
-          scrollToTop();
-        }
-        if (!data.hasNextPage) unobserve();
-      });
+      // dispatch(getUserMessages(page, limit)).then((data) => {
+      //   if (data.docs.length > 0) {
+      //     setAccMessages([...data.docs.reverse(), ...accMessages]);
+      //     setPage(page + 1);
+      //     scrollToTop();
+      //   }
+      //   if (!data.hasNextPage) unobserve();
+      // });
     },
   });
+
+  useEffect(() => {
+    dispatch(sendMessage("")).then(({ data }) => {
+      setAccMessages([...accMessages, ...data.slice(1)]);
+      console.log(data);
+      scrollToBottom();
+    });
+  }, []);
 
   const getRelativeTime = (date) =>
     moment(date).calendar(null, {
@@ -79,7 +87,7 @@ export default function Chatbot() {
         </Link>
         <div className="rounded-full w-10 h-10 ml-5 relative overflow-hidden">
           <Image
-            src="/icon-512x512.png"
+            src="/assets/muka-masseh.png"
             objectFit="cover"
             layout="fill"
             alt="profile picture"
@@ -112,9 +120,9 @@ export default function Chatbot() {
 
               {message.isSenderBot ? (
                 <div className="flex my-7">
-                  <div className="rounded-full w-12 h-12 relative">
+                  <div className="rounded-full w-12 h-12 ml-5 relative overflow-hidden">
                     <Image
-                      src="/icon-512x512.png"
+                      src="/assets/muka-masseh.png"
                       objectFit="cover"
                       layout="fill"
                       alt="profile picture"
