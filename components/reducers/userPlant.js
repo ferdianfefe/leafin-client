@@ -5,7 +5,10 @@ import {
   USER_CREATE_USERPLANT_REQUEST,
   USER_CREATE_USERPLANT_SUCCESS,
   USER_CREATE_USERPLANT_FAILURE,
-} from "../../constants/userConstants";
+  USER_DELETE_USERPLANT_REQUEST,
+  USER_DELETE_USERPLANT_SUCCESS,
+  USER_DELETE_USERPLANT_FAILURE,
+} from '../../constants/userConstants';
 
 const initialState = {
   isLoading: false,
@@ -55,6 +58,24 @@ const plantReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isLoggedIn: false,
+        error: payload,
+      };
+    case USER_DELETE_USERPLANT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+    case USER_DELETE_USERPLANT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+      };
+    case USER_DELETE_USERPLANT_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
         error: payload,
       };
     default:

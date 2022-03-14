@@ -39,9 +39,8 @@ const Log = ({ props }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(getPlantLog(plantID));
+      setLightIntensity((lightIntensity += 25));
       setHumidity(humidity--);
-      const light = lightIntensity + 25;
-      setLightIntensity(light);
       setTemperature(Math.floor(Math.random() * (28 - 26 + 1)) + 26);
     }, 3000);
 

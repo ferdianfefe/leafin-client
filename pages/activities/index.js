@@ -150,8 +150,7 @@ export default function Activities() {
     const interval = setInterval(() => {
       dispatch(getAllPlantsLogs());
       setHumidity(humidity--);
-      const light = lightIntensity + 25;
-      setLightIntensity(light);
+      setLightIntensity((lightIntensity += 25));
       setTemperature(Math.floor(Math.random() * (28 - 26 + 1)) + 26);
     }, 3000);
 
@@ -199,22 +198,46 @@ export default function Activities() {
                         tallest[x] = parseInt(height);
                         setTallest((prevState) => [...prevState]);
                       }
-                      const color =
-                        x == 0
-                          ? percentage < batasAman
-                            ? '#24A3FF'
-                            : '#F2575D'
-                          : percentage > batasAman
-                          ? '#24A3FF'
-                          : '#F2575D';
-                      const textColor =
-                        x == 0
-                          ? percentage < batasAman
-                            ? '#000000'
-                            : '#F2575D'
-                          : percentage > batasAman
-                          ? '#000000'
-                          : '#F2575D';
+                      let color;
+                      if (x == 2) {
+                        if (percentage < 50 && percentage >= 10) {
+                          color = '#24A3FF';
+                        } else {
+                          color = '#F2575D';
+                        }
+                      } else if (x == 0) {
+                        if (percentage <= batasAman) {
+                          color = '#24A3FF';
+                        } else {
+                          color = '#F2575D';
+                        }
+                      } else {
+                        if (percentage >= batasAman) {
+                          color = '#24A3FF';
+                        } else {
+                          color = '#F2575D';
+                        }
+                      }
+                      let textColor;
+                      if (x == 2) {
+                        if (percentage < 50 && percentage >= 10) {
+                          textColor = '#000000';
+                        } else {
+                          textColor = '#F2575D';
+                        }
+                      } else if (x == 0) {
+                        if (percentage <= batasAman) {
+                          textColor = '#000000';
+                        } else {
+                          textColor = '#F2575D';
+                        }
+                      } else {
+                        if (percentage >= batasAman) {
+                          textColor = '#000000';
+                        } else {
+                          textColor = '#F2575D';
+                        }
+                      }
                       if (i < length) {
                         return (
                           <div

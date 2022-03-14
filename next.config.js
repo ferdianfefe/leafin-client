@@ -17,7 +17,7 @@ module.exports = withPWA({
     ],
   },
   images: {
-    domains: ['res.cloudinary.com'],
+    domains: ['res.cloudinary.com', 'img.icons8.com'],
   },
   async rewrites() {
     return [

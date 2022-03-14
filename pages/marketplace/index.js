@@ -1,69 +1,73 @@
-import Button from '@/components/Button';
-import FilterItem from '@/components/FilterItem';
 import Navbar from '@/components/Navbar';
-import { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { useEffect, useState } from 'react';
 
 import 'swiper/css';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProduct } from '@/components/actions/marketplaceActions';
+import { getProfile } from '@/components/actions/userActions';
 
 export default function Marketplace() {
-  const [selectedFilters, setSelectedFilters] = useState([]);
-  const filters = ['Fertilizer', 'Tools', 'Seeds', 'Leafin'];
+  const marketplaceRedux = useSelector((state) => state.marketplace.products);
+  const isAdmin = useSelector((state) => state.user);
+  const [products, setProducts] = useState([]);
 
-  const selectFilter = (filter) => {
-    if (selectedFilters.includes(filter)) {
-      setSelectedFilters(selectedFilters.filter((item) => item !== filter));
-    } else {
-      setSelectedFilters([...selectedFilters, filter]);
-    }
-  };
+  const dispatch = useDispatch();
 
-  const barang = [
-    {
-      stars: 4,
-      name: 'Pupuk Nafos',
-      price: '12.69',
-      image: '/assets/Pupuk-Nafos.jpg',
-    },
-    {
-      stars: 4,
-      name: 'Pupuk ZA',
-      price: '12.69',
-      image: '/assets/Pupuk-ZA.jpg',
-    },
-    {
-      stars: 4,
-      name: 'Pupuk Kaltim',
-      price: '12.69',
-      image: '/assets/Pupuk-Kaltim.jpg',
-    },
-    {
-      stars: 4,
-      name: 'Pupuk Dinosaurus',
-      price: '12.69',
-      image: '/assets/Pupuk-Dinosaurus.jpg',
-    },
-    {
-      stars: 4,
-      name: 'Pupuk Petro',
-      price: '12.69',
-      image: '/assets/Pupuk-Petro.jpg',
-    },
-    {
-      stars: 3,
-      name: 'Pupuk Biotara',
-      price: '12.69',
-      image: '/assets/Pupuk-Biotara.jpg',
-    },
-  ];
+  useEffect(() => {
+    dispatch(getAllProduct());
+    dispatch(getProfile());
+  }, []);
+
+  useEffect(() => {
+    setProducts(marketplaceRedux);
+  }, [marketplaceRedux]);
+
+  // const barang = [
+  //   {
+  //     stars: 4,
+  //     name: 'Pupuk Nafos',
+  //     price: '12.69',
+  //     image: '/assets/Pupuk-Nafos.jpg',
+  //   },
+  //   {
+  //     stars: 4,
+  //     name: 'Pupuk ZA',
+  //     price: '12.69',
+  //     image: '/assets/Pupuk-ZA.jpg',
+  //   },
+  //   {
+  //     stars: 4,
+  //     name: 'Pupuk Kaltim',
+  //     price: '12.69',
+  //     image: '/assets/Pupuk-Kaltim.jpg',
+  //   },
+  //   {
+  //     stars: 4,
+  //     name: 'Pupuk Dinosaurus',
+  //     price: '12.69',
+  //     image: '/assets/Pupuk-Dinosaurus.jpg',
+  //   },
+  //   {
+  //     stars: 4,
+  //     name: 'Pupuk Petro',
+  //     price: '12.69',
+  //     image: '/assets/Pupuk-Petro.jpg',
+  //   },
+  //   {
+  //     stars: 3,
+  //     name: 'Pupuk Biotara',
+  //     price: '12.69',
+  //     image: '/assets/Pupuk-Biotara.jpg',
+  //   },
+  // ];
 
   const funcStars = (stars) => {
     let result = [];
     for (let i = 0; i < stars; i++) {
       result.push(
-        <div className="w-[9px] h-[9px] relative">
+        <div key={i} className="w-[9px] h-[9px] relative">
           <Image src="/assets/stars.svg" alt="stars" layout="fill" />
         </div>
       );
@@ -72,49 +76,44 @@ export default function Marketplace() {
   };
   return (
     <>
-      <div className="container mx-auto p-5 flex flex-wrap justify-center">
-        <div className="w-full">
+      <div className="container mx-auto p-5 flex flex-wrap justify-center ">
+        {/* <div className="w-full relative items-center"> */}
+        <div className="flex-none flex flex-col justify-center w-full">
           <h1 className="font-bold text-[20px] w-2/3 text-left">
             We provide everything you need
           </h1>
+          {isAdmin?.user?.data.isAdmin && (
+            <Link href="/marketplace/add">
+              <a className="absolute right-5">
+                <div className="w-5 h-5 relative items-center justify-self-end">
+                  <Image
+                    src="/assets/plus.svg"
+                    objectFit="contain"
+                    layout="fill"
+                    alt="edit"
+                    priority
+                  />
+                </div>
+              </a>
+            </Link>
+          )}
         </div>
-
-        <div className="flex flex-wrap items-center w-full justify-start">
-          <Swiper
-            slidesPerView={3}
-            spaceBetween={5}
-            slidesPerGroup={3}
-            loopFillGroupWithBlank={true}
-            className="mt-2"
-          >
-            {filters.map((filter, i) => {
-              return (
-                <SwiperSlide key={i}>
-                  <Button
-                    onClick={() => {
-                      selectFilter(filter);
-                    }}
-                  >
-                    <FilterItem
-                      text={filter}
-                      active={selectedFilters.includes(filter)}
-                    />
-                  </Button>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
-        </div>
-
-        <div className="flex flex-wrap items-center w-full justify-between mb-20">
-          {barang.map(({ stars, name, price, image }, i) => {
+        <div className="flex flex-wrap items-center w-full justify-between mb-20 mt-5">
+          {products.map(({ imageFileURL, price, stars, title, slug }, i) => {
+            {
+              /* <div className="flex flex-wrap items-center w-full justify-between mb-20">
+          {barang.map(({ stars, name, price, image }, i) => { */
+            }
             return (
-              <Link key={i} href={'marketplace/' + name.replace(' ', '-')}>
+              // <Link key={i} href={'marketplace/' + name.replace(' ', '-')}>
+              <Link key={i} href={'marketplace/' + slug}>
                 <a className="h-[269px] rounded-xl w-[48%] mb-3">
                   <div className="relative h-[182px] overflow-hidden rounded-t-xl">
                     <Image
-                      src={image}
-                      alt={name}
+                      // src={image}
+                      // alt={name}
+                      src={imageFileURL}
+                      alt={title}
                       loading="lazy"
                       layout="fill"
                     />
@@ -123,8 +122,10 @@ export default function Marketplace() {
                     <div className="pt-2 pb-1 flex gap-[2px]">
                       {funcStars(stars)}
                     </div>
-                    <div className="font-semibold mb-2">{name}</div>
-                    <div className="font-bold mb-1">{price}</div>
+                    {/* <div className="font-semibold mb-2">{name}</div>
+                    <div className="font-bold mb-1">{price}</div> */}
+                    <div className="font-semibold mb-2">{title}</div>
+                    <div className="font-semibold mb-1">{price} $</div>
                   </div>
                 </a>
               </Link>

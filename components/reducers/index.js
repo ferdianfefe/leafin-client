@@ -4,6 +4,7 @@ import userPlant from './userPlant';
 import message from './message';
 import feed from './feed';
 import log from './log';
+import marketplace from './marketplace';
 
 export default combineReducers({
   user,
@@ -11,4 +12,5 @@ export default combineReducers({
   message,
   feed,
   log,
+  marketplace,
 });

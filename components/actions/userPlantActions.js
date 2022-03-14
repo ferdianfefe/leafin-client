@@ -2,9 +2,12 @@ import {
   USER_GET_USERPLANT_REQUEST,
   USER_GET_USERPLANT_SUCCESS,
   USER_GET_USERPLANT_FAILURE,
-} from "../../constants/userConstants";
-import axios from "axios";
-import config from "../../config";
+  USER_DELETE_USERPLANT_REQUEST,
+  USER_DELETE_USERPLANT_SUCCESS,
+  USER_DELETE_USERPLANT_FAILURE,
+} from '../../constants/userConstants';
+import axios from 'axios';
+import config from '../../config';
 
 const addUserPlant =
   ({ token, plantName, plantType }) =>
@@ -63,4 +66,23 @@ const getServerUserPlant = async (req) => {
   return data;
 };
 
-export { addUserPlant, getUserPlant, getServerUserPlant };
+const deleteUserPlant = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_DELETE_USERPLANT_REQUEST });
+
+    const { data } = await axios.delete(`${config.apiURL}/user-plant/${id}`, {
+      withCredentials: true,
+    });
+    dispatch({ type: USER_DELETE_USERPLANT_SUCCESS, payload: data });
+
+    return Promise.resolve(data);
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_USERPLANT_FAILURE,
+      payload: error?.response?.data?.message || error.message,
+    });
+    return Promise.reject(error?.response?.data?.message || error.message);
+  }
+};
+
+export { addUserPlant, getUserPlant, getServerUserPlant, deleteUserPlant };
