@@ -55,7 +55,7 @@ export default function Chatbot() {
     });
 
   const handleMessageChange = (e) => {
-    setMessageInput(e.target.value.trim());
+    setMessageInput(e.target.value);
   };
 
   const hardcodedUserInputs = [
