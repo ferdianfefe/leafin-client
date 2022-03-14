@@ -60,7 +60,6 @@ export default function Idmarketplace() {
         </a>
       </Link>
       <div className="relative w-full h-[400px] -z-10">
-        {/* <Image src={`/assets/${id}.jpg`} layout="fill" alt={id} /> */}
         <Image
           src={product?.imageFileURL || '/logo.png'}
           layout="fill"
@@ -70,12 +69,9 @@ export default function Idmarketplace() {
       <div className="fixed bottom-0 container mx-auto px-5 rounded-t-2xl bg-white">
         <div className="flex justify-between font-bold items-center pt-3">
           <h1 className="text-[26px] text flex flex-col">
-            {/* {id}
-            <span className="text-[15.15px]">LSPr - 004 - IDN</span> */}
             {product?.title}
             <span className="text-[15.15px]">{product?.productId}</span>
           </h1>
-          {/* <p className="text-lg">12.69 $</p> */}
           <p className="text-lg">{product?.price} $</p>
         </div>
         <div className="mt-4 mb-4">
@@ -83,14 +79,6 @@ export default function Idmarketplace() {
           <span className="prose text-xs w-full">
             {parse(product?.description || '')}
           </span>
-          {/* <span className="text-xs w-full">
-            Pupuk Kandang Kambing Organik halus <br />
-            • Steril <br />
-            • Siap Pakai <br />
-            • Tidak <br />
-            Berbau Terbuat dari kotoran kambing yang diproses secara alami.
-            Cocok ditambahkan pada media tanam untuk buah-buahan.
-          </span> */}
         </div>
 
         <Button className="bg-primary text-white font-bold w-full mb-5 flex justify-center gap-2">

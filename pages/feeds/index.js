@@ -1,28 +1,28 @@
-import Navbar from "../../components/Navbar";
-import FilterItem from "../../components/FilterItem";
-import FeedItem from "../../components/FeedItem";
-import Button from "../../components/Button";
-import Link from "next/link";
-import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import ScrollToBottom, { useScrollToBottom } from "react-scroll-to-bottom";
-import useInView from "react-cool-inview";
+import Navbar from '../../components/Navbar';
+import FilterItem from '../../components/FilterItem';
+import FeedItem from '../../components/FeedItem';
+import Button from '../../components/Button';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ScrollToBottom, { useScrollToBottom } from 'react-scroll-to-bottom';
+import useInView from 'react-cool-inview';
 import {
   getAllFeeds,
   getServerFeedTags,
   getFeedTags,
-} from "@/components/actions/feedActions";
+} from '@/components/actions/feedActions';
 import {
   FEED_GET_TAGS_REQUEST,
   FEED_GET_TAGS_SUCCESS,
-} from "constants/feedConstants";
-import { wrapper } from "@/components/store/store";
+} from 'constants/feedConstants';
+import { wrapper } from '@/components/store/store';
 
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 Feeds.getInitialProps = wrapper.getInitialPageProps(
   ({ getState, dispatch }) =>
@@ -36,16 +36,10 @@ Feeds.getInitialProps = wrapper.getInitialPageProps(
       } else if (!feed.feeds.length) {
         dispatch(getFeedTags());
       } else {
-        console.log("sudah ada data");
+        console.log('sudah ada data');
       }
     }
 );
-
-// export async function getServerSideProps() {
-//   await wrapper.dispatch({ type: FEED_GET_TAGS_REQUEST });
-//   const data = await getServerFeedTags();
-//   await wrapper.dispatch({ type: FEED_GET_TAGS_SUCCESS, payload: data });
-// }
 
 export default function Feeds() {
   const tags = useSelector((state) => state.feed.tags);
@@ -155,7 +149,7 @@ export default function Feeds() {
             );
           })}
           {/* Akal-akalan supaya bisa muncul kalau pakai data dinamis */}
-          <SwiperSlide style={{ width: "0px" }}></SwiperSlide>
+          <SwiperSlide style={{ width: '0px' }}></SwiperSlide>
         </Swiper>
       </div>
       <ScrollToBottom className="flex-1 overflow-y-auto">
@@ -173,7 +167,7 @@ export default function Feeds() {
           {inView && <h1></h1>}
         </div>
       </ScrollToBottom>
-      <Navbar active={"feeds"}></Navbar>
+      <Navbar active={'feeds'}></Navbar>
     </div>
   );
 }

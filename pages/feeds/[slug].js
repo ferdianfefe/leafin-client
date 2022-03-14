@@ -1,9 +1,9 @@
-import Link from "next/link";
-import Image from "next/image";
-import Tag from "../../components/Tag";
-import Error from "next/error";
-import axios from "axios";
-import config from "../../config";
+import Link from 'next/link';
+import Image from 'next/image';
+import Tag from '../../components/Tag';
+import Error from 'next/error';
+import axios from 'axios';
+import config from '../../config';
 
 export async function getServerSideProps({ req, query }) {
   const res = await axios.get(`${config.apiURL}/feed/${query.slug}`, {
@@ -11,7 +11,6 @@ export async function getServerSideProps({ req, query }) {
       cookie: `refreshToken=${req?.cookies?.refreshToken}; accessToken=${req?.cookies?.accessToken};`,
     },
   });
-  console.log(res);
   return {
     props: {
       feed: res.data.data,

@@ -79,18 +79,6 @@ export default function Profile(props) {
     router.push('/home');
   };
 
-  // Ambil payload pakai SSR
-  // if (user?.user?.data?.email == null) {
-  //   dispatch({ type: USER_GET_PROFILE_SUCCESS, payload: props.user });
-  // }
-
-  // Ambil dari client side
-  // useEffect(() => {
-  //   console.log('user', user);
-  //   if (user.user?.data == null) {
-  //     dispatch(getProfile());
-  //   }
-  // }, []);
   return (
     <div className="container mx-auto p-5 flex flex-wrap justify-center">
       <div className="flex items-center  justify-center w-full">
@@ -147,21 +135,6 @@ export default function Profile(props) {
       <div className="mt-10 flex flex-wrap items-center w-full justify-start">
         <h1 className="font-bold text-lg w-full mb-2">Badges</h1>
         <Badge>Level 1</Badge>
-        {/* <Swiper
-          slidesPerView={3}
-          spaceBetween={5}
-          slidesPerGroup={3}
-          loopFillGroupWithBlank={true}
-          className="mt-5"
-        >
-          {badges.map((badge, i) => {
-            return (
-              <SwiperSlide key={i}>
-                <Badge>{badge}</Badge>
-              </SwiperSlide>
-            );
-          })}
-        </Swiper> */}
       </div>
       {plant.length != 0 && (
         <div className="font-bold mt-10 w-full">
@@ -206,52 +179,7 @@ export default function Profile(props) {
         </div>
       </div>
 
-      {/* <div className="mt-10 flex flex-wrap w-full">
-        <h1 className="font-bold text-lg w-full">Env Profile</h1>
-        <div className="mt-5 border flex items-center gap-5 w-full rounded-xl p-5 border-gray-400">
-          <div className="relative h-24 w-32">
-            <Image
-              src="/assets/weather.svg"
-              objectFit="contain"
-              layout="fill"
-              alt="weather"
-              loading="lazy"
-            />
-          </div>
-          <div className="font-bold w-1/2">
-            {envProfile.map(({ name, value }, i) => {
-              return (
-                <div
-                  key={i}
-                  className="text-[#CCCCCC] mb-2 w-full text-xs flex justify-between"
-                >
-                  {name}
-                  <p className="text-black">{value}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div> */}
-
       <Navbar active="profile" />
     </div>
   );
 }
-
-// export async function getServerSideProps({ req }) {
-//   const res = await fetch(`${config.apiURL}/user/`, {
-//     method: 'GET',
-//     credentials: true,
-//     headers: {
-//       cookie: `refreshToken=${req.cookies.refreshToken}; accessToken=${req.cookies.accessToken};`,
-//       content: 'application/json',
-//     },
-//   });
-//   const data = (await res.json()).data;
-//   return {
-//     props: {
-//       user: { data },
-//     },
-//   };
-// }

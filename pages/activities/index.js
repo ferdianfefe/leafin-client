@@ -91,14 +91,6 @@ export default function Activities() {
           percentage: temperature,
           batasAman: 28,
         };
-        // if (temperature > 28) {
-        //   const data = `Move ${userPlant.plantType.name} to darker area`;
-        //   // console.log(todo);
-        //   const x = todo.filter((x) => x.todo == data);
-        //   if (x.length == 0) addTodo('/assets/water.svg', data);
-        // } else {
-        //   removeTodo(`Move ${userPlant.plantType.name} to darker area`);
-        // }
 
         logs[1].data[i] = {
           name: userPlant.plantType.name,
@@ -171,7 +163,6 @@ export default function Activities() {
   return (
     <>
       <div className="container mx-auto p-5 flex flex-wrap justify-center">
-        {/* <div className="flex flex-col w-full justify-center items-center"> */}
         <h1 className="font-bold text-2xl text-center px-10 w-full mb-5">
           Activities
         </h1>
@@ -179,13 +170,8 @@ export default function Activities() {
           {logs.map(({ name, data }, x) => {
             const length = data.length < 5 ? data.length : 5;
             const width = (1 / length) * 100;
-            // if (x == 0) setTallest([0, 0, 0]);
             return (
-              <SwiperSlide
-                key={x}
-
-                // className="flex flex-wrap justify-center items-center mb-10"
-              >
+              <SwiperSlide key={x}>
                 <div className="flex justify-center w-full items-center rounded-2xl border-2 mb-10 flex-wrap">
                   <p className="my-3 ml-5 font-semibold text-start w-full text-md mb-5">
                     {name}
@@ -274,8 +260,6 @@ export default function Activities() {
             );
           })}
         </Swiper>
-
-        {/* </div> */}
 
         <div className="font-bold mt-10 w-full">
           <label className="text-left">All Plants</label>
