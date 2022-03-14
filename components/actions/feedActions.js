@@ -11,10 +11,10 @@ import {
   FEED_GET_TAGS_REQUEST,
   FEED_GET_TAGS_SUCCESS,
   FEED_GET_TAGS_FAILURE,
-} from "../../constants/feedConstants";
+} from '../../constants/feedConstants';
 
-import axios from "axios";
-import config from "../../config";
+import axios from 'axios';
+import config from '../../config';
 
 /* Get all feeds */
 const getAllFeeds = (page, limit, selectedFilters) => async (dispatch) => {
@@ -37,6 +37,20 @@ const getAllFeeds = (page, limit, selectedFilters) => async (dispatch) => {
     });
     return Promise.reject(error?.response?.data?.message || error.message);
   }
+};
+
+const getServerAllFeeds = async (req, page, limit, selectedFilters) => {
+  const { data } = await axios.get(`${config.apiURL}/feed`, {
+    params: {
+      page,
+      limit,
+      tags: selectedFilters,
+    },
+    headers: {
+      cookie: `refreshToken=${req?.cookies?.refreshToken}; accessToken=${req?.cookies?.accessToken};`,
+    },
+  });
+  return data.data;
 };
 
 /* Get one feed */
@@ -118,4 +132,5 @@ export {
   createFeed,
   getServerFeedTags,
   getFeedTags,
+  getServerAllFeeds,
 };

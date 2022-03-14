@@ -34,6 +34,16 @@ const getAllProduct = () => async (dispatch) => {
   }
 };
 
+const getServerAllProduct = async (req) => {
+  const { data } = await axios.get(`${config.apiURL}/product`, {
+    headers: {
+      cookie: `refreshToken=${req?.cookies?.refreshToken}; accessToken=${req?.cookies?.accessToken};`,
+    },
+  });
+
+  return data.data;
+};
+
 const getProduct = (slug) => async (dispatch) => {
   try {
     dispatch({ type: MARKETPLACE_GET_REQUEST });
@@ -86,4 +96,10 @@ const deleteProduct = (slug, imageId) => async (dispatch) => {
   }
 };
 
-export { getAllProduct, getProduct, addProduct, deleteProduct };
+export {
+  getAllProduct,
+  getProduct,
+  addProduct,
+  deleteProduct,
+  getServerAllProduct,
+};

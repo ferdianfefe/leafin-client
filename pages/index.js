@@ -17,6 +17,25 @@ import {
   USER_GET_PROFILE_SUCCESS,
 } from 'constants/userConstants';
 
+import {
+  FEED_GET_ALL_REQUEST,
+  FEED_GET_ALL_SUCCESS,
+} from 'constants/feedConstants';
+import {
+  getAllFeeds,
+  getServerAllFeeds,
+} from '@/components/actions/feedActions';
+
+import {
+  MARKETPLACE_GET_ALL_REQUEST,
+  MARKETPLACE_GET_ALL_SUCCESS,
+} from 'constants/marketplaceConstants';
+
+import {
+  getServerAllProduct,
+  getAllProduct,
+} from '@/components/actions/marketplaceActions';
+
 import { wrapper } from '@/components/store/store';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -24,7 +43,7 @@ import { useEffect, useState } from 'react';
 Index.getInitialProps = wrapper.getInitialPageProps(
   ({ getState, dispatch }) =>
     async ({ req }) => {
-      const { userPlant } = getState();
+      const { userPlant, user, feed, marketplace } = getState();
       if (userPlant.plants == null && !process.browser) {
         dispatch({ type: USER_GET_USERPLANT_REQUEST });
 
@@ -36,7 +55,6 @@ Index.getInitialProps = wrapper.getInitialPageProps(
       }
 
       /* Get profile */
-      const { user } = getState();
       if (user.user?.data == null && !process.browser) {
         dispatch({ type: USER_GET_PROFILE_REQUEST });
 
@@ -46,6 +64,26 @@ Index.getInitialProps = wrapper.getInitialPageProps(
       } else if (user.user?.data == null) {
         dispatch(getProfile());
       }
+
+      if (feed.feeds.length == 0 && !process.browser) {
+        dispatch({ type: FEED_GET_ALL_REQUEST });
+
+        const data = await getServerAllFeeds(req, 1, 2);
+
+        dispatch({ type: FEED_GET_ALL_SUCCESS, payload: data });
+      } else if (feed.feeds.length == 0) {
+        dispatch(getAllFeeds(1, 2));
+      }
+
+      if (marketplace.products.length == 0 && !process.browser) {
+        dispatch({ type: MARKETPLACE_GET_ALL_REQUEST });
+
+        const data = await getServerAllProduct(req);
+
+        dispatch({ type: MARKETPLACE_GET_ALL_SUCCESS, payload: data });
+      } else if (marketplace.products.length == 0) {
+        dispatch(getAllProduct());
+      }
     }
 );
 
@@ -53,25 +91,8 @@ export default function Index(props) {
   let reduxPlant = useSelector((state) => state.userPlant);
   let user = useSelector((state) => state.user);
   const [plant, setPlant] = useState([]);
-
-  const [feeds, setFeeds] = useState([
-    {
-      _id: 1,
-      author: 'Budi',
-      title: 'Hasil Tanam Menggunakan Alat Otomatis dari Leafin',
-      pictureFileURL: '/assets/Pupuk-ZA.jpg',
-      likes: 100,
-      views: 200,
-    },
-    {
-      _id: 2,
-      author: 'Sarah',
-      title: 'Tips Pemula Dalam Menggunakan Pupuk Kompos',
-      pictureFileURL: '/assets/Pupuk-ZA.jpg',
-      likes: 100,
-      views: 200,
-    },
-  ]);
+  const feeds = useSelector((state) => state.feed.feeds);
+  const products = useSelector((state) => state.marketplace.products);
 
   const [items, setItems] = useState([
     {
@@ -277,92 +298,90 @@ export default function Index(props) {
             </div>
           </div>
 
-          <div className="font-bold mt-10 w-full">
-            <label className="text-left">Popular</label>
-            <div className="flex flex-col mt-5 justify-between flex-wrap gap-y-3">
-              {feeds.map(
-                ({ author, title, _id, pictureFileURL, likes, views }, i) => {
-                  return (
-                    <Link key={i} href={'activities/' + _id}>
-                      <a className="bg-white py-5 rounded-xl flex items-center">
-                        <div className="rounded-xl flex-none w-20 h-[100px] mx-3 relative overflow-hidden">
-                          <Image
-                            src={pictureFileURL}
-                            objectFit="cover"
-                            layout="fill"
-                            alt="profile picture"
-                            loading="lazy"
-                          ></Image>
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-primary font-semibold">{author}</p>
-                          <p className="mt-1 font-bold pr-2">{title}</p>
-
-                          <div className="flex justify-start mt-3">
-                            <div className="flex-1 flex items-center">
-                              <div className="w-4 h-4 relative mr-1">
-                                <Image
-                                  src={'/assets/borderHeartIcon.svg'}
-                                  layout="fill"
-                                  alt="heart"
-                                  loading="lazy"
-                                />
-                              </div>
-                              <p className="text-[#E1E1E1] text-xs font-normal">
-                                {likes} likes
-                              </p>
+          {feeds.length > 0 && (
+            <div className="font-bold mt-10 w-full">
+              <label className="text-left">Popular</label>
+              <div className="flex flex-col mt-5 justify-between flex-wrap gap-y-3">
+                {feeds?.map(
+                  ({ authorId, title, _id, imageFileURL, likes }, i) => {
+                    if (i < 2) {
+                      return (
+                        <Link key={i} href={'activities/' + _id}>
+                          <a className="bg-white py-5 rounded-xl flex items-center">
+                            <div className="rounded-xl flex-none w-20 h-[100px] mx-3 relative overflow-hidden">
+                              <Image
+                                src={imageFileURL}
+                                objectFit="cover"
+                                layout="fill"
+                                alt="profile picture"
+                                loading="lazy"
+                              ></Image>
                             </div>
-                            <div className="flex-1 flex items-center">
-                              <div className="w-4 h-4 relative mr-1">
-                                <Image
-                                  src={'/assets/borderEyeIcon.svg'}
-                                  layout="fill"
-                                  alt="eye"
-                                  loading="lazy"
-                                />
-                              </div>
-                              <p className="text-[#E1E1E1] text-xs font-normal">
-                                {views} Views
+                            <div className="flex-1">
+                              <p className="text-primary font-semibold">
+                                {authorId.name}
                               </p>
-                            </div>
-                          </div>
-                        </div>
-                      </a>
-                    </Link>
-                  );
-                }
-              )}
-            </div>
-          </div>
+                              <p className="mt-1 font-bold pr-2">{title}</p>
 
-          <div className="font-bold mt-10 mb-20 w-full">
-            <label className="text-left">Popular Items</label>
-            <div className="flex mt-5 justify-between flex-wrap gap-y-3">
-              {items.map(({ stars, name, price, image }, i) => {
-                return (
-                  <Link key={i} href={'marketplace/' + name.replace(' ', '-')}>
-                    <a className="h-[269px] rounded-xl w-[48%] mb-3">
-                      <div className="relative h-[182px] overflow-hidden rounded-t-xl">
-                        <Image
-                          src={image}
-                          alt={name}
-                          loading="lazy"
-                          layout="fill"
-                        />
-                      </div>
-                      <div className="border-x-2 border-b-2 rounded-b-xl flex flex-col px-3">
-                        <div className="pt-2 pb-1 flex gap-[2px]">
-                          {funcStars(stars)}
-                        </div>
-                        <div className="font-semibold mb-2">{name}</div>
-                        <div className="font-bold mb-1">{price}</div>
-                      </div>
-                    </a>
-                  </Link>
-                );
-              })}
+                              <div className="flex justify-start mt-3">
+                                <div className="flex-1 flex items-center">
+                                  <div className="w-4 h-4 relative mr-1">
+                                    <Image
+                                      src={'/assets/borderHeartIcon.svg'}
+                                      layout="fill"
+                                      alt="heart"
+                                      loading="lazy"
+                                    />
+                                  </div>
+                                  <p className="text-[#E1E1E1] text-xs font-normal">
+                                    {likes} likes
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </a>
+                        </Link>
+                      );
+                    }
+                  }
+                )}
+              </div>
             </div>
-          </div>
+          )}
+          {products.length > 0 && (
+            <div className="font-bold mt-10 mb-20 w-full">
+              <label className="text-left">Popular Items</label>
+              <div className="flex mt-5 justify-between flex-wrap gap-y-3">
+                {products.map(
+                  ({ stars, title, price, imageFileURL, slug }, i) => {
+                    if (i < 2) {
+                      return (
+                        <Link key={i} href={'marketplace/' + slug}>
+                          <a className="h-[269px] rounded-xl w-[48%] mb-3">
+                            <div className="relative h-[182px] overflow-hidden rounded-t-xl">
+                              <Image
+                                src={imageFileURL}
+                                alt={title}
+                                loading="lazy"
+                                layout="fill"
+                              />
+                            </div>
+                            <div className="border-x-2 border-b-2 rounded-b-xl flex flex-col px-3">
+                              <div className="pt-2 pb-1 flex gap-[2px]">
+                                {funcStars(stars)}
+                              </div>
+                              <div className="font-semibold mb-2">{title}</div>
+                              <div className="font-bold mb-1">{price} $</div>
+                            </div>
+                          </a>
+                        </Link>
+                      );
+                    }
+                  }
+                )}
+              </div>
+            </div>
+          )}
           <Navbar active="home" />
         </div>
       </div>

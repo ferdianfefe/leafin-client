@@ -54,9 +54,6 @@ export default function Activities() {
   let reduxPlant = useSelector((state) => state.userPlant);
   let reduxLogs = useSelector((state) => state.log);
   const [todo, setTodo] = useState([]);
-  const [humidity, setHumidity] = useState(80);
-  const [temperature, setTemperature] = useState(27);
-  const [lightIntensity, setLightIntensity] = useState(1000);
 
   const dispatch = useDispatch();
 
@@ -83,8 +80,7 @@ export default function Activities() {
   useEffect(() => {
     reduxLogs.logs?.data.map((data, i) => {
       if (data != null) {
-        // const { temperature, humidity, lightIntensity, userPlant } = data;
-        const { userPlant } = data;
+        const { temperature, humidity, lightIntensity, userPlant } = data;
 
         logs[0].data[i] = {
           name: userPlant.plantType.name,
@@ -141,16 +137,12 @@ export default function Activities() {
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(getAllPlantsLogs());
-      setHumidity(humidity--);
-      setLightIntensity((lightIntensity += 25));
-      setTemperature(Math.floor(Math.random() * (28 - 26 + 1)) + 26);
-    }, 3000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
 
   const addTodo = (svg, todo) => {
-    // console.log('add todo' + todos
     setTodo((prevState) => [...prevState, { svg, todo }]);
   };
 
