@@ -40,7 +40,6 @@ export default function Chatbot() {
   useEffect(() => {
     dispatch(sendMessage("")).then(({ data }) => {
       setAccMessages([...accMessages, ...data.slice(1)]);
-      console.log(data);
       scrollToBottom();
     });
   }, []);
@@ -59,13 +58,32 @@ export default function Chatbot() {
     setMessageInput(e.target.value.trim());
   };
 
+  const hardcodedUserInputs = [
+    "",
+    "Do you have any tips and trick on how to grow the plant",
+    "why my plants fail?",
+  ];
+
   const sendMessageHandler = (e) => {
     e.preventDefault();
     if (messageInput === "") {
       return;
     }
-    dispatch(sendMessage(messageInput)).then(({ data }) => {
-      setAccMessages([...accMessages, ...data]);
+    let sentMessageInput = messageInput;
+    const userMessages = accMessages.filter(
+      (message) => message.isSenderBot == false
+    );
+    if (userMessages.length == 0) {
+      sentMessageInput = "name " + messageInput;
+    } else {
+      sentMessageInput = hardcodedUserInputs[userMessages.length];
+    }
+    dispatch(sendMessage(sentMessageInput)).then(({ data }) => {
+      console.log(messageInput);
+      console.log(data.slice(1));
+      let scriptedMessage = data[0];
+      scriptedMessage.message = messageInput;
+      setAccMessages([...accMessages, scriptedMessage, ...data.slice(1)]);
       setMessageInput("");
       scrollToBottom();
     });
@@ -129,7 +147,7 @@ export default function Chatbot() {
                       loading="lazy"
                     ></Image>
                   </div>
-                  <div className="flex-1 py-3 px-7 ml-4 rounded-full bg-[#EBEBEB] ">
+                  <div className="flex-1 py-3 px-7 ml-4 rounded-3xl bg-[#EBEBEB] ">
                     <p className="text-[#7A7A7A] break-all text-sm">
                       {message.message}
                     </p>
@@ -147,7 +165,7 @@ export default function Chatbot() {
                       <Moment format="hh:mm">{message.createdAt}</Moment>
                     </p>
                   </div>
-                  <div className="flex-1 py-3 px-7 ml-4 flex-none rounded-full bg-primary ">
+                  <div className="flex-1 py-3 px-7 ml-4 flex-none rounded-3xl bg-primary ">
                     <p className="text-white text-sm break-all">
                       {message.message}
                     </p>
