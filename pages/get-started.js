@@ -21,8 +21,20 @@ export default function Question() {
   };
   const recommendationList = [
     {
-      name: "Orchid",
-      image: "/images/orchid.jpg",
+      name: "Bougainvillea",
+      image: "/assets/bougainvillea.jpg",
+    },
+    {
+      name: "Jasminum",
+      image: "/assets/jasminum.jpg",
+    },
+    {
+      name: "Zingiber Officinale",
+      image: "/assets/zingiber-officinale.png",
+    },
+    {
+      name: "Orchidaceae",
+      image: "/assets/orchidaceae.jpg",
     },
   ];
 
@@ -54,7 +66,11 @@ export default function Question() {
     <div className="container mx-auto w-[100vw] h-[100vh] p-5 flex flex-col justify-between items-center">
       <div className="top w-full">
         <h1 className="font-bold text-center text-2xl px-10 mb-10">
-          Almost Ready
+          {step <= questions.length
+            ? "Almost Ready"
+            : step === questions.length + 1
+            ? "Congratulations"
+            : "Recommendation"}
         </h1>
         {step === 0 && (
           <div>
@@ -103,7 +119,7 @@ export default function Question() {
           </div>
         )}
         {step === questions.length + 1 && (
-          <div>
+          <div className="w-[100%]">
             <div className="w-[315px] h-[315px] relative mx-auto">
               <Image
                 loading="lazy"
@@ -114,8 +130,31 @@ export default function Question() {
               ></Image>
             </div>
             <p className="text-[#8D8D8D] mt-5 text-center">
-              Cari tanaman yang cocok dengan pribadi dan kesibukan kamu
+              Congratulation for your set Big steps require small steps
             </p>
+          </div>
+        )}
+        {step === questions.length + 2 && (
+          <div className="w-[100%] flex flex-wrap">
+            {recommendationList.map((item, index) => (
+              <div
+                key={index}
+                className="bg-white w-[45%] m-2 shadow-md rounded-xl flex flex-col items-center justify-center"
+              >
+                <div className="p-2">
+                  <div className="w-28 h-28 rounded-full relative overflow-hidden">
+                    <Image
+                      src={item.image}
+                      objectFit="cover"
+                      layout="fill"
+                      alt="profile picture"
+                      loading="lazy"
+                    ></Image>
+                  </div>
+                  <p className="mt-5 text-center font-bold">{item.name}</p>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -154,6 +193,16 @@ export default function Question() {
             href="home"
           >
             Continue
+          </Button>
+        </div>
+      )}
+      {step == questions.length + 2 && (
+        <div className="w-[100%]">
+          <Button
+            className={"mt-5 border bg-primary text-white font-bold"}
+            href="home"
+          >
+            Back to menu
           </Button>
         </div>
       )}

@@ -20,7 +20,7 @@ export default function Add() {
   } = useForm();
 
   useEffect(() => {
-    setValue("token", "cgTlKPTGS89Tb0RaSm-xDJb3emLQLq1J");
+    setValue("token", "xkhlVOHsG16m6ujYGqOS6CW3UHiEVAms");
   });
 
   const submitHandler = (formData) => {

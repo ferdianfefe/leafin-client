@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // import io from 'socket.io-client';
-import { getPlantLog } from '@/components/actions/logActions';
+import { getPlantLog } from "@/components/actions/logActions";
 // import config from '../../../config';
 
 const Log = ({ props }) => {
@@ -14,9 +14,9 @@ const Log = ({ props }) => {
   const plantID = props.data.data.userPlant._id;
   // let socket;
 
-  const [humidity, setHumidity] = useState(80);
-  const [temperature, setTemperature] = useState(27);
-  const [lightIntensity, setLightIntensity] = useState(1000);
+  // const [humidity, setHumidity] = useState(80);
+  // const [temperature, setTemperature] = useState(27);
+  // const [lightIntensity, setLightIntensity] = useState(1000);
 
   const dispatch = useDispatch();
 
@@ -38,11 +38,13 @@ const Log = ({ props }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      dispatch(getPlantLog(plantID));
-      setLightIntensity((lightIntensity += 25));
+      dispatch(getPlantLog(plantID)).then(() => {
+        console.log(plant);
+      });
+      /* setLightIntensity((lightIntensity += 25));
       setHumidity(humidity--);
-      setTemperature(Math.floor(Math.random() * (28 - 26 + 1)) + 26);
-    }, 3000);
+      setTemperature(Math.floor(Math.random() * (28 - 26 + 1)) + 26); */
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
@@ -59,30 +61,30 @@ const Log = ({ props }) => {
   const plant = {
     data: [
       {
-        name: 'sunlight',
-        // data: data.lightIntensity || 0 + '%',
-        data: lightIntensity || 0 + '%',
-        svg: '/assets/sun.svg',
-        color: 'FFC061',
-        secColor: 'FFF0D9',
+        name: "sunlight",
+        data: data.lightIntensity || 0 + '%',
+        // data: lightIntensity || 0 + "%",
+        svg: "/assets/sun.svg",
+        color: "FFC061",
+        secColor: "FFF0D9",
         batas: 10000,
       },
       {
-        name: 'temperature',
-        // data: data.temperature || 0 + '%',
-        data: temperature || 0 + '%',
-        svg: '/assets/water.svg',
-        color: '61B4FF',
-        secColor: 'C7E4FF',
+        name: "temperature",
+        data: data.temperature || 0 + '%',
+        // data: temperature || 0 + "%",
+        svg: "/assets/water.svg",
+        color: "61B4FF",
+        secColor: "C7E4FF",
         batas: 50,
       },
       {
-        name: 'humidity',
-        // data: data.humidity || 0 + '%',
-        data: humidity || 0 + '%',
-        svg: '/assets/humidity.svg',
-        color: '0A7BE0',
-        secColor: 'C7E4FF',
+        name: "humidity",
+        data: data.humidity || 0 + '%',
+        // data: humidity || 0 + "%",
+        svg: "/assets/humidity.svg",
+        color: "0A7BE0",
+        secColor: "C7E4FF",
         batas: 100,
       },
     ],
@@ -110,7 +112,7 @@ const Log = ({ props }) => {
               >
                 <div
                   style={{
-                    width: (data / batas) * 100 + '%',
+                    width: (data / batas) * 100 + "%",
                     backgroundColor: `#${color}`,
                   }}
                   className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center`}
